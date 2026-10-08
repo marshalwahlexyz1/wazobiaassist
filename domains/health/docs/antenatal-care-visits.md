@@ -1,0 +1,17 @@
+Source: World Health Organization (https://github.com/WorldHealthOrganization/smart-anc/blob/master/input/l2/WHO-SRH-21.2-eng.xlsx; https://github.com/WorldHealthOrganization/smart-anc/blob/master/input/l2/WHO-SRH-21.3-eng.xlsx)
+
+How many antenatal visits are recommended, according to the World Health Organization (WHO): WHO recommends that a pregnant woman sees a health-care provider 8 times during her pregnancy. WHO calls these antenatal care "contacts". The number can change if the woman has any complications. WHO says the schedule shows when the woman should come in so that she can get all the important care and information.
+
+When to go for antenatal visits, according to the WHO schedule: the first visit is recommended before the woman is 20 weeks pregnant, and the WHO schedule plans it for 12 weeks of pregnancy. The next visits are planned for 20, 26, 30, 34, 36, 38 and 40 weeks of pregnancy. That makes 8 visits. If the woman has not given birth by 41 weeks, she must come in to the health facility. This 41-week visit is about the birth and is not counted as one of the 8 visits.
+
+Starting antenatal care early, according to WHO: WHO counts how many pregnant women have their first antenatal visit in the first three months of pregnancy, before 12 weeks. The WHO schedule plans the first visit for 12 weeks of pregnancy. A pregnant woman can ask at the nearest health facility or primary health centre (PHC) about starting antenatal care.
+
+If a woman starts antenatal care late, according to the WHO schedule: the visits are moved closer together so she can still get the care she needs. Early in pregnancy the visits are farther apart, and they get closer as the birth comes near. From 34 weeks, visits are every 2 weeks. A woman who comes for the first time after 30 weeks of pregnancy is given visits every 2 weeks.
+
+Why antenatal visits matter: tests, according to WHO. During antenatal visits, the health worker offers checks and tests at the right times. These include an ultrasound scan before 24 weeks of pregnancy, a blood test for blood group, blood tests for anaemia (low blood) more than once in pregnancy, urine tests, and tests such as HIV and syphilis tests. WHO also tracks whether the woman's blood pressure was measured and whether the baby's heartbeat was listened to during antenatal care.
+
+Why antenatal visits matter: advice and counselling, according to WHO. At antenatal visits the health worker gives advice on healthy eating and keeping physically active, on danger signs in pregnancy and when to go to the hospital, and on planning for the birth and for emergencies. Later in pregnancy, the health worker talks about breastfeeding. WHO and UNICEF recommend starting breastfeeding within the first hour of life and giving only breast milk, not even water, for the first 6 months. The health worker also talks about family planning after the birth.
+
+Malaria prevention in pregnancy, according to WHO: in places where malaria is common, the health worker should talk about malaria prevention at every antenatal visit. This includes sleeping under an insecticide-treated bed net, and the importance of seeking care and getting treatment at the first sign of any symptoms.
+
+Between antenatal visits, a pregnant woman should not wait for her next visit if she has a danger sign. If she has bleeding from the vagina, fits, severe headache with blurred vision, fever and is too weak to get out of bed, severe belly pain, or fast or difficult breathing, she should go to the hospital or the nearest health facility immediately.

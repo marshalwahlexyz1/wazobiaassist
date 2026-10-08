@@ -1,0 +1,15 @@
+# file | organisation | URL     (run: python -m scripts.fetch_sources agriculture)
+# Candidate documents found by search on 2026-10-08, not yet opened. Long manuals: keep only the relevant sections.
+maize-production | IFDC | https://hub.ifdc.org/items/c27a922a-b5a3-457c-9ae7-d44443dfefd5/full
+maize-production | IITA/NCRI/ABU (USAID archive) | https://pdf.usaid.gov/pdf_docs/PNAAS960.pdf
+fall-armyworm | FAO | https://www.fao.org/fall-armyworm/en/
+fall-armyworm | FAO | https://openknowledge.fao.org/server/api/core/bitstreams/cafb4aaa-65fe-41d3-92b9-5ad6e099edd7/content
+cowpea-storage | Purdue University (PICS) | https://www.extension.entm.purdue.edu/publications/E-262.pdf
+cowpea-storage | Purdue University (PICS) | https://www.extension.entm.purdue.edu/publications/E-265.pdf
+cassava-production | IITA | https://www.iita.org/wp-content/uploads/2016/06/Growing_cassava_a_training_manual_from_production_to_postharvest.pdf
+rice-production | NAERLS | https://naerls.gov.ng/wp-content/uploads/2022/11/Rice-Production-Processing-Utilization-and-Marketing-in-Nigeria.pdf
+rice-production | IITA | https://www.iita.org/wp-content/uploads/2020/07/Guide-to-Rice-Production-in-Northern-Nigeria.pdf
+sorghum-production | ICRISAT | https://oar.icrisat.org/11531/1/Handbook%20on%20Sorghum%20production%20for%20NE%20printed%20version.pdf
+grain-storage-aflatoxin | IITA/AgResults | https://hdl.handle.net/10568/107314
+grain-storage-aflatoxin | Feed the Future Nigeria | https://www.canr.msu.edu/afre/uploads/files/Nigeria-Film-Call-2019/Manual%20for%20Maize%20Handling%20and%20Storage_final.pdf
+nimet-seasonal-prediction | NiMet | https://scp.nimet.gov.ng/file/2026/pdf/2026%20SCP_Keynote%20Speech%20by%20HMAAD.pdf

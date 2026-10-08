@@ -83,7 +83,7 @@ class Assistant:
     def route(self, question_en: str) -> str:
         scores = keyword_scores(question_en, self.domains)
         ranked = sorted(scores.items(), key=lambda kv: -kv[1])
-        if ranked and ranked[0][1] >= 2 and (len(ranked) == 1 or ranked[0][1] > ranked[1][1]):
+        if ranked and ranked[0][1] >= 1 and (len(ranked) == 1 or ranked[0][1] > ranked[1][1]):
             return ranked[0][0]  # clear keyword winner: skip the model call
         topics = "\n".join(f"- {n}: {d.description}" for n, d in self.domains.items())
         out = self.llm.chat([
@@ -98,7 +98,10 @@ class Assistant:
     def answer_en(self, domain: str, question_en: str) -> tuple[str, list[Chunk]]:
         d = self.domains[domain]
         chunks = self.retriever.search(domain, question_en, self.settings.top_k)
-        passages = "\n\n".join(f"[{i}] (Source: {c.source})\n{c.text}" for i, c in enumerate(chunks, 1))
+        # Cite the organisation only ("WHO"), not the long URL that follows it.
+        passages = "\n\n".join(
+            f"[{i}] (Source: {c.source.split(' (')[0]})\n{c.text}" for i, c in enumerate(chunks, 1)
+        )
         answer = self.llm.chat([
             {"role": "system", "content": ANSWER_PROMPT.format(
                 title=d.title, instructions=d.instructions.strip(),

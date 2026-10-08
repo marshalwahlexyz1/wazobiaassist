@@ -31,9 +31,36 @@ domains/<name>/instructions.md   answering and safety rules for this domain
 domains/<name>/docs/*.md         curated official sources (first line: "Source: NIMC")
 ```
 
-Adding a domain means adding a folder, with no code changes. Each `docs/_TODO.md` lists the sources to collect. Files starting with `_` are ignored.
+Adding a domain means adding a folder, with no code changes. Files starting with `_` (drafts, notes) are ignored, and so is any file that still contains `{{VERIFY}}`.
 
-**Status:** `money` ships with 20 scam patterns. `agriculture`, `health`, `education` and `civic` have rules and keywords but **no documents yet**. Until documents are added, the assistant says it does not know.
+### Content status (8 Oct)
+
+| Domain | Live documents | Waiting for review | Still to collect |
+|---|---|---|---|
+| money | 20 scam patterns | 5 drafts (CBN complaints, SEC schemes, FCCPC loan apps, NDIC, reporting fraud) with `{{VERIFY}}` marks | POS / wrong-transfer guidance |
+| health | WHO pregnancy danger signs, WHO antenatal visits | - | NPHCDA immunisation schedule, newborn and after-delivery danger signs, malaria/fever, diarrhoea, pneumonia |
+| agriculture | - | - | all (sources listed) |
+| education | - | - | all (sources listed) |
+| civic | - | - | all (sources listed) |
+
+Each `docs/_SOURCES_REVIEW.md` lists the candidate sources and the facts to double-check (USSD codes, fees, dates). Until a domain has documents, the assistant says it does not know.
+
+### Collecting and approving sources (content owners)
+
+The build environment could not open Nigerian government sites, so source pages are fetched from the GPU server, which has normal internet:
+
+```bash
+python -m scripts.fetch_sources            # or: python -m scripts.fetch_sources health civic
+```
+
+This reads `domains/*/sources.txt` and saves each page as `docs/_fetched-<name>.md`. For each file:
+
+1. Open the official page and check the text against it.
+2. Delete menus, adverts and anything off-topic. Keep the first `Source:` line. Long manuals: keep only the relevant sections.
+3. Check every number, USSD code, fee and date. Remove anything you cannot confirm.
+4. Rename the file to `<name>.md`. Run `curl localhost:8080/health` after restarting to see the new document count.
+
+To add a source, add a line `<file-name> | <Organisation> | <URL>` to the domain's `sources.txt`, or write the file by hand with a `Source:` first line.
 
 ## Run it
 
@@ -132,5 +159,6 @@ app/static/index.html  web demo page
 domains/               the five domains
 scripts/ask.py         ask one question from the terminal
 scripts/export_logs.py evidence CSV and summary
+scripts/fetch_sources.py download source pages as drafts for review
 tests/                 pytest, runs without a GPU
 ```

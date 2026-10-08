@@ -1,0 +1,13 @@
+# file | organisation | URL     (run: python -m scripts.fetch_sources civic)
+# Candidate pages found by search on 2026-10-08, not yet opened. Check codes and fees on the official page.
+nin-retrieval | Nairametrics | https://nairametrics.com/2020/12/16/how-to-retrieve-your-national-identification-number-nimc/
+nin-free | WithinNigeria (quoting NIMC) | https://www.withinnigeria.com/news/2022/12/14/nin-free-mandatory-to-access-all-govt-services-nimc/
+bvn | NIBSS | https://nibss-plc.com.ng/ussd-validation-services/
+voter-registration | INEC | https://inecnigeria.org/wp-content/uploads/2022/11/2021-CVR-Guidelines-Final.pdf
+voter-registration | INEC | https://cvr.inecnigeria.org
+passport | Nigeria Immigration Service | https://immigration.gov.ng
+passport | Nigeria Immigration Service | https://passport.immigration.gov.ng
+cac-business-name | CAC | https://www.cac.gov.ng/?p=3443
+cac-business-name | CAC | https://icrp.cac.gov.ng/support/faq/
+nin-sim-linkage | NCC | https://ncc.gov.ng/sim-nin-linkage-faq
+# Still needed: an official NIMC enrolment page (nimc.gov.ng) — add its URL here when found.

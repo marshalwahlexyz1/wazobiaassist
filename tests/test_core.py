@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import pytest
@@ -64,6 +65,9 @@ def test_keyword_routing(settings):
     assert a.route("Someone says CBN grant, pay a fee to receive it. Is it a scam?") == "money"
     assert a.route("How do I register for JAMB UTME?") == "education"
     assert a.route("My pregnant wife has fever and bleeding") == "health"
+    assert a.route("My wife is pregnant and has severe headache with blurred vision") == "health"
+    a.llm.chat = lambda messages, max_tokens=400: "education"  # ties go to the model
+    assert a.route("Can I use my BVN to register for JAMB?") == "education"
 
 
 def test_keyword_scores_match_phrases():
@@ -158,3 +162,40 @@ def test_twilio_signature():
               "From": "+12349013030", "To": "+18005551212"}
     assert valid_signature("12345", url, params, "0/KCTR6DLpKmkAf8muzZqo1nDgQ=")
     assert not valid_signature("12345", url, params, "wrong")
+
+
+# --- source collection script ---------------------------------------------------
+
+def test_html_to_text_keeps_content_and_drops_menus():
+    from scripts.fetch_sources import html_to_text
+
+    html = """<html><head><style>p{}</style><script>var x=1;</script></head><body>
+    <nav><a>Home</a> <a>About us and everything else in this long menu</a></nav>
+    <h1>Getting your NIN</h1>
+    <p>Visit any NIMC enrolment centre with a document that proves who you are and where you live.</p>
+    <ul><li>Birth certificate</li><li>Old ID</li></ul>
+    <footer>Copyright notice that is long enough to pass the length filter easily</footer></body></html>"""
+    text = html_to_text(html)
+    assert "Visit any NIMC enrolment centre" in text
+    assert "- Birth certificate" in text
+    assert "var x" not in text and "About us" not in text and "Copyright" not in text
+
+
+def test_every_sources_file_parses():
+    from scripts.fetch_sources import read_sources
+
+    for path in (ROOT / "domains").glob("*/sources.txt"):
+        for name, items in read_sources(path).items():
+            assert re.fullmatch(r"[a-z0-9-]+", name), name
+            assert all(url.startswith("https://") for _, url in items)
+
+
+def test_documents_with_verify_markers_are_skipped(tmp_path):
+    d = tmp_path / "x"
+    (d / "docs").mkdir(parents=True)
+    (d / "domain.json").write_text('{"title": "X", "description": "x", "keywords": []}')
+    (d / "docs" / "ok.md").write_text("Source: A\n\nChecked text.")
+    (d / "docs" / "bad.md").write_text("Source: B\n\nFee is 20 naira {{VERIFY}}.")
+    (d / "docs" / "_draft-c.md").write_text("Source: C\n\nDraft.")
+    chunks = load_domains(tmp_path)["x"].chunks
+    assert [c.source for c in chunks] == ["A"]

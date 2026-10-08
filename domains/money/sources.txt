@@ -1,0 +1,16 @@
+# file | organisation | URL     (run: python -m scripts.fetch_sources money)
+# Hand-written drafts with {{VERIFY}} markers already exist for these files; compare them with the fetched pages.
+cbn-bank-complaints-and-fraud-warnings | CBN | https://www.cbn.gov.ng/FinInc/FinLit/LodgeComplaint.html
+cbn-bank-complaints-and-fraud-warnings | CBN | https://www.cbn.gov.ng/FinInc/FinLit/How_Lodge_Complaints.pdf
+cbn-bank-complaints-and-fraud-warnings | CBN | https://www.cbn.gov.ng/supervision/cpdfraudandscam.html
+cbn-bank-complaints-and-fraud-warnings | Nairametrics (quoting CBN) | https://nairametrics.com/2025/05/12/cbn-warns-nigerians-against-fake-contracts-grants-loans/
+sec-unregistered-investment-schemes | SEC Nigeria | https://sec.gov.ng/for-investors/keep-track-of-circulars/public-notice-unregistered-online-investment-schemes/
+sec-unregistered-investment-schemes | SEC Nigeria | https://sec.gov.ng/for-investors/find-a-registered-operator/
+fccpc-loan-app-rules | FCCPC | https://fccpc.gov.ng/digital-lending-fccpc-tackles-abuses-issues-landmark-regulations/
+fccpc-loan-app-rules | FCCPC | https://fccpc.gov.ng/about-us/faqs/
+fccpc-loan-app-rules | Vanguard (quoting FCCPC) | https://www.vanguardngr.com/2026/07/fccpc-resumes-digital-lending-regulation-as-court-vacates-restraining-order/
+ndic-deposit-insurance | NDIC | https://ndic.gov.ng/frequently-asked-questions/
+ndic-deposit-insurance | NDIC | https://ndic.gov.ng/resources/facts-and-figures/facts-about-deposit-insurance-for-mfbs-pmis/
+reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/Contactus
+reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/efcc/news-and-information/news-release/10454-efcc-sets-up-public-complaints-unit
+reporting-fraud-efcc-police | Nigeria Police Force (NCCC) | https://nccc.npf.gov.ng/news/npf-launches-enhanced-platform
