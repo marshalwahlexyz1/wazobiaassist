@@ -1,0 +1,17 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+httpx>=0.27
+python-dotenv>=1.0
+python-telegram-bot==21.6
+# Models (GPU machine)
+torch>=2.1
+transformers>=4.43
+accelerate>=0.30
+sentence-transformers>=3.0
+numpy
+scipy
+# Only for LOAD_IN_4BIT=1 with LLM_BACKEND=transformers
+bitsandbytes>=0.43
+# Also needed on the machine: ffmpeg (apt install ffmpeg).
+# vLLM is installed separately (see README) because it pins its own torch version.
