@@ -1,0 +1,8 @@
+# file | organisation | URL     (run: python -m scripts.fetch_sources education)
+# Candidate pages found by search on 2026-10-08, not yet opened. Confirm SMS codes, fees and dates on jamb.gov.ng.
+exam-scams | Channels TV (quoting JAMB) | https://www.channelstv.com/2026/03/27/jamb-re-arrests-fraudster-warns-against-score-manipulation/
+exam-scams | The Guardian Nigeria (quoting JAMB) | https://guardian.ng/?p=1141790
+exam-scams | Dubawa | https://dubawa.org/fraud-alert-this-website-is-fraudulent-you-cant-upgrade-your-jamb-score-by-paying-any-amount/
+jamb-profile-and-utme-registration | Technext | https://technext24.com/explainer/guide-to-registering-for-utme-de-2026/
+jamb-profile-and-utme-registration | Legit.ng | https://www.legit.ng/education/1686971-2026-utme-easy-step-by-step-instructions-how-successfully-register/
+# Still needed (add URLs when found): jamb.gov.ng pages, waecnigeria.org, neco.gov.ng, ubec.gov.ng, nelf.gov.ng

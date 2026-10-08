@@ -11,6 +11,8 @@ accelerate>=0.30
 sentence-transformers>=3.0
 numpy
 scipy
+# Reading PDF sources in scripts/fetch_sources.py
+pypdf>=4.0
 # Only for LOAD_IN_4BIT=1 with LLM_BACKEND=transformers
 bitsandbytes>=0.43
 # Also needed on the machine: ffmpeg (apt install ffmpeg).

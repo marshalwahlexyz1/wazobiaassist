@@ -7,7 +7,8 @@ Each folder in domains/ is one domain:
     domains/<name>/docs/*.md|*.txt  curated source documents; first line may be
                                     "Source: NIMC (https://nimc.gov.ng)"
 
-Adding a domain means adding a folder. No code changes.
+Adding a domain means adding a folder. No code changes. Files starting with
+"_" (drafts, notes) and files still containing {{VERIFY}} are ignored.
 """
 
 import json
@@ -21,6 +22,7 @@ from pathlib import Path
 log = logging.getLogger(__name__)
 
 CHUNK_CHARS = 700
+UNVERIFIED = "{{VERIFY}}"  # documents with this marker are never used
 _WORD = re.compile(r"[a-z0-9]+")
 
 
@@ -83,6 +85,9 @@ def load_domains(root: Path) -> dict[str, Domain]:
         for doc in sorted((folder / "docs").glob("*")):
             if doc.suffix in (".md", ".txt") and not doc.name.startswith("_"):
                 source, text = _read_doc(doc)
+                if UNVERIFIED in text:
+                    log.warning("Skipping %s: it still contains %s markers", doc, UNVERIFIED)
+                    continue
                 domain.chunks += _chunk(text, source)
         log.info("Domain %s: %d chunks", domain.name, len(domain.chunks))
         domains[domain.name] = domain

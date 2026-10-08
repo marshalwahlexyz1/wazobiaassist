@@ -1,0 +1,9 @@
+# file | organisation | URL     (run: python -m scripts.fetch_sources health)
+# WHO fact sheets (standard WHO addresses; not opened from the build session). Keep only the parts about
+# symptoms, danger signs, prevention and when to seek care. NO drug doses.
+malaria-and-fever | WHO | https://www.who.int/news-room/fact-sheets/detail/malaria
+diarrhoea-in-children | WHO | https://www.who.int/news-room/fact-sheets/detail/diarrhoeal-disease
+pneumonia-in-children | WHO | https://www.who.int/news-room/fact-sheets/detail/pneumonia-in-children
+newborn-danger-signs | WHO | https://www.who.int/news-room/fact-sheets/detail/newborn-mortality
+mother-after-delivery | WHO | https://www.who.int/news-room/fact-sheets/detail/maternal-mortality
+# Still needed: the official NPHCDA routine immunisation schedule (nphcda.gov.ng). Do not write it from memory.
