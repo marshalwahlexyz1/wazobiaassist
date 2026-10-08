@@ -2,6 +2,7 @@
 
 import logging
 import subprocess
+import threading
 from pathlib import Path
 
 from .config import Settings
@@ -22,21 +23,43 @@ class NcairASR:
     def __init__(self, settings: Settings):
         self.settings = settings
         self.pipes = {}
+        # Questions from different users run in parallel threads; one lock per
+        # language keeps each model to one call at a time.
+        self.locks = {lang: threading.Lock() for lang in settings.asr_models}
 
-    def transcribe(self, audio_path: str, lang: str) -> str:
+    def _load(self, lang: str):
         if lang not in self.pipes:
+            import torch
             from transformers import pipeline
 
             name = self.settings.asr_models[lang]
             log.info("Loading ASR %s", name)
+            gpu = _device() == 0
             self.pipes[lang] = pipeline(
-                "automatic-speech-recognition", model=name, device=_device(),
+                "automatic-speech-recognition", model=name, device=0 if gpu else -1,
+                torch_dtype=torch.float16 if gpu else torch.float32,
                 token=self.settings.hf_token or None,
             )
-        return self.pipes[lang](audio_path, chunk_length_s=30)["text"].strip()
+        return self.pipes[lang]
+
+    def warm_up(self) -> None:
+        """Loads every language's model, so the first voice note isn't slow."""
+        for lang in self.settings.asr_models:
+            try:
+                with self.locks[lang]:
+                    self._load(lang)
+            except Exception:
+                log.exception("Could not preload ASR for %s", lang)
+
+    def transcribe(self, audio_path: str, lang: str) -> str:
+        with self.locks[lang]:
+            return self._load(lang)(audio_path, chunk_length_s=30)["text"].strip()
 
 
 class MockASR:
+    def warm_up(self) -> None:
+        pass
+
     def transcribe(self, audio_path: str, lang: str) -> str:
         return "Someone sent me a message that CBN is giving grants and I should pay a fee to receive it"
 
@@ -48,10 +71,15 @@ class MmsTTS:
     def __init__(self, settings: Settings):
         self.settings = settings
         self.models = {}
+        self.lock = threading.Lock()
 
     def speak(self, text: str, lang: str, out_path: Path) -> Path | None:
         if not self.settings.tts_models.get(lang):
             return None  # no voice model for this language
+        with self.lock:
+            return self._speak(text, lang, out_path)
+
+    def _speak(self, text: str, lang: str, out_path: Path) -> Path | None:
         if lang in self.models and self.models[lang] is None:
             return None  # this language's model failed to load before
         try:

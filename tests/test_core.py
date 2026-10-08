@@ -218,3 +218,60 @@ def test_no_tts_model_means_text_only(settings, tmp_path):
 
     settings.tts_models["ig"] = ""
     assert MmsTTS(settings).speak("Ndewo", "ig", tmp_path / "x.ogg") is None
+
+
+# --- WhatsApp message splitting ------------------------------------------------
+
+def test_split_message_keeps_all_text_within_limit():
+    from app.channels.whatsapp import split_message
+
+    body = "\n\n".join(f"{i}. " + "word " * 80 for i in range(1, 8))  # ~2,900 characters
+    parts = split_message(body, 1600)
+    assert len(parts) == 2 and all(len(p) <= 1600 for p in parts)
+    assert " ".join(parts).split() == body.split()
+    assert split_message("short") == ["short"]
+
+
+# --- concurrency -----------------------------------------------------------------
+
+def test_different_users_are_answered_in_parallel(convo, monkeypatch):
+    import threading
+    import time
+
+    real_ask = convo.assistant.ask
+    inside, both_inside = [0], threading.Event()
+    guard = threading.Lock()
+
+    def slow_ask(*args, **kwargs):
+        with guard:
+            inside[0] += 1
+            if inside[0] == 2:
+                both_inside.set()
+        both_inside.wait(timeout=2)  # only returns early if the other user is also inside
+        return real_ask(*args, **kwargs)
+
+    monkeypatch.setattr(convo.assistant, "ask", slow_ask)
+    for user in ("a", "b"):
+        convo.handle("telegram", user, text="hi")
+        convo.handle("telegram", user, text="4")
+    start = time.monotonic()
+    threads = [threading.Thread(target=convo.handle, args=("telegram", u), kwargs={"text": "CBN grant fee"})
+               for u in ("a", "b")]
+    for th in threads:
+        th.start()
+    for th in threads:
+        th.join()
+    assert both_inside.is_set() and time.monotonic() - start < 1.5
+
+
+def test_server_refuses_empty_salt_outside_mock(monkeypatch, tmp_path):
+    import importlib
+    import sys
+
+    monkeypatch.setenv("MOCK", "0")
+    monkeypatch.setenv("ID_SALT", "")
+    monkeypatch.setenv("DB_PATH", str(tmp_path / "db.sqlite"))
+    sys.modules.pop("app.server", None)
+    with pytest.raises(SystemExit):
+        importlib.import_module("app.server")
+    sys.modules.pop("app.server", None)

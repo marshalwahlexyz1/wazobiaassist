@@ -34,9 +34,11 @@ echo "== Python environments (this takes a while the first time)"
 .venv-vllm/bin/pip install -q vllm
 
 echo "== Settings"
-if [ ! -f .env ]; then
-  cp .env.example .env
-  sed -i "s/^ID_SALT=$/ID_SALT=$(openssl rand -hex 16)/" .env
+[ -f .env ] || cp .env.example .env
+# The app refuses to start without a salt. Generate one if it's empty (never change it later).
+if ! grep -q '^ID_SALT=.' .env; then
+  SALT=$(openssl rand -hex 16)
+  if grep -q '^ID_SALT=' .env; then sed -i "s/^ID_SALT=.*/ID_SALT=$SALT/" .env; else echo "ID_SALT=$SALT" >> .env; fi
 fi
 missing=""
 for key in HF_TOKEN NGROK_AUTHTOKEN NGROK_DOMAIN; do

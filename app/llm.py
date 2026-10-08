@@ -2,6 +2,7 @@
 or a mock for working without a GPU."""
 
 import logging
+import threading
 
 import httpx
 
@@ -36,6 +37,7 @@ class TransformersLLM:
         self.settings = settings
         self.tok = None
         self.model = None
+        self.lock = threading.Lock()  # one generation at a time on the in-process model
 
     def _load(self):
         import torch
@@ -56,6 +58,10 @@ class TransformersLLM:
         self.model = AutoModelForCausalLM.from_pretrained(s.llm_model, **kwargs).eval()
 
     def chat(self, messages: list[dict], max_tokens: int = 400) -> str:
+        with self.lock:
+            return self._chat(messages, max_tokens)
+
+    def _chat(self, messages: list[dict], max_tokens: int) -> str:
         import torch
 
         if self.model is None:

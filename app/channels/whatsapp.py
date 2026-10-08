@@ -23,6 +23,19 @@ CHANNEL = "whatsapp"
 MAX_BODY = 1600  # Twilio's limit for one WhatsApp message
 
 
+def split_message(body: str, limit: int = MAX_BODY) -> list[str]:
+    """Splits a long answer into WhatsApp-sized parts, at paragraph or line breaks
+    where possible, so nothing is cut off."""
+    parts = []
+    while len(body) > limit:
+        cut = max(body.rfind("\n\n", 0, limit), body.rfind("\n", 0, limit), body.rfind(" ", 0, limit))
+        if cut <= 0:
+            cut = limit
+        parts.append(body[:cut].rstrip())
+        body = body[cut:].lstrip()
+    return parts + [body] if body else parts
+
+
 def valid_signature(auth_token: str, url: str, params: dict, signature: str) -> bool:
     """Twilio's X-Twilio-Signature check (HMAC-SHA1 of URL + sorted params)."""
     payload = url + "".join(f"{k}{params[k]}" for k in sorted(params))
@@ -41,15 +54,17 @@ class WhatsApp:
         return bool(self.s.twilio_sid and self.s.twilio_token)
 
     def send(self, to: str, body: str, media_url: str | None = None) -> None:
-        data = {"From": self.s.twilio_whatsapp_from, "To": to, "Body": body[:MAX_BODY]}
-        if media_url:
-            data["MediaUrl"] = media_url
-        r = httpx.post(
-            f"https://api.twilio.com/2010-04-01/Accounts/{self.s.twilio_sid}/Messages.json",
-            data=data, auth=self.auth, timeout=30,
-        )
-        if r.status_code >= 300:
-            log.error("Twilio send failed: %s %s", r.status_code, r.text[:300])
+        parts = split_message(body) or [""]
+        for i, part in enumerate(parts):
+            data = {"From": self.s.twilio_whatsapp_from, "To": to, "Body": part}
+            if media_url and i == len(parts) - 1:
+                data["MediaUrl"] = media_url
+            r = httpx.post(
+                f"https://api.twilio.com/2010-04-01/Accounts/{self.s.twilio_sid}/Messages.json",
+                data=data, auth=self.auth, timeout=30,
+            )
+            if r.status_code >= 300:
+                log.error("Twilio send failed: %s %s", r.status_code, r.text[:300])
 
     def process(self, form: dict) -> None:
         """Runs in the background after Twilio's webhook call has returned."""
