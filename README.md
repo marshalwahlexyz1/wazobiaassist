@@ -35,21 +35,23 @@ domains/<name>/docs/*.md         curated official sources (first line: "Source: 
 
 Adding a domain means adding a folder, with no code changes. Files starting with `_` (drafts, notes) are ignored, and so is any file that still contains `{{VERIFY}}`.
 
-### Content status (8 Oct)
+### Content status (8 Oct, evening)
 
-| Domain | Live documents | Waiting for review | Still to collect |
+Every live document was written from official pages opened on 8 Oct 2026, and every file starts with its source links.
+
+| Domain | Live documents | Main sources | Not covered yet |
 |---|---|---|---|
-| money | 20 scam patterns | 5 drafts (CBN complaints, SEC schemes, FCCPC loan apps, NDIC, reporting fraud) with `{{VERIFY}}` marks | POS / wrong-transfer guidance |
-| health | WHO pregnancy danger signs, WHO antenatal visits | - | NPHCDA immunisation schedule, newborn and after-delivery danger signs, malaria/fever, diarrhoea, pneumonia |
-| agriculture | - | - | all (sources listed) |
-| education | - | - | all (sources listed) |
-| civic | - | - | all (sources listed) |
+| money (flagship) | 20 scam patterns; CBN complaints and fraud warnings; SEC unregistered schemes; FCCPC loan-app rules; NDIC deposit insurance; reporting fraud to EFCC/police | CBN, SEC, FCCPC, NDIC, EFCC, NPF-NCCC | wrong-transfer / fake-alert rules (CBN documents blocked automated download) |
+| civic (flagship) | NIN enrolment; NIN retrieval; BVN; NIN-SIM linkage; voter registration and PVC; passport; CAC business name | NIMC, NIBSS, NCC, INEC, NIS, CAC | birth certificate, driver's licence |
+| health | immunisation schedule; pregnancy danger signs; antenatal visits; newborn danger signs; mother after delivery; malaria and fever; diarrhoea; pneumonia | NPHCDA card (via UNICEF Nigeria), WHO | Federal Ministry of Health / NCDC material |
+| education | JAMB profile and UTME; JAMB CAPS; WAEC; NECO; free basic education (UBE); NELFUND; exam scams | JAMB, WAEC, NECO, UBEC, NELFUND | JAMB result SMS, WAEC/NECO 2026 fraud warnings |
+| agriculture | maize; fall armyworm; cowpea storage; cassava; rice; sorghum; grain storage and aflatoxin; NiMet 2026 seasonal prediction | IITA, FAO, Purdue (PICS), NAERLS, ICRISAT, NiMet | yam, millet, groundnut, soybean, livestock |
 
-Each `docs/_SOURCES_REVIEW.md` lists the candidate sources and the facts to double-check (USSD codes, fees, dates). Until a domain has documents, the assistant says it does not know.
+**Before launch, a person must read each domain's `docs/_SOURCES_REVIEW.md`.** It lists what to double-check, for example: conflicting NIMC fees (left out), the HPV dose count, pesticides that must still be registered in Nigeria, the FCCPC court case, and dates that came only from news reports quoting an agency.
 
 ### Collecting and approving sources (content owners)
 
-The build environment could not open Nigerian government sites, so source pages are fetched from the GPU server, which has normal internet:
+To add or refresh sources:
 
 ```bash
 python -m scripts.fetch_sources            # or: python -m scripts.fetch_sources health civic

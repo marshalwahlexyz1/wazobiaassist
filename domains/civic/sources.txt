@@ -1,13 +1,38 @@
 # file | organisation | URL     (run: python -m scripts.fetch_sources civic)
-# Candidate pages found by search on 2026-10-08, not yet opened. Check codes and fees on the official page.
-nin-retrieval | Nairametrics | https://nairametrics.com/2020/12/16/how-to-retrieve-your-national-identification-number-nimc/
-nin-free | WithinNigeria (quoting NIMC) | https://www.withinnigeria.com/news/2022/12/14/nin-free-mandatory-to-access-all-govt-services-nimc/
+# Pages used for the approved docs/*.md files, all opened on 2026-10-08.
+# Note: nimc.gov.ng, inecnigeria.org and cvr.inecnigeria.org render with JavaScript, so the fetch
+# script gets little or no text from them; open them in a browser. The NIMC FAQ is a .docx file.
+nin-enrolment | NIMC | https://nimc.gov.ng/nin
+nin-enrolment | NIMC | https://nimc.gov.ng/storage/Uploads/NIMC_FAQs_2026.docx
+nin-enrolment | NIMC | https://nimc.gov.ng/fees
+nin-enrolment | NIMC | https://nimc.gov.ng/fraud-alert
+nin-enrolment | NIMC | https://nimc.gov.ng/press-releases/nimc-restates-commitment-to-zero-tolerance-for-extortion
+nin-enrolment | NIMC | https://nimc.gov.ng/nin-enrolment-documents
+nin-retrieval | NIMC | https://nimc.gov.ng/sms-services
+nin-retrieval | NIMC | https://nimc.gov.ng/storage/Uploads/NIMC_FAQs_2026.docx
+nin-retrieval | NIMC | https://nimc.gov.ng/nin/nin-for-sim-tips
+nin-retrieval | NIMC | https://nimc.gov.ng/nin/nin-slip-reissuance
+nin-retrieval | NIMC | https://nimc.gov.ng/mobile-digital-id
+nin-retrieval | NIMC | https://nimc.gov.ng/fraud-alert
+bvn | NIBSS | https://nibss-plc.com.ng/bank-verification-numberbvn/
 bvn | NIBSS | https://nibss-plc.com.ng/ussd-validation-services/
-voter-registration | INEC | https://inecnigeria.org/wp-content/uploads/2022/11/2021-CVR-Guidelines-Final.pdf
-voter-registration | INEC | https://cvr.inecnigeria.org
+bvn | NIBSS | https://nibss-plc.com.ng/nrbvn/
+bvn | NIMC | https://nimc.gov.ng/fraud-alert
+voter-registration-and-pvc | INEC | https://cvr.inecnigeria.org/
+voter-registration-and-pvc | INEC | https://cvr.inecnigeria.org/Public/getStarted
+voter-registration-and-pvc | INEC | https://cvr.inecnigeria.org/vvs
+voter-registration-and-pvc | INEC | https://cvr.inecnigeria.org/Home/help
+voter-registration-and-pvc | INEC | https://inecnigeria.org/voters/education
+voter-registration-and-pvc | Blueprint (quoting INEC Chairman) | https://blueprint.ng/inec-announces-date-for-nationwide-pvc-collection/
+voter-registration-and-pvc | Legit.ng (quoting INEC Chairman) | https://www.legit.ng/politics/1733273-breaking-inec-announces-date-voters-card-collection/
+voter-registration-and-pvc | BusinessDay (quoting INEC statement) | https://businessday.ng/news/article/inec-resumes-nationwide-continuous-voters-registration/
+passport | Nigeria Immigration Service | https://immigration.gov.ng/passports/
+passport | Nigeria Immigration Service | https://passport.immigration.gov.ng/
+passport | Nigeria Immigration Service | https://immigration.gov.ng/nigeria-immigration-service-announces-upward-review-of-nigerian-standard-passport-fees/
 passport | Nigeria Immigration Service | https://immigration.gov.ng
-passport | Nigeria Immigration Service | https://passport.immigration.gov.ng
-cac-business-name | CAC | https://www.cac.gov.ng/?p=3443
 cac-business-name | CAC | https://icrp.cac.gov.ng/support/faq/
+cac-business-name | CAC | https://icrp.cac.gov.ng/assets/docs/crp-user-guide.pdf
+cac-business-name | CAC | https://icrp.cac.gov.ng/
+nin-sim-linkage | NIMC | https://nimc.gov.ng/nin/nin-for-sim-tips
 nin-sim-linkage | NCC | https://ncc.gov.ng/sim-nin-linkage-faq
-# Still needed: an official NIMC enrolment page (nimc.gov.ng) — add its URL here when found.
+nin-sim-linkage | NIMC | https://nimc.gov.ng/sms-services
