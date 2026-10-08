@@ -1,15 +1,17 @@
 # file | organisation | URL     (run: python -m scripts.fetch_sources agriculture)
-# Candidate documents found by search on 2026-10-08, not yet opened. Long manuals: keep only the relevant sections.
-maize-production | IFDC | https://hub.ifdc.org/items/c27a922a-b5a3-457c-9ae7-d44443dfefd5/full
-maize-production | IITA/NCRI/ABU (USAID archive) | https://pdf.usaid.gov/pdf_docs/PNAAS960.pdf
-fall-armyworm | FAO | https://www.fao.org/fall-armyworm/en/
+# Documents actually opened and used for the approved docs/*.md files (accessed 2026-10-08).
+# Note: iita.org/wp-content PDFs returned 404 on 2026-10-08; the IITA maize guide was read from its Wayback Machine copy.
+maize-production | IITA | https://web.archive.org/web/20240617083739id_/https://www.iita.org/wp-content/uploads/2020/07/Guide-to-Maize-Production-in-Northern-Nigeria.pdf
+fall-armyworm | FAO | https://openknowledge.fao.org/server/api/core/bitstreams/c43afcac-6262-4152-afd4-70cd4ac46584/content
 fall-armyworm | FAO | https://openknowledge.fao.org/server/api/core/bitstreams/cafb4aaa-65fe-41d3-92b9-5ad6e099edd7/content
-cowpea-storage | Purdue University (PICS) | https://www.extension.entm.purdue.edu/publications/E-262.pdf
-cowpea-storage | Purdue University (PICS) | https://www.extension.entm.purdue.edu/publications/E-265.pdf
-cassava-production | IITA | https://www.iita.org/wp-content/uploads/2016/06/Growing_cassava_a_training_manual_from_production_to_postharvest.pdf
+fall-armyworm | IITA | https://web.archive.org/web/20240617083739id_/https://www.iita.org/wp-content/uploads/2020/07/Guide-to-Maize-Production-in-Northern-Nigeria.pdf
+cowpea-storage | Purdue University | https://www.extension.entm.purdue.edu/publications/E-262.pdf
+cowpea-storage | Purdue University | https://www.extension.entm.purdue.edu/publications/E-265.pdf
+cassava-production | IITA and USAID ICS-Nigeria | https://biblio.iita.org/documents/U03ManIitaGrowingNothomNodev.pdf-8f9fd4aaa5294d9319f26833c5c0a2a4.pdf
 rice-production | NAERLS | https://naerls.gov.ng/wp-content/uploads/2022/11/Rice-Production-Processing-Utilization-and-Marketing-in-Nigeria.pdf
-rice-production | IITA | https://www.iita.org/wp-content/uploads/2020/07/Guide-to-Rice-Production-in-Northern-Nigeria.pdf
 sorghum-production | ICRISAT | https://oar.icrisat.org/11531/1/Handbook%20on%20Sorghum%20production%20for%20NE%20printed%20version.pdf
-grain-storage-aflatoxin | IITA/AgResults | https://hdl.handle.net/10568/107314
-grain-storage-aflatoxin | Feed the Future Nigeria | https://www.canr.msu.edu/afre/uploads/files/Nigeria-Film-Call-2019/Manual%20for%20Maize%20Handling%20and%20Storage_final.pdf
-nimet-seasonal-prediction | NiMet | https://scp.nimet.gov.ng/file/2026/pdf/2026%20SCP_Keynote%20Speech%20by%20HMAAD.pdf
+grain-storage-aflatoxin | IITA and AgResults | https://cgspace.cgiar.org/server/api/core/bitstreams/6419854d-6c09-4668-b1f4-f79533c7e6d5/content
+grain-storage-aflatoxin | IITA and AgResults | https://cgspace.cgiar.org/server/api/core/bitstreams/172541d0-2c50-4bbf-bafb-b84b8843e656/content
+grain-storage-aflatoxin | IITA | https://web.archive.org/web/20240617083739id_/https://www.iita.org/wp-content/uploads/2020/07/Guide-to-Maize-Production-in-Northern-Nigeria.pdf
+nimet-seasonal-prediction-2026 | NiMet | https://nimet.gov.ng/downloader?file=admin/uploads/publications/698da9653c517_SCP%202026%20Summary%20for%20Policy%20makers_.pdf&id=76
+nimet-seasonal-prediction-2026 | NiMet | https://nimet.gov.ng/downloader?file=admin/uploads/publications/6a7e1e83de1c0_NiMet%20Seasonal%20Climate%20Prediction%20Update.pdf&id=92
