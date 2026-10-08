@@ -1,4 +1,4 @@
-Source: World Health Organization (https://github.com/WorldHealthOrganization/smart-anc/blob/master/input/l2/WHO-SRH-21.2-eng.xlsx)
+Source: World Health Organization (https://github.com/WorldHealthOrganization/smart-anc/blob/master/input/l2/WHO-SRH-21.2-eng.xlsx; https://iris.who.int/bitstreams/e9f751fd-6eab-42cb-9e0c-0eb86a0365bb/download)
 
 Severe danger signs in pregnancy, from the World Health Organization (WHO): a pregnant woman should go to the hospital immediately if she has any of these signs. Bleeding from the vagina. Convulsions or fits. Severe headache with blurred vision. Fever and being too weak to get out of bed. Severe pain in the belly (abdomen). Fast breathing or difficult breathing. WHO says health workers should tell every pregnant woman, at every antenatal visit, how important it is to go to the hospital immediately if any of these severe danger signs appear.
 

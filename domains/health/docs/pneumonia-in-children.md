@@ -1,0 +1,15 @@
+Source: World Health Organization (https://www.who.int/news-room/fact-sheets/detail/pneumonia; https://iris.who.int/bitstreams/e9f751fd-6eab-42cb-9e0c-0eb86a0365bb/download)
+
+What pneumonia is, from the World Health Organization (WHO): pneumonia is an infection of the lungs. When a person has pneumonia, the small air sacs in the lungs fill with pus and fluid. This makes breathing painful and lets less oxygen into the body. Pneumonia can be caused by viruses, bacteria or fungi.
+
+Why pneumonia is dangerous for children, from WHO: pneumonia is the single largest infectious cause of death in children worldwide. It killed 740 180 children under 5 years old in 2019, which is 14% of all deaths of children under 5. Deaths are highest in southern Asia and sub-Saharan Africa. WHO says pneumonia can be prevented with simple actions and treated with low-cost medicine and care.
+
+Danger signs in a child with cough or difficult breathing, from WHO: in a child under 5 years with cough or difficult breathing, with or without fever, health workers look for fast breathing, or the lower chest moving in or pulling in when the child breathes in (in a healthy child, the chest expands when breathing in). Wheezing can also happen. WHO says very sick babies may be unable to feed or drink, and may become unconscious, very cold, or have convulsions (fits).
+
+If a child has cough or difficult breathing together with any danger sign, such as fast breathing, the lower chest pulling in when breathing in, not able to drink or breastfeed, fits, being unconscious or very sleepy, or feeling very cold, do not wait at home. Go to the nearest health facility or primary health centre (PHC) now. A newborn baby with difficulty breathing should be taken to the hospital immediately, according to WHO's guide for newborn care.
+
+Treatment of pneumonia, from WHO: pneumonia caused by bacteria is treated with antibiotics. Most children get medicine by mouth, often prescribed at a health centre, and trained community health workers can also check and treat children in the community. Only children with severe pneumonia need to stay in hospital. Take the child to a health worker or primary health centre (PHC) to get the right care.
+
+Children at higher risk of pneumonia, from WHO: children with weak immune systems are at higher risk, for example children who are malnourished or underfed, especially babies who are not given only breast milk. Children with HIV or measles are also at higher risk. Smoke from cooking or heating with wood or dung inside the home, living in crowded homes, and parents who smoke also make a child more likely to get pneumonia.
+
+Preventing pneumonia, from WHO: vaccination against Hib, pneumococcus, measles and whooping cough (pertussis) is the most effective way to prevent pneumonia in children. Giving only breast milk for the first 6 months of life helps protect the child and also shortens the illness if the child gets sick. Reducing smoke inside the home, for example with clean cooking stoves, and good hygiene in crowded homes, including hand washing with soap, also reduce pneumonia.

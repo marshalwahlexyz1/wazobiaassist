@@ -1,9 +1,23 @@
 # file | organisation | URL     (run: python -m scripts.fetch_sources health)
-# WHO fact sheets (standard WHO addresses; not opened from the build session). Keep only the parts about
-# symptoms, danger signs, prevention and when to seek care. NO drug doses.
-malaria-and-fever | WHO | https://www.who.int/news-room/fact-sheets/detail/malaria
-diarrhoea-in-children | WHO | https://www.who.int/news-room/fact-sheets/detail/diarrhoeal-disease
-pneumonia-in-children | WHO | https://www.who.int/news-room/fact-sheets/detail/pneumonia-in-children
+# Every URL below was opened on 2026-10-08 and used in the matching docs/<file>.md. See docs/_SOURCES_REVIEW.md.
+# WHO-PCPNC = WHO "Pregnancy, childbirth, postpartum and newborn care: a guide for essential practice", 3rd ed., 2015 (PDF on iris.who.int).
+pregnancy-danger-signs | WHO | https://github.com/WorldHealthOrganization/smart-anc/blob/master/input/l2/WHO-SRH-21.2-eng.xlsx
+pregnancy-danger-signs | WHO | https://iris.who.int/bitstreams/e9f751fd-6eab-42cb-9e0c-0eb86a0365bb/download
+antenatal-care-visits | WHO | https://github.com/WorldHealthOrganization/smart-anc/blob/master/input/l2/WHO-SRH-21.2-eng.xlsx
+antenatal-care-visits | WHO | https://github.com/WorldHealthOrganization/smart-anc/blob/master/input/l2/WHO-SRH-21.3-eng.xlsx
+# The NPHCDA schedule card is an image-only PDF (no text layer); it was read visually, not by the fetch script.
+immunisation-schedule | UNICEF Nigeria | https://www.unicef.org/nigeria/documents/nigeria-immunization-schedule
+immunisation-schedule | NPHCDA (via UNICEF Nigeria) | https://www.unicef.org/nigeria/media/9911/file/Nigeria%20Immunization%20Schedule.pdf.pdf
+immunisation-schedule | NPHCDA | https://nphcda.gov.ng/speech-by-the-executive-director-ceo-of-national-primary-health-care-development-agency-nphcda-at-the-national-flag-off-of-human-papilloma-virus-vaccine-introduction-hpv-vi-on-the/
+immunisation-schedule | NPHCDA | https://nphcda.gov.ng/protecting-the-future-nigeria-launches-integrated-campaign-against-measles-rubella-human-papillomavirus-hpv-polio-and-neglected-tropical-diseases/
 newborn-danger-signs | WHO | https://www.who.int/news-room/fact-sheets/detail/newborn-mortality
+newborn-danger-signs | WHO | https://iris.who.int/bitstreams/e9f751fd-6eab-42cb-9e0c-0eb86a0365bb/download
+mother-after-delivery | WHO | https://iris.who.int/bitstreams/e9f751fd-6eab-42cb-9e0c-0eb86a0365bb/download
 mother-after-delivery | WHO | https://www.who.int/news-room/fact-sheets/detail/maternal-mortality
-# Still needed: the official NPHCDA routine immunisation schedule (nphcda.gov.ng). Do not write it from memory.
+mother-after-delivery | WHO | https://www.who.int/news-room/fact-sheets/detail/newborn-mortality
+malaria-and-fever | WHO | https://www.who.int/news-room/fact-sheets/detail/malaria
+malaria-and-fever | WHO | https://iris.who.int/bitstreams/e9f751fd-6eab-42cb-9e0c-0eb86a0365bb/download
+diarrhoea-in-children | WHO | https://www.who.int/news-room/fact-sheets/detail/diarrhoeal-disease
+diarrhoea-in-children | WHO | https://iris.who.int/bitstreams/e9f751fd-6eab-42cb-9e0c-0eb86a0365bb/download
+pneumonia-in-children | WHO | https://www.who.int/news-room/fact-sheets/detail/pneumonia
+pneumonia-in-children | WHO | https://iris.who.int/bitstreams/e9f751fd-6eab-42cb-9e0c-0eb86a0365bb/download
