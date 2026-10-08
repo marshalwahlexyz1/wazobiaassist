@@ -81,7 +81,7 @@ pytest
 The bot runs on one always-on Google Cloud server with an NVIDIA L4 (24 GB). No training is needed: N-ATLaS is used as released. Before you start:
 
 - **Google Cloud:** sign up for the $300 credit at https://cloud.google.com/free, upgrade the billing account (free-trial accounts cannot use GPUs; the credit still applies), and request quota for 1 NVIDIA L4 GPU in `us-central1`. Approval can take a day.
-- **Hugging Face:** accept the terms for N-ATLaS **and** each NCAIR ASR model, check their exact names at https://huggingface.co/NCAIR1, and create a token.
+- **Hugging Face:** with the account whose token you will use, accept the terms on all five gated models: [N-ATLaS](https://huggingface.co/NCAIR1/N-ATLaS), [Hausa-ASR](https://huggingface.co/NCAIR1/Hausa-ASR), [Igbo-ASR](https://huggingface.co/NCAIR1/Igbo-ASR), [Yoruba-ASR](https://huggingface.co/NCAIR1/Yoruba-ASR) and [NigerianAccentedEnglish](https://huggingface.co/NCAIR1/NigerianAccentedEnglish) (names checked 8 Oct). Then create a read token.
 - **ngrok:** create an account at https://dashboard.ngrok.com, copy your authtoken, and claim your free fixed domain.
 
 ```bash
@@ -166,7 +166,7 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 
 - N-ATLaS is weakest in Yoruba, so we answer in English first, then translate.
 - Nigerian Pidgin is not supported by the model.
-- NCAIR has no text-to-speech model, so spoken replies use Meta MMS-TTS and are optional. MMS may not cover every language.
+- NCAIR has no text-to-speech model, so spoken replies use Meta MMS-TTS and are optional. MMS has Hausa, Yoruba and English voices but **no Igbo voice**, so Igbo replies are text only.
 - The Hausa, Igbo and Yoruba interface text in `app/messages.py` is a draft for native-speaker review.
 
 ## Project layout

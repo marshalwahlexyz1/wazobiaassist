@@ -50,6 +50,8 @@ class MmsTTS:
         self.models = {}
 
     def speak(self, text: str, lang: str, out_path: Path) -> Path | None:
+        if not self.settings.tts_models.get(lang):
+            return None  # no voice model for this language
         if lang in self.models and self.models[lang] is None:
             return None  # this language's model failed to load before
         try:

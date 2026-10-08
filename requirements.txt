@@ -5,7 +5,8 @@ httpx>=0.27
 python-dotenv>=1.0
 python-telegram-bot==21.6
 # Models (GPU machine)
-torch>=2.1
+# >=2.6: the NCAIR speech models are .bin files, which recent transformers only loads with torch 2.6+
+torch>=2.6
 transformers>=4.43
 accelerate>=0.30
 sentence-transformers>=3.0

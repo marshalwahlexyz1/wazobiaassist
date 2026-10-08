@@ -211,3 +211,10 @@ def test_english_routing_questions_route_correctly(settings):
     wrong = [(r["question"], a.route(r["question"])) for r in rows
              if r["language"] == "en" and a.route(r["question"]) != r["expected"]]
     assert not wrong, wrong
+
+
+def test_no_tts_model_means_text_only(settings, tmp_path):
+    from app.speech import MmsTTS
+
+    settings.tts_models["ig"] = ""
+    assert MmsTTS(settings).speak("Ndewo", "ig", tmp_path / "x.ogg") is None

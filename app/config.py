@@ -54,7 +54,7 @@ class Settings:
     tts_models: dict = field(
         default_factory=lambda: {
             "ha": _env("TTS_MODEL_HA", "facebook/mms-tts-hau"),
-            "ig": _env("TTS_MODEL_IG", "facebook/mms-tts-ibo"),
+            "ig": _env("TTS_MODEL_IG", ""),  # Meta MMS has no Igbo voice: Igbo replies are text only
             "yo": _env("TTS_MODEL_YO", "facebook/mms-tts-yor"),
             "en": _env("TTS_MODEL_EN", "facebook/mms-tts-eng"),
         }
