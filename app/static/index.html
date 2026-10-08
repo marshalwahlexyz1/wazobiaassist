@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WazobiaAssist</title>
+<style>
+  :root { --bg:#f6f7f4; --card:#fff; --ink:#1c2420; --muted:#5d6a63; --accent:#0b7a4b; --accent-ink:#fff; --line:#dfe4e0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#111614; --card:#1a211e; --ink:#e8eee9; --muted:#9aa8a0; --accent:#3cbf7f; --accent-ink:#0b1410; --line:#2c3631; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:640px; margin:0 auto; padding:24px 16px 48px; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:16px; }
+  label { font-weight:600; display:block; margin-bottom:6px; }
+  select, textarea { width:100%; font:inherit; color:inherit; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px; }
+  textarea { min-height:80px; resize:vertical; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  button { font:inherit; font-weight:600; border:0; border-radius:10px; padding:12px 16px; cursor:pointer; background:var(--accent); color:var(--accent-ink); }
+  button.secondary { background:transparent; color:var(--ink); border:1px solid var(--line); }
+  button.recording { background:#c0392b; color:#fff; }
+  button:disabled { opacity:.5; cursor:default; }
+  #answer { white-space:pre-wrap; }
+  .muted { color:var(--muted); font-size:.9rem; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>WazobiaAssist</h1>
+  <p class="sub">Ask by voice or text in Hausa, Igbo, Yorùbá or English. Built on N-ATLAS.</p>
+
+  <div class="card">
+    <label for="lang">Language</label>
+    <select id="lang">
+      <option value="ha">Hausa</option>
+      <option value="ig">Igbo</option>
+      <option value="yo">Yorùbá</option>
+      <option value="en" selected>English</option>
+    </select>
+    <p class="muted">Topics: farming, health, school, government services (NIN, PVC, BVN), money and scams.
+      Questions and answers are saved anonymously to improve the service.</p>
+  </div>
+
+  <div class="card">
+    <label for="text">Your question</label>
+    <textarea id="text" placeholder="Type here, or press Record and speak"></textarea>
+    <div class="row">
+      <button id="record" type="button">🎤 Record</button>
+      <button id="send" type="button">Ask</button>
+    </div>
+  </div>
+
+  <div id="result" class="card hidden" aria-live="polite">
+    <div id="answer"></div>
+    <audio id="audio" class="hidden" controls></audio>
+    <div id="rating" class="row hidden">
+      <button class="secondary" data-rating="up" type="button">👍 Helpful</button>
+      <button class="secondary" data-rating="down" type="button">👎 Not helpful</button>
+    </div>
+    <p id="thanks" class="muted hidden">Thank you!</p>
+  </div>
+</main>
+<script>
+  function sessionId() {
+    let id = null;
+    try { id = localStorage.getItem("wazobia-session"); } catch (e) {}
+    if (!id) {
+      id = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now());
+      try { localStorage.setItem("wazobia-session", id); } catch (e) {}
+    }
+    return id;
+  }
+  const session = sessionId();
+  const $ = (id) => document.getElementById(id);
+  let recorder = null, chunks = [], lastId = null;
+
+  async function ask(audioBlob) {
+    const form = new FormData();
+    form.append("session_id", session);
+    form.append("lang", $("lang").value);
+    form.append("text", audioBlob ? "" : $("text").value);
+    if (audioBlob) form.append("audio", audioBlob, "voice.webm");
+    $("send").disabled = $("record").disabled = true;
+    $("result").classList.remove("hidden");
+    $("answer").textContent = "…";
+    ["audio", "rating", "thanks"].forEach((id) => $(id).classList.add("hidden"));
+    try {
+      const res = await fetch("/api/ask", { method: "POST", body: form });
+      const data = await res.json();
+      $("answer").textContent = data.answer || "Sorry, something went wrong.";
+      lastId = data.interaction_id;
+      if (lastId) $("rating").classList.remove("hidden");
+      if (data.audio_url) { $("audio").src = data.audio_url; $("audio").classList.remove("hidden"); }
+    } catch (e) {
+      $("answer").textContent = "Sorry, something went wrong. Please try again.";
+    } finally {
+      $("send").disabled = $("record").disabled = false;
+    }
+  }
+
+  $("send").onclick = () => { if ($("text").value.trim()) ask(null); };
+
+  $("record").onclick = async () => {
+    if (recorder && recorder.state === "recording") { recorder.stop(); return; }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      recorder = new MediaRecorder(stream);
+      chunks = [];
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = () => {
+        stream.getTracks().forEach((t) => t.stop());
+        $("record").textContent = "🎤 Record";
+        $("record").classList.remove("recording");
+        ask(new Blob(chunks, { type: recorder.mimeType }));
+      };
+      recorder.start();
+      $("record").textContent = "⏹ Stop and send";
+      $("record").classList.add("recording");
+    } catch (e) {
+      alert("Microphone not available. Please type your question.");
+    }
+  };
+
+  document.querySelectorAll("[data-rating]").forEach((b) => b.onclick = async () => {
+    const form = new FormData();
+    form.append("session_id", session);
+    form.append("interaction_id", lastId);
+    form.append("rating", b.dataset.rating);
+    await fetch("/api/rate", { method: "POST", body: form });
+    $("rating").classList.add("hidden");
+    $("thanks").classList.remove("hidden");
+  });
+</script>
+</body>
+</html>

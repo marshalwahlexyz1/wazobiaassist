@@ -1,0 +1,8 @@
+# Enough to run the server in MOCK=1 mode and the tests, without a GPU
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+httpx>=0.27
+python-dotenv>=1.0
+python-telegram-bot==21.6
+pytest>=8
