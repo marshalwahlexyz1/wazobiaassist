@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 .venv/
 .pytest_cache/
+# Raw page downloads from scripts/fetch_sources.py (regenerate any time; approved files are renamed)
+domains/*/docs/_fetched-*
