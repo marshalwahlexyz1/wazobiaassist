@@ -53,12 +53,25 @@ class Conversation:
         self.store = store
         self.media_dir = media_dir
         media_dir.mkdir(parents=True, exist_ok=True)
-        self.model_lock = threading.Lock()  # one question on the GPU at a time
+        # Different users are answered in parallel (vLLM batches their requests), but
+        # one user's messages are handled one at a time, so that e.g. a language
+        # choice is saved before the question sent right after it.
+        self._user_locks: dict[str, threading.Lock] = {}
+        self._locks_guard = threading.Lock()
+
+    def _user_lock(self, user_hash: str) -> threading.Lock:
+        with self._locks_guard:
+            return self._user_locks.setdefault(user_hash, threading.Lock())
 
     def handle(self, channel: str, channel_user_id: str, text: str | None = None,
                audio_path: str | None = None, audio_seconds: float | None = None) -> list[Reply]:
+        uh = self.store.user_hash(channel, str(channel_user_id))
+        with self._user_lock(uh):
+            return self._handle(uh, channel, text, audio_path, audio_seconds)
+
+    def _handle(self, uh: str, channel: str, text: str | None, audio_path: str | None,
+                audio_seconds: float | None) -> list[Reply]:
         store = self.store
-        uh = store.user_hash(channel, str(channel_user_id))
         user = store.get_user(uh)
         msg = (text or "").strip()
 
@@ -98,12 +111,11 @@ class Conversation:
             "audio_seconds": audio_seconds,
         }
         try:
-            with self.model_lock:
-                result = self.assistant.ask(
-                    lang, text=msg, audio_path=audio_path,
-                    off_topic_reply=t(lang, "off_topic"),
-                    speak_to=self.media_dir / f"{uuid.uuid4().hex}.ogg",
-                )
+            result = self.assistant.ask(
+                lang, text=msg, audio_path=audio_path,
+                off_topic_reply=t(lang, "off_topic"),
+                speak_to=self.media_dir / f"{uuid.uuid4().hex}.ogg",
+            )
         except Exception as exc:  # failures are logged too: they are part of the evidence
             log.exception("question failed")
             store.log(uh, **record, error=repr(exc)[:500])

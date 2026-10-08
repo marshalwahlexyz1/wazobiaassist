@@ -25,6 +25,9 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger("wazobia")
 
 settings = Settings()
+if not settings.mock and settings.id_salt in ("", "change-me"):
+    # An empty salt makes user hashes reversible (anyone can hash every phone number).
+    raise SystemExit("Set ID_SALT in .env to a long random string, e.g. the output of: openssl rand -hex 32")
 store = Store(settings.db_path, settings.id_salt)
 assistant = Assistant(settings)
 conversation = Conversation(assistant, store, settings.media_dir)
@@ -34,6 +37,9 @@ STATIC = Path(__file__).parent / "static"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Load the four ASR models in the background, so the first voice note in each
+    # language isn't slow.
+    asyncio.get_running_loop().run_in_executor(None, assistant.asr.warm_up)
     telegram = None
     if settings.telegram_token:
         from .channels.telegram import build_telegram

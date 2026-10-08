@@ -74,43 +74,82 @@ uvicorn app.server:app --port 8080 # open http://localhost:8080
 pytest
 ```
 
-### On the GPU server
+### On Google Cloud (live bot)
 
-Requirements: ffmpeg, Python 3.10+, about 24 GB of GPU memory. Accept the terms on Hugging Face for N-ATLaS **and** each NCAIR ASR model, and check their exact names at https://huggingface.co/NCAIR1.
+One `g2-standard-8` VM with an NVIDIA L4 (24 GB) runs everything: about $0.85/hour, so roughly
+$80 from Friday to Monday, paid from Google Cloud's $300 new-account credit.
+
+**1. Accounts (start now: GPU quota approval can take a day or two)**
+1. Sign up at https://cloud.google.com/free ($300 credit for 90 days; a card is needed for verification).
+2. Upgrade the billing account (**Billing → Overview → Activate full account**). Free-trial accounts
+   cannot use GPUs. The credit still applies, and you are only charged after it runs out.
+3. In **IAM & Admin → Quotas & system limits**, request `GPUs (all regions)` = 1 and
+   `NVIDIA L4 GPUs` = 1 in `us-central1` (also `europe-west4` as a backup).
+4. Accept the terms on Hugging Face for N-ATLaS **and** each NCAIR ASR model.
+5. Create a free ngrok account (dashboard.ngrok.com): copy the authtoken and claim the free static
+   domain. This gives WhatsApp a fixed address.
+
+**2. Create the VM** in Cloud Shell (the `>_` button in the console):
+```bash
+git clone https://github.com/marshalwahlexyz1/wazobiaassist && cd wazobiaassist
+gcloud config set project <your-project-id>
+bash scripts/gcp/create_vm.sh            # tries several zones until an L4 is free
+```
+
+**3. Install and start the bot** on the VM:
+```bash
+gcloud compute ssh wazobia --zone <zone>
+git clone https://github.com/marshalwahlexyz1/wazobiaassist && cd wazobiaassist
+cp .env.example .env    # HF_TOKEN, TELEGRAM_BOT_TOKEN, TWILIO_*, NGROK_AUTHTOKEN, NGROK_DOMAIN,
+                        # PUBLIC_BASE_URL=https://<NGROK_DOMAIN>   (ID_SALT is generated if empty)
+bash scripts/gcp/setup.sh               # one time, ~30 min; installs and starts the service
+.venv/bin/python -m scripts.ask --lang ha --text "Ta yaya zan sami NIN?"   # test one question
+curl https://<NGROK_DOMAIN>/health      # reachable from the internet?
+```
+
+The bot runs as the `wazobia` systemd service (`scripts/run_all.sh`: vLLM, then the app, then
+ngrok). It starts on boot and restarts everything if any part crashes. Telegram uses polling and
+WhatsApp comes in through ngrok's fixed address, so no firewall changes are needed and the Twilio
+URL never changes.
+
+```bash
+sudo systemctl status wazobia      # running?
+journalctl -u wazobia -f           # service log; vLLM/app/ngrok logs are in data/logs/
+sudo systemctl restart wazobia     # after git pull, or changing .env or the domain documents
+gcloud compute instances stop wazobia --zone <zone>    # stop paying for the GPU (from Cloud Shell)
+```
+
+vLLM settings are in `.env`: `GPU_MEM=0.80` and `MAX_MODEL_LEN=4096` fit the L4 alongside the ASR,
+embedding and TTS models (use 0.60 and 8192 on a 40 GB+ card). If `data/logs/vllm.log` shows an
+out-of-memory error, set `VLLM_EXTRA_ARGS=--quantization fp8` and restart.
+
+**If L4 quota is refused:** rent a GPU by the hour from RunPod or Lambda (no quota needed). On a
+Lambda VM, `bash scripts/gcp/setup.sh` works as is. On RunPod (a container without systemd),
+follow the steps below and run `bash scripts/run_all.sh` inside `tmux`.
+
+### Any other GPU machine, by hand
 
 ```bash
 sudo apt install -y ffmpeg
-
-# 1. Serve N-ATLaS with vLLM (in its own environment, because vLLM pins its own torch)
 python -m venv .venv-vllm && .venv-vllm/bin/pip install vllm
-HF_TOKEN=hf_xxx .venv-vllm/bin/vllm serve NCAIR1/N-ATLaS \
-    --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.75 --port 8000
-
-# 2. Run the app (second terminal)
 python -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env   # fill in HF_TOKEN, ID_SALT, channel keys
-.venv/bin/python -m scripts.ask --lang ha --text "Ta yaya zan sami NIN?"   # test one question
-.venv/bin/uvicorn app.server:app --host 0.0.0.0 --port 8080
+cp .env.example .env                    # fill in HF_TOKEN, ID_SALT, channel keys, NGROK_*
+bash scripts/run_all.sh                 # vLLM + app + ngrok; run it inside tmux
 ```
 
-`--gpu-memory-utilization 0.75` leaves room on a 24 GB card for the ASR, embedding and TTS models. On a 40 GB+ card you can raise it.
-
-If vLLM won't install, set `LLM_BACKEND=transformers` to load N-ATLaS inside the app instead (slower).
-
-Run both processes in `tmux` so they survive disconnects. `GET /health` shows status and document counts per domain.
+If vLLM won't install, set `LLM_BACKEND=transformers` to load N-ATLaS inside the app instead
+(slower), and start only the app: `.venv/bin/uvicorn app.server:app --port 8080`.
+`GET /health` shows status and document counts per domain.
 
 ### Public URL (needed for WhatsApp and the web microphone)
 
-```bash
-cloudflared tunnel --url http://localhost:8080
-```
-
-Put the `https://….trycloudflare.com` address in `PUBLIC_BASE_URL` and restart the app. Browsers only allow the microphone on https pages.
+`scripts/run_all.sh` starts ngrok on your free static domain, so the address never changes. Put
+`https://<NGROK_DOMAIN>` in `PUBLIC_BASE_URL`. Browsers only allow the microphone on https pages.
 
 ### Channels
 
 - **Telegram:** message @BotFather, `/newbot`, put the token in `TELEGRAM_BOT_TOKEN`. The bot starts with the server.
-- **WhatsApp (Twilio sandbox):** in the Twilio console, open Messaging → Try it out → WhatsApp sandbox. Put the account SID and auth token in `.env`. Set "When a message comes in" to `https://<public url>/whatsapp` (POST). Each tester must first send the sandbox's `join <code>` message to the sandbox number.
+- **WhatsApp (Twilio sandbox):** in the Twilio console, open Messaging → Try it out → WhatsApp sandbox. Put the account SID and auth token in `.env`. Set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must first send the sandbox's `join <code>` message to the sandbox number.
 - **Web:** open the public URL.
 
 ## Users' commands
@@ -127,6 +166,13 @@ python -m scripts.export_logs
 ```
 
 This writes `data/interactions.csv` and prints counts by language, domain, channel and input type, the satisfaction rate and the median response time.
+
+```bash
+python -m scripts.eval_router
+```
+
+This measures how often questions reach the right domain, using `eval/router_cases.jsonl`. Native
+speakers: add Hausa, Igbo and Yoruba questions to it.
 
 ## Privacy and safety
 
@@ -160,5 +206,9 @@ domains/               the five domains
 scripts/ask.py         ask one question from the terminal
 scripts/export_logs.py evidence CSV and summary
 scripts/fetch_sources.py download source pages as drafts for review
+scripts/eval_router.py routing accuracy on eval/router_cases.jsonl
+scripts/serve_llm.sh   N-ATLaS on vLLM
+scripts/run_all.sh     vLLM + app + ngrok together (used by the systemd service)
+scripts/gcp/           create_vm.sh (L4 VM on Google Cloud), setup.sh (one-time install + service)
 tests/                 pytest, runs without a GPU
 ```
