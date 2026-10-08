@@ -1,8 +1,41 @@
 # file | organisation | URL     (run: python -m scripts.fetch_sources education)
-# Candidate pages found by search on 2026-10-08, not yet opened. Confirm SMS codes, fees and dates on jamb.gov.ng.
-exam-scams | Channels TV (quoting JAMB) | https://www.channelstv.com/2026/03/27/jamb-re-arrests-fraudster-warns-against-score-manipulation/
-exam-scams | The Guardian Nigeria (quoting JAMB) | https://guardian.ng/?p=1141790
-exam-scams | Dubawa | https://dubawa.org/fraud-alert-this-website-is-fraudulent-you-cant-upgrade-your-jamb-score-by-paying-any-amount/
-jamb-profile-and-utme-registration | Technext | https://technext24.com/explainer/guide-to-registering-for-utme-de-2026/
-jamb-profile-and-utme-registration | Legit.ng | https://www.legit.ng/education/1686971-2026-utme-easy-step-by-step-instructions-how-successfully-register/
-# Still needed (add URLs when found): jamb.gov.ng pages, waecnigeria.org, neco.gov.ng, ubec.gov.ng, nelf.gov.ng
+# All URLs below were opened and read on 2026-10-08 and used in the approved files in docs/.
+# neco.gov.ng, results.neco.gov.ng and nelf.gov.ng/faq render their text with JavaScript, so the fetch script gets little text from them; open them in a browser.
+jamb-profile-and-utme-registration | JAMB FAQ | https://jamb.gov.ng/FAQ.aspx
+jamb-profile-and-utme-registration | JAMB Profiled Email advisory | https://jamb.gov.ng/img/2025Advisories/PROFILED_EMAIL_SERVICE1.pdf
+jamb-profile-and-utme-registration | JAMB Bulletin 21-09-2026 | https://jamb.gov.ng/Bulletin/2026/JAMBulletin_21-09-2026.pdf
+jamb-profile-and-utme-registration | BusinessDay (quoting JAMB) | https://businessday.ng/education/article/jamb-warns-cbt-centres-against-overcharging/
+jamb-caps-admission | JAMB CAPS page | https://jamb.gov.ng/caps.aspx
+jamb-caps-admission | JAMB home page | https://jamb.gov.ng
+jamb-caps-admission | JAMB e-Facility portal | https://efacility.jamb.gov.ng/
+jamb-caps-admission | JAMB FAQ | https://jamb.gov.ng/FAQ.aspx
+jamb-caps-admission | JAMB Payment and Services | https://jamb.gov.ng/Payment-Services.aspx
+jamb-caps-admission | JAMB CAPS and IBASS Manual | https://jamb.gov.ng/Speeches-Presentation/CAPS_and_IBASS_manuals.pdf
+jamb-caps-admission | JAMB Bulletin 21-09-2026 | https://jamb.gov.ng/Bulletin/2026/JAMBulletin_21-09-2026.pdf
+jamb-caps-admission | JAMB Bulletin 28-09-2026 | https://jamb.gov.ng/Bulletin/2026/JAMBulletin_28-09-2026.pdf
+waec-wassce | WAEC Nigeria FAQ | https://waecnigeria.org/faq?page=1
+waec-wassce | WAEC Nigeria FAQ page 2 | https://waecnigeria.org/faq?page=2
+waec-wassce | WAEC Nigeria home page | https://waecnigeria.org
+waec-wassce | WAEC Nigeria news | https://waecnigeria.org/news
+waec-wassce | WAEC 2026 Second Series timetable | https://waecnigeria.org/sites/default/files/2026-08/WASSCE%20%28PC%202%29%202026%20TIME%20TABLE.pdf
+waec-wassce | WAECDIRECT result checker | https://www.waecdirect.org/
+waec-wassce | WAECDIRECT FAQ | https://www.waecdirect.org/faq.htm
+waec-wassce | WAEC private candidates registration | https://registration.waecdirect.org/
+neco | NECO 2026 SSCE External guideline | https://neco.gov.ng/REVIEWED%202026%20SSCE%20EXTERNAL%20REGISTRATION%20GUIDELINE%20(CBT%20AND%20PPE)%20ADVERT.pdf
+neco | NECO website | https://neco.gov.ng
+neco | NECO Results Portal | https://results.neco.gov.ng/
+neco | NECO e-Verify | https://everify.neco.gov.ng
+free-basic-education-ube | UBEC | https://ubec.gov.ng
+free-basic-education-ube | UBEC (UBE Act 2004) | https://ubec.gov.ng/wp-content/uploads/2021/09/NGA87623-UBE-ACT-2004.pdf
+nelfund-student-loan | NELFUND FAQs | https://nelf.gov.ng/faq
+nelfund-student-loan | NELFUND terms | https://nelf.gov.ng/terms
+nelfund-student-loan | NELFUND Guidelines | https://d3uh36dq07i5db.cloudfront.net/guidelines/1755598134313.pdf
+exam-scams | Voice of Nigeria (quoting JAMB) | https://von.gov.ng/2026-utme-jamb-warns-candidate-against-examination-infractions/
+exam-scams | ThisDay (quoting JAMB) | https://www.thisdaylive.com/2025/04/16/jamb-dissociates-self-from-false-misleading-messages-on-utme/
+exam-scams | BusinessDay (quoting JAMB) | https://businessday.ng/education/article/jamb-warns-cbt-centres-against-overcharging/
+exam-scams | JAMB FAQ | https://jamb.gov.ng/FAQ.aspx
+exam-scams | JAMB Bulletin 21-09-2026 | https://jamb.gov.ng/Bulletin/2026/JAMBulletin_21-09-2026.pdf
+exam-scams | NECO 2026 SSCE External guideline | https://neco.gov.ng/REVIEWED%202026%20SSCE%20EXTERNAL%20REGISTRATION%20GUIDELINE%20(CBT%20AND%20PPE)%20ADVERT.pdf
+exam-scams | WAEC Nigeria FAQ | https://waecnigeria.org/faq?page=1
+exam-scams | WAECDIRECT FAQ | https://www.waecdirect.org/faq.htm
+exam-scams | NELFUND FAQs | https://nelf.gov.ng/faq
