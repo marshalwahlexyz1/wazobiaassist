@@ -1,16 +1,38 @@
 # file | organisation | URL     (run: python -m scripts.fetch_sources money)
-# Hand-written drafts with {{VERIFY}} markers already exist for these files; compare them with the fetched pages.
+# Every URL below was opened on 2026-10-08 and used in the matching docs/<file>.md. See docs/_SOURCES_REVIEW.md.
+# Approved files exist for all of these, so fetch_sources will skip them (it never overwrites approved files).
 cbn-bank-complaints-and-fraud-warnings | CBN | https://www.cbn.gov.ng/FinInc/FinLit/LodgeComplaint.html
-cbn-bank-complaints-and-fraud-warnings | CBN | https://www.cbn.gov.ng/FinInc/FinLit/How_Lodge_Complaints.pdf
+cbn-bank-complaints-and-fraud-warnings | CBN | https://www.cbn.gov.ng/OUT/2018/CPD/CONSUMER%20PROTECTION%20FAQs.PDF
 cbn-bank-complaints-and-fraud-warnings | CBN | https://www.cbn.gov.ng/supervision/cpdfraudandscam.html
+cbn-bank-complaints-and-fraud-warnings | CBN | https://www.cbn.gov.ng/AboutCBN/Reforms.html
 cbn-bank-complaints-and-fraud-warnings | Nairametrics (quoting CBN) | https://nairametrics.com/2025/05/12/cbn-warns-nigerians-against-fake-contracts-grants-loans/
+cbn-bank-complaints-and-fraud-warnings | Vanguard (quoting CBN) | https://www.vanguardngr.com/2026/04/cbn-warns-of-rising-fraud-targeting-bank-accounts/
 sec-unregistered-investment-schemes | SEC Nigeria | https://sec.gov.ng/for-investors/keep-track-of-circulars/public-notice-unregistered-online-investment-schemes/
 sec-unregistered-investment-schemes | SEC Nigeria | https://sec.gov.ng/for-investors/find-a-registered-operator/
+sec-unregistered-investment-schemes | SEC Nigeria | https://sec.gov.ng/enforcements/keep-track-of-enforcement-updates/
+sec-unregistered-investment-schemes | SEC Nigeria | https://sec.gov.ng/enforcements/keep-track-of-enforcement-updates/illegal-operator-value-growth-platform/
+sec-unregistered-investment-schemes | SEC Nigeria | https://sec.gov.ng/enforcements/keep-track-of-enforcement-updates/illegal-operator-alert-cbex-crypto-bridge-exchange-super-technology-st-technologies-international-ltd/
 fccpc-loan-app-rules | FCCPC | https://fccpc.gov.ng/digital-lending-fccpc-tackles-abuses-issues-landmark-regulations/
+fccpc-loan-app-rules | FCCPC | https://fccpc.gov.ng/wp-content/uploads/2025/11/Digital-Electronic-Online-or-Non-Traditional-Consumer-Lending-Regulations-2025.pdf
 fccpc-loan-app-rules | FCCPC | https://fccpc.gov.ng/about-us/faqs/
+fccpc-loan-app-rules | FCCPC | https://fccpc.gov.ng/digital-lending-rule-fccpc-goes-after-violators/
+fccpc-loan-app-rules | FCCPC | https://fccpc.gov.ng/status-update-investigation-into-possible-violations-of-privacy-and-other-rights-in-the-online-money-lending-industry-by-the-joint-task-force-fccpc-nitda-and-icpc/
 fccpc-loan-app-rules | Vanguard (quoting FCCPC) | https://www.vanguardngr.com/2026/07/fccpc-resumes-digital-lending-regulation-as-court-vacates-restraining-order/
-ndic-deposit-insurance | NDIC | https://ndic.gov.ng/frequently-asked-questions/
-ndic-deposit-insurance | NDIC | https://ndic.gov.ng/resources/facts-and-figures/facts-about-deposit-insurance-for-mfbs-pmis/
+fccpc-loan-app-rules | Naija News | https://www.naijanews.com/2026/07/22/appeal-court-void-fccpcs-deon-lending-regulations/
+ndic-deposit-insurance | NDIC | https://ndic.gov.ng/faq
+ndic-deposit-insurance | NDIC | https://ndic.gov.ng/about
+ndic-deposit-insurance | NDIC | https://ndic.gov.ng/our-mandate?section=deposit-guarantee
+ndic-deposit-insurance | NDIC | https://ndic.gov.ng/our-mandate?section=failure-resolution&topic=claims-settlement
+ndic-deposit-insurance | NDIC | https://ndic.gov.ng/your-claims
+ndic-deposit-insurance | NDIC | https://ndic.gov.ng/article?slug=update-on-the-revocation-of-the-operating-licenses-of-46-microfinance-banks-by-the-central-bank-of-nigeria
+ndic-deposit-insurance | CBN | https://www.cbn.gov.ng/OUT/2018/CPD/CONSUMER%20PROTECTION%20FAQs.PDF
+ndic-deposit-insurance | Nairametrics (quoting NDIC) | https://nairametrics.com/2024/05/02/ndic-raises-deposit-insurance-coverage-for-bank-customers-in-nigeria-to-n5-million/
+reporting-fraud-efcc-police | CBN | https://www.cbn.gov.ng/supervision/cpdfraudandscam.html
 reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/Contactus
-reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/efcc/news-and-information/news-release/10454-efcc-sets-up-public-complaints-unit
+reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/SubmitPetition
+reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/
+reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/news/efcc-sets-up-public-complaints-unit
+reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/news/public-alert-about-impersonators-fake-efcc-sting-operations
+reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/news/efcc-disclaims-lagos-roadblocks-online-invitations
+reporting-fraud-efcc-police | EFCC | https://www.efcc.gov.ng/news/akure-now-hub-of-fake-efcc-operations-kingpin-in-efcc-net
 reporting-fraud-efcc-police | Nigeria Police Force (NCCC) | https://nccc.npf.gov.ng/news/npf-launches-enhanced-platform
