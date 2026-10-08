@@ -8,7 +8,7 @@ import argparse
 
 from app.assistant import Assistant
 from app.config import LANGUAGES, Settings
-from app.i18n import t
+from app.messages import t
 
 
 def main() -> None:

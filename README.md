@@ -4,6 +4,8 @@ A voice-first assistant built on **N-ATLAS**. Nigerians send a voice note in Hau
 
 National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First Access, Track B (Innovation & Enterprise).
 
+**Flagship domains: scam checking and government services**, which no other N-ATLAS project covers. Farming, health and education show that the platform scales.
+
 ## How it works
 
 | Step | Component | Code |
@@ -74,44 +76,59 @@ uvicorn app.server:app --port 8080 # open http://localhost:8080
 pytest
 ```
 
-### On the GPU server
+### On the GPU server (Google Cloud, NVIDIA L4)
 
-Requirements: ffmpeg, Python 3.10+, about 24 GB of GPU memory. Accept the terms on Hugging Face for N-ATLaS **and** each NCAIR ASR model, and check their exact names at https://huggingface.co/NCAIR1.
+The bot runs on one always-on Google Cloud server with an NVIDIA L4 (24 GB). No training is needed: N-ATLaS is used as released. Before you start:
 
-```bash
-sudo apt install -y ffmpeg
-
-# 1. Serve N-ATLaS with vLLM (in its own environment, because vLLM pins its own torch)
-python -m venv .venv-vllm && .venv-vllm/bin/pip install vllm
-HF_TOKEN=hf_xxx .venv-vllm/bin/vllm serve NCAIR1/N-ATLaS \
-    --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.75 --port 8000
-
-# 2. Run the app (second terminal)
-python -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env   # fill in HF_TOKEN, ID_SALT, channel keys
-.venv/bin/python -m scripts.ask --lang ha --text "Ta yaya zan sami NIN?"   # test one question
-.venv/bin/uvicorn app.server:app --host 0.0.0.0 --port 8080
-```
-
-`--gpu-memory-utilization 0.75` leaves room on a 24 GB card for the ASR, embedding and TTS models. On a 40 GB+ card you can raise it.
-
-If vLLM won't install, set `LLM_BACKEND=transformers` to load N-ATLaS inside the app instead (slower).
-
-Run both processes in `tmux` so they survive disconnects. `GET /health` shows status and document counts per domain.
-
-### Public URL (needed for WhatsApp and the web microphone)
+- **Google Cloud:** sign up for the $300 credit at https://cloud.google.com/free, upgrade the billing account (free-trial accounts cannot use GPUs; the credit still applies), and request quota for 1 NVIDIA L4 GPU in `us-central1`. Approval can take a day.
+- **Hugging Face:** accept the terms for N-ATLaS **and** each NCAIR ASR model, check their exact names at https://huggingface.co/NCAIR1, and create a token.
+- **ngrok:** create an account at https://dashboard.ngrok.com, copy your authtoken, and claim your free fixed domain.
 
 ```bash
-cloudflared tunnel --url http://localhost:8080
+# 1. In Google Cloud Shell: create the server (g2-standard-8 with one L4, Deep Learning VM image)
+git clone https://github.com/marshalwahlexyz1/wazobiaassist && cd wazobiaassist
+bash scripts/gcp/create_vm.sh
+
+# 2. On the server
+gcloud compute ssh wazobia --zone us-central1-a
+git clone https://github.com/marshalwahlexyz1/wazobiaassist && cd wazobiaassist
+bash scripts/gcp/setup.sh      # first run creates .env and asks for HF_TOKEN, NGROK_AUTHTOKEN, NGROK_DOMAIN
+nano .env                      # fill them in (plus Telegram/Twilio keys when ready)
+bash scripts/gcp/setup.sh      # second run installs and starts everything
 ```
 
-Put the `https://….trycloudflare.com` address in `PUBLIC_BASE_URL` and restart the app. Browsers only allow the microphone on https pages.
+`setup.sh` installs three services that start on boot and restart themselves if they crash:
+
+| Service | What it runs |
+|---|---|
+| `wazobia-vllm` | N-ATLaS on vLLM, `localhost:8000` (`--max-model-len 4096 --gpu-memory-utilization 0.8`, leaving room for the speech and embedding models) |
+| `wazobia-app` | the bot, WhatsApp webhook and web page, `localhost:8080`; waits for vLLM to be ready |
+| `wazobia-ngrok` | your fixed public address `https://<NGROK_DOMAIN>` → `localhost:8080` |
+
+Day-to-day commands on the server:
+
+```bash
+journalctl -u wazobia-vllm -u wazobia-app -f                # live logs
+curl -s localhost:8080/health                               # status and documents per domain
+.venv/bin/python -m scripts.ask --lang ha --text "Ta yaya zan sami NIN?"   # one question, every step shown
+git pull && sudo systemctl restart wazobia-app              # after a code, document or .env change
+```
+
+If vLLM runs out of GPU memory, put `VLLM_EXTRA_ARGS=--quantization fp8` in `.env` and run `sudo systemctl restart wazobia-vllm`. If vLLM won't install at all, set `LLM_BACKEND=transformers` to load N-ATLaS inside the app (slower).
+
+Stop the server when nobody is testing, to save credit: `gcloud compute instances stop wazobia --zone us-central1-a` (start it again with `start`; the services come back by themselves).
+
+Without Google Cloud (e.g. a rented RunPod or Lambda GPU), follow the same steps from `setup.sh` by hand.
+
+### Public address
+
+`PUBLIC_BASE_URL` defaults to `https://<NGROK_DOMAIN>`. It is needed for WhatsApp, for voice replies on WhatsApp, and for the web page's microphone (browsers only allow it on https). On ngrok's free plan, visitors to the web page see a one-time ngrok warning page first; WhatsApp and Telegram are not affected.
 
 ### Channels
 
 - **Telegram:** message @BotFather, `/newbot`, put the token in `TELEGRAM_BOT_TOKEN`. The bot starts with the server.
-- **WhatsApp (Twilio sandbox):** in the Twilio console, open Messaging → Try it out → WhatsApp sandbox. Put the account SID and auth token in `.env`. Set "When a message comes in" to `https://<public url>/whatsapp` (POST). Each tester must first send the sandbox's `join <code>` message to the sandbox number.
-- **Web:** open the public URL.
+- **WhatsApp (Twilio sandbox):** in the Twilio console, open Messaging → Try it out → WhatsApp sandbox. Put the account SID and auth token in `.env`. Set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must first send the sandbox's `join <code>` message to the sandbox number.
+- **Web:** open `https://<NGROK_DOMAIN>`.
 
 ## Users' commands
 
@@ -119,6 +136,16 @@ Put the `https://….trycloudflare.com` address in `PUBLIC_BASE_URL` and restart
 - `👍` / `👎` after an answer: rate it (Telegram and web have buttons)
 - `LANGUAGE`: change language
 - `DELETE`: erase all of the user's data
+
+## Routing test
+
+Native speakers add 10 questions per language to `tests/routing_questions.csv` (`language,question,expected`), then on the server:
+
+```bash
+.venv/bin/python -m scripts.routing_test          # or --lang ha
+```
+
+It translates and routes each question exactly like the live bot and lists the wrong routes. Fix them by adding keywords to `domains/<name>/domain.json` or sharpening its description.
 
 ## Validation evidence
 
@@ -140,7 +167,7 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 - N-ATLaS is weakest in Yoruba, so we answer in English first, then translate.
 - Nigerian Pidgin is not supported by the model.
 - NCAIR has no text-to-speech model, so spoken replies use Meta MMS-TTS and are optional. MMS may not cover every language.
-- The Hausa, Igbo and Yoruba interface text in `app/i18n.py` is a draft for native-speaker review.
+- The Hausa, Igbo and Yoruba interface text in `app/messages.py` is a draft for native-speaker review.
 
 ## Project layout
 
@@ -153,12 +180,14 @@ app/llm.py             N-ATLaS via vLLM / transformers / mock
 app/speech.py          NCAIR ASR, MMS-TTS
 app/protect.py         keeps numbers, USSD codes and URLs intact through translation
 app/store.py           anonymous SQLite log
-app/i18n.py            interface text in 4 languages
+app/messages.py        interface text in 4 languages
 app/channels/          telegram.py, whatsapp.py
 app/static/index.html  web demo page
 domains/               the five domains
 scripts/ask.py         ask one question from the terminal
 scripts/export_logs.py evidence CSV and summary
 scripts/fetch_sources.py download source pages as drafts for review
+scripts/routing_test.py check routing per language (tests/routing_questions.csv)
+scripts/gcp/            Google Cloud VM creation, setup and always-on services
 tests/                 pytest, runs without a GPU
 ```

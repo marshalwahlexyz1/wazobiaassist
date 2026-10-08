@@ -1,0 +1,18 @@
+language,question,expected
+en,When should I plant maize?,agriculture
+en,How do I control fall armyworm on my farm?,agriculture
+en,How do I store cowpea without weevils?,agriculture
+en,What are the danger signs in pregnancy?,health
+en,When is my baby's next vaccine?,health
+en,My child has a fever. What should I do?,health
+en,How do I register for JAMB?,education
+en,How do I create a JAMB profile?,education
+en,Is primary school free in Nigeria?,education
+en,How do I get my NIN?,civic
+en,How do I register to vote and collect my PVC?,civic
+en,How do I check my BVN?,civic
+en,"I got a message that CBN is giving grants and I should pay a fee to receive it. Is it real?",money
+en,Someone says they sent money to my POS by mistake and wants it back.,money
+en,Is this loan app legit? They want access to my contacts.,money
+en,Good morning,other
+en,Thank you very much,other

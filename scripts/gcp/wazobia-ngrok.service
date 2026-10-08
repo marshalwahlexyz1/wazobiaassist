@@ -1,0 +1,14 @@
+[Unit]
+Description=WazobiaAssist: fixed public https address (ngrok)
+After=network-online.target wazobia-app.service
+Wants=network-online.target
+
+[Service]
+User=__USER__
+EnvironmentFile=__DIR__/.env
+ExecStart=/usr/bin/env ngrok http --url=${NGROK_DOMAIN} --authtoken=${NGROK_AUTHTOKEN} --log=stdout 8080
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

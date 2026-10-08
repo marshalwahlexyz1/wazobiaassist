@@ -8,7 +8,7 @@ from app.channels.whatsapp import valid_signature
 from app.config import LANGUAGES, ROOT, Settings
 from app.conversation import Conversation, parse_language, parse_rating
 from app.domains import Retriever, keyword_scores, load_domains
-from app.i18n import TEXT
+from app.messages import TEXT
 from app.protect import protect, restore
 from app.store import Store, redact
 
@@ -132,7 +132,7 @@ def test_parsers():
     assert parse_rating("👍") == "up" and parse_rating("👎🏽") == "down" and parse_rating("ok") is None
 
 
-# --- store, i18n, twilio -----------------------------------------------------------
+# --- store, messages, twilio -----------------------------------------------------------
 
 def test_redact():
     out = redact("Call 08012345678 or +234 801 234 5678, a.b@x.com, send N50,000")
@@ -199,3 +199,15 @@ def test_documents_with_verify_markers_are_skipped(tmp_path):
     (d / "docs" / "_draft-c.md").write_text("Source: C\n\nDraft.")
     chunks = load_domains(tmp_path)["x"].chunks
     assert [c.source for c in chunks] == ["A"]
+
+
+def test_english_routing_questions_route_correctly(settings):
+    """The English rows of the routing test must pass on keywords alone."""
+    import csv
+
+    a = Assistant(settings)
+    a.llm.chat = lambda messages, max_tokens=400: "other"  # model only decides when keywords can't
+    rows = csv.DictReader((ROOT / "tests" / "routing_questions.csv").open(encoding="utf-8"))
+    wrong = [(r["question"], a.route(r["question"])) for r in rows
+             if r["language"] == "en" and a.route(r["question"]) != r["expected"]]
+    assert not wrong, wrong

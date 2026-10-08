@@ -1,0 +1,17 @@
+[Unit]
+Description=WazobiaAssist: bot and web page
+After=network-online.target wazobia-vllm.service
+Wants=wazobia-vllm.service
+
+[Service]
+User=__USER__
+WorkingDirectory=__DIR__
+# Wait (up to 15 minutes) until the model server answers.
+ExecStartPre=/usr/bin/timeout 900 /bin/sh -c 'until curl -sf http://localhost:8000/health >/dev/null; do sleep 5; done'
+ExecStart=__DIR__/.venv/bin/uvicorn app.server:app --host 127.0.0.1 --port 8080
+TimeoutStartSec=960
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

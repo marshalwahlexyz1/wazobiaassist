@@ -74,9 +74,12 @@ class Settings:
     twilio_whatsapp_from: str = field(
         default_factory=lambda: _env("TWILIO_WHATSAPP_FROM", "whatsapp:+14155238886")
     )
-    # Public https address of this server (e.g. from cloudflared/ngrok). Needed for
+    # Public https address of this server (defaults to https://NGROK_DOMAIN). Needed for
     # Twilio request signature checks and for sending voice replies on WhatsApp.
-    public_base_url: str = field(default_factory=lambda: _env("PUBLIC_BASE_URL").rstrip("/"))
+    public_base_url: str = field(
+        default_factory=lambda: (_env("PUBLIC_BASE_URL")
+                                 or (f"https://{_env('NGROK_DOMAIN')}" if _env("NGROK_DOMAIN") else "")).rstrip("/")
+    )
 
     db_path: Path = field(default_factory=lambda: Path(_env("DB_PATH", str(ROOT / "data" / "interactions.db"))))
     media_dir: Path = field(default_factory=lambda: Path(_env("MEDIA_DIR", str(ROOT / "data" / "media"))))

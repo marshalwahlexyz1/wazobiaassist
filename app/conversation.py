@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .assistant import Assistant
 from .config import LANGUAGES
-from .i18n import LANGUAGE_MENU, t
+from .messages import LANGUAGE_MENU, t
 from .store import Store
 
 log = logging.getLogger(__name__)

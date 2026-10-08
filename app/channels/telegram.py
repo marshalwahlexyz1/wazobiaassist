@@ -9,7 +9,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CallbackQueryHandler, ContextTypes, MessageHandler, filters
 
 from ..conversation import Conversation, Reply
-from ..i18n import LANGUAGE_LABELS, t
+from ..messages import LANGUAGE_LABELS, t
 
 log = logging.getLogger(__name__)
 CHANNEL = "telegram"

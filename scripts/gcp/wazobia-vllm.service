@@ -1,0 +1,17 @@
+[Unit]
+Description=WazobiaAssist: N-ATLaS model server (vLLM)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=__USER__
+WorkingDirectory=__DIR__
+EnvironmentFile=__DIR__/.env
+# 24 GB L4: the model takes ~15 GB; 0.8 leaves room for speech and embedding models.
+# If it runs out of memory, set VLLM_EXTRA_ARGS=--quantization fp8 in .env.
+ExecStart=__DIR__/.venv-vllm/bin/vllm serve ${LLM_MODEL} --dtype bfloat16 --max-model-len 4096 --gpu-memory-utilization 0.8 --port 8000 $VLLM_EXTRA_ARGS
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

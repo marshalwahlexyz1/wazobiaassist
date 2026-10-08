@@ -16,7 +16,7 @@ import httpx
 
 from ..config import Settings
 from ..conversation import Conversation
-from ..i18n import t
+from ..messages import t
 
 log = logging.getLogger(__name__)
 CHANNEL = "whatsapp"
