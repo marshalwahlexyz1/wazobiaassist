@@ -51,7 +51,7 @@ def test_lost_placeholder_appends_english(settings):
 
 def test_all_domains_load():
     domains = load_domains(ROOT / "domains")
-    assert set(domains) == {"agriculture", "health", "education", "civic", "money", "products"}
+    assert set(domains) == {"agriculture", "health", "education", "civic", "money", "products", "laws"}
     assert domains["products"].tool == "nafdac"
     assert domains["money"].chunks, "money domain should ship with scam patterns"
     for d in domains.values():
