@@ -9,6 +9,7 @@ from pathlib import Path
 from .config import LANGUAGES, Settings
 from .domains import Chunk, Retriever, keyword_scores, load_domains
 from .llm import make_llm
+from .products import FoodDatabase, Greenbook, ProductChecker, mentions_nafdac
 from .protect import protect, restore
 from .speech import make_asr, make_tts
 
@@ -22,6 +23,11 @@ Decide which topic the user's question belongs to.
 {topics}
 - other: greetings, thanks, or anything not covered above
 Reply with only the topic name, one word."""
+
+EXTRACT_PROMPT = """TASK: extract
+The user wants to know if a product is registered with NAFDAC.
+Reply with only the product's name and brand, or the NAFDAC number, exactly as the user wrote it.
+No other words. If there is no product name or number, reply NONE."""
 
 ANSWER_PROMPT = """TASK: answer
 You are WazobiaAssist, a trustworthy assistant for ordinary Nigerians.
@@ -61,6 +67,10 @@ class Assistant:
         self.llm = make_llm(settings)
         self.asr = make_asr(settings)
         self.tts = make_tts(settings)
+        self.products = ProductChecker(
+            FoodDatabase(settings.nafdac_food_db),
+            Greenbook() if settings.nafdac_live and not settings.mock else None,
+        )
 
     # --- steps -----------------------------------------------------------
 
@@ -81,6 +91,9 @@ class Assistant:
         return restored
 
     def route(self, question_en: str) -> str:
+        product_domains = [n for n, d in self.domains.items() if d.tool == "nafdac"]
+        if product_domains and mentions_nafdac(question_en):
+            return product_domains[0]  # "NAFDAC" or a NAFDAC number: always a product check
         scores = keyword_scores(question_en, self.domains)
         ranked = sorted(scores.items(), key=lambda kv: -kv[1])
         if ranked and ranked[0][1] >= 1 and (len(ranked) == 1 or ranked[0][1] > ranked[1][1]):
@@ -110,6 +123,15 @@ class Assistant:
         ])
         return answer, chunks
 
+    def check_product(self, question_en: str) -> tuple[str, list[str]]:
+        name = self.llm.chat([
+            {"role": "system", "content": EXTRACT_PROMPT},
+            {"role": "user", "content": question_en},
+        ], max_tokens=30).strip().strip('."')
+        if name.upper() == "NONE" or len(name) > 120:
+            name = ""
+        return self.products.check(question_en, name)
+
     # --- full pipeline ---------------------------------------------------
 
     def ask(self, lang: str, text: str | None = None, audio_path: str | None = None,
@@ -122,6 +144,10 @@ class Assistant:
         domain = self.route(question_en)
         if domain == "other":
             answer_en, chunks, answer = "", [], off_topic_reply
+        elif self.domains[domain].tool == "nafdac":
+            answer_en, product_sources = self.check_product(question_en)
+            chunks = [Chunk("", src) for src in product_sources]
+            answer = self.translate(answer_en, "en", lang)
         else:
             answer_en, chunks = self.answer_en(domain, question_en)
             answer = self.translate(answer_en, "en", lang)

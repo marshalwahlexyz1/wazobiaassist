@@ -44,6 +44,7 @@ class Domain:
     keywords: list[str]
     instructions: str
     chunks: list[Chunk] = field(default_factory=list)
+    tool: str = ""  # e.g. "nafdac": answered by a database lookup instead of documents
 
 
 def _read_doc(path: Path) -> tuple[str, str]:
@@ -81,6 +82,7 @@ def load_domains(root: Path) -> dict[str, Domain]:
             description=meta["description"],
             keywords=[k.lower() for k in meta.get("keywords", [])],
             instructions=instructions.read_text(encoding="utf-8") if instructions.exists() else "",
+            tool=meta.get("tool", ""),
         )
         for doc in sorted((folder / "docs").glob("*")):
             if doc.suffix in (".md", ".txt") and not doc.name.startswith("_"):

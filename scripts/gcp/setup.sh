@@ -49,6 +49,11 @@ if [ -n "$missing" ]; then
   exit 1
 fi
 
+echo "== NAFDAC food database (about 28,000 products) and a daily refresh at 03:15"
+.venv/bin/python -m scripts.update_nafdac || echo "NAFDAC download failed; the product check will use the drug database only until it succeeds."
+CRON="15 3 * * * cd $DIR && .venv/bin/python -m scripts.update_nafdac >> data/nafdac_update.log 2>&1"
+( crontab -l 2>/dev/null | grep -v "scripts.update_nafdac"; echo "$CRON" ) | crontab -
+
 echo "== Installing services"
 for unit in wazobia-vllm wazobia-app wazobia-ngrok; do
   sed "s#__DIR__#$DIR#g; s#__USER__#$ME#g" "scripts/gcp/$unit.service" | sudo tee "/etc/systemd/system/$unit.service" >/dev/null

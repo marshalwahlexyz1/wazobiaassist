@@ -139,6 +139,15 @@ Without Google Cloud (e.g. a rented RunPod or Lambda GPU), follow the same steps
 - `LANGUAGE`: change language
 - `DELETE`: erase all of the user's data
 
+## NAFDAC product check
+
+Users can ask whether a product is registered with NAFDAC, by name or by NAFDAC number ("Is Emzor paracetamol registered?", "Check A8-0121"). Any question that mentions NAFDAC or contains a NAFDAC number goes to the `products` domain, which looks the product up instead of reading documents:
+
+- **NAFDAC Greenbook** (drugs, vaccines, medical devices, veterinary, herbal products, disinfectants; about 8,900 products): searched live, the same way NAFDAC's own page searches it, with a 6-hour cache.
+- **NAFDAC Food Products Database** (about 28,000 products): downloaded by `python -m scripts.update_nafdac` into `data/nafdac_food.sqlite`. `setup.sh` runs it and refreshes it daily at 03:15.
+
+N-ATLaS pulls the product name out of the question; the answer itself is built from NAFDAC's fields (name, NAFDAC number, company, expiry date), so a number or date is never invented. Expired registrations are reported as expired. A product that isn't found is never called fake: the bot asks for the NAFDAC number on the pack and gives NAFDAC's lines (0700-1-623322 enquiries, 0800-1-623322 complaints). A product that is found comes with a reminder that fakes copy real numbers. Cosmetics are not in either database.
+
 ## Routing test
 
 Native speakers add 10 questions per language to `tests/routing_questions.csv` (`language,question,expected`), then on the server:
@@ -190,6 +199,8 @@ scripts/ask.py         ask one question from the terminal
 scripts/export_logs.py evidence CSV and summary
 scripts/fetch_sources.py download source pages as drafts for review
 scripts/routing_test.py check routing per language (tests/routing_questions.csv)
+scripts/update_nafdac.py download NAFDAC's food product database
+app/products.py        NAFDAC product check (Greenbook live search + food database)
 scripts/gcp/            Google Cloud VM creation, setup and always-on services
 tests/                 pytest, runs without a GPU
 ```

@@ -92,6 +92,8 @@ class MockLLM:
             return f"(translated) {user}"
         if system.startswith("TASK: route"):
             return "money"
+        if system.startswith("TASK: extract"):
+            return user
         return "1. This is a mock answer. 2. Run with a real model to get real answers. (Source: mock)"
 
 

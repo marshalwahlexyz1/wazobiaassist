@@ -51,7 +51,8 @@ def test_lost_placeholder_appends_english(settings):
 
 def test_all_domains_load():
     domains = load_domains(ROOT / "domains")
-    assert set(domains) == {"agriculture", "health", "education", "civic", "money"}
+    assert set(domains) == {"agriculture", "health", "education", "civic", "money", "products"}
+    assert domains["products"].tool == "nafdac"
     assert domains["money"].chunks, "money domain should ship with scam patterns"
     for d in domains.values():
         assert d.instructions and d.keywords and d.description
@@ -275,3 +276,105 @@ def test_server_refuses_empty_salt_outside_mock(monkeypatch, tmp_path):
     with pytest.raises(SystemExit):
         importlib.import_module("app.server")
     sys.modules.pop("app.server", None)
+
+
+# --- NAFDAC product check ------------------------------------------------------
+
+def _food_db(path):
+    import sqlite3
+
+    db = sqlite3.connect(path)
+    db.execute("""CREATE TABLE food (number TEXT, number_norm TEXT, name TEXT, category TEXT,
+                  subcategory TEXT, packsize TEXT, presentation TEXT, applicant TEXT,
+                  manufacturer TEXT, country TEXT, issued TEXT, expiry TEXT)""")
+    rows = [
+        ("A8-0121", "A80121", "INDOMIE INSTANT NOODLES RELISH CHICKEN DELIGHT", "Food", "Cereals", "120G", "",
+         "DUFIL PRIMA FOODS LTD", "DUFIL", "Nigeria", "31/01/2024", "30/01/2029"),
+        ("A8-102316L", "A8102316L", "OZIGEO FOODS SOY MILK POWDER", "Food", "Cereals", "180", "",
+         "GEORGE SOFT STIR FOODS LTD", "GEORGE", "Nigeria", "20/12/2022", "19/12/2024"),
+        ("01-0241", "010241", "GOLDEN PENNY SEMOVITA", "Food", "Cereals", "1KG", "",
+         "FLOUR MILLS OF NIGERIA PLC.", "FMN", "Nigeria", "26/01/2023", "25/01/2028"),
+        ("A1-9999", "A19999", "GOLDEN PENNY EASYBAKE FLOUR", "Food", "Cereals", "50KG", "",
+         "EAGLE FLOUR", "EAGLE", "Nigeria", "26/01/2023", "25/01/2028"),
+    ]
+    db.executemany("INSERT INTO food VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", rows)
+    db.commit()
+    db.close()
+
+
+GREENBOOK_ROW = {"product_name": "Emzor Paracetamol Tablet## (check description)", "strength": "500 mg",
+                 "NAFDAC": "04-0411", "expiry_date": "2028-03-27", "status": "Active",
+                 "ingredient": {"ingredient_name": "Paracetamol"}, "form": {"name": "Tablet"},
+                 "applicant": {"name": "Emzor Pharmaceutical Industries Limited"}}
+
+
+def _checker(tmp_path, greenbook_rows=(), fail=False):
+    from app.products import FoodDatabase, Greenbook, ProductChecker
+
+    _food_db(tmp_path / "food.sqlite")
+    calls = []
+
+    def fetch(term):
+        calls.append(term)
+        if fail:
+            raise RuntimeError("down")
+        return list(greenbook_rows)
+
+    return ProductChecker(FoodDatabase(tmp_path / "food.sqlite"), Greenbook(fetch=fetch)), calls
+
+
+def test_product_found_in_greenbook(tmp_path):
+    from datetime import date
+
+    pc, calls = _checker(tmp_path, [GREENBOOK_ROW])
+    text, sources = pc.check("Is Emzor paracetamol registered with NAFDAC?", "Emzor paracetamol",
+                             today=date(2026, 10, 10))
+    assert "«Emzor Paracetamol Tablet»" in text and "04-0411" in text
+    assert "valid until 27 March 2028" in text and "##" not in text
+    assert sources == ["NAFDAC Greenbook"] and calls == ["emzor paracetamol"]
+
+
+def test_expired_food_registration_by_number(tmp_path):
+    from datetime import date
+
+    pc, _ = _checker(tmp_path)
+    text, _ = pc.check("Check NAFDAC number a8-102316l", "", today=date(2026, 10, 10))
+    assert "OZIGEO FOODS SOY MILK POWDER" in text and "expired on 19 December 2024" in text
+
+
+def test_only_best_matches_are_listed(tmp_path):
+    pc, _ = _checker(tmp_path)
+    text, _ = pc.check("Is Golden Penny semovita registered?", "Golden Penny semovita")
+    assert "SEMOVITA" in text and "EASYBAKE" not in text
+
+
+def test_not_found_is_not_called_fake_and_greenbook_outage_is_reported(tmp_path):
+    pc, _ = _checker(tmp_path, fail=True)
+    text, _ = pc.check("Is Super Miracle Bitters registered with NAFDAC?", "Super Miracle Bitters")
+    assert "could not find «Super Miracle Bitters»" in text
+    assert "does not prove the product is fake" in text and "0700-1-623322" in text
+    assert "could not be reached" in text
+
+
+def test_nafdac_questions_route_to_products(settings):
+    a = Assistant(settings)
+    assert a.route("Is Indomie NAFDAC approved?") == "products"
+    assert a.route("Check reg no A4-7579 for me") == "products"
+    assert a.route("I was charged 12-2026 naira") != "products"  # digits alone are not a NAFDAC number
+
+
+def test_product_names_survive_translation():
+    masked, kept = protect("NAFDAC lists «Golden Penny Semovita», NAFDAC number 01-0241.")
+    assert "Golden Penny" not in masked
+    assert restore(masked, kept) == "NAFDAC lists «Golden Penny Semovita», NAFDAC number 01-0241."
+
+
+def test_full_pipeline_product_question(settings, tmp_path):
+    from app.products import FoodDatabase, ProductChecker
+
+    _food_db(tmp_path / "food.sqlite")
+    a = Assistant(settings)
+    a.products = ProductChecker(FoodDatabase(tmp_path / "food.sqlite"), None)
+    r = a.ask("en", text="Is Indomie chicken noodles NAFDAC approved?")
+    assert r.domain == "products" and "A8-0121" in r.answer
+    assert r.sources == ["NAFDAC Food Products Database"]

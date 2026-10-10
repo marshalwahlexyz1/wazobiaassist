@@ -81,6 +81,13 @@ class Settings:
                                  or (f"https://{_env('NGROK_DOMAIN')}" if _env("NGROK_DOMAIN") else "")).rstrip("/")
     )
 
+    # NAFDAC product check: the food database is downloaded by scripts/update_nafdac.py;
+    # the Greenbook (drugs) is searched live. Set NAFDAC_LIVE=0 to skip the live search.
+    nafdac_food_db: Path = field(
+        default_factory=lambda: Path(_env("NAFDAC_FOOD_DB", str(ROOT / "data" / "nafdac_food.sqlite")))
+    )
+    nafdac_live: bool = field(default_factory=lambda: _env("NAFDAC_LIVE", "1") == "1")
+
     db_path: Path = field(default_factory=lambda: Path(_env("DB_PATH", str(ROOT / "data" / "interactions.db"))))
     media_dir: Path = field(default_factory=lambda: Path(_env("MEDIA_DIR", str(ROOT / "data" / "media"))))
     # Users are stored only as a salted hash of their channel id.

@@ -4,7 +4,8 @@ them for placeholders before the model sees the text and restoring them after.""
 import re
 
 _PROTECTED = re.compile(
-    r"https?://\S+"              # URLs
+    r"«[^»\n]{1,120}»"           # product names marked «like this»
+    r"|https?://\S+"             # URLs
     r"|www\.\S+"
     r"|\*[\d*]+#"                # USSD codes like *565*0#
     r"|\d[\d,.:/-]*\d|\d"        # numbers, amounts, dates, times

@@ -1,0 +1,17 @@
+{
+  "title": "NAFDAC product check",
+  "description": "checking whether a food, drink, drug, herbal or other product is registered with NAFDAC, NAFDAC numbers, fake or counterfeit products",
+  "tool": "nafdac",
+  "keywords": [
+    "nafdac",
+    "nafdac number",
+    "registration number",
+    "fake drug",
+    "fake drugs",
+    "fake medicine",
+    "counterfeit",
+    "fake product",
+    "registered product",
+    "greenbook"
+  ]
+}
