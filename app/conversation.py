@@ -114,6 +114,7 @@ class Conversation:
             result = self.assistant.ask(
                 lang, text=msg, audio_path=audio_path,
                 off_topic_reply=t(lang, "off_topic"),
+                general_note=t(lang, "general_note"),
                 speak_to=self.media_dir / f"{uuid.uuid4().hex}.ogg",
             )
         except Exception as exc:  # failures are logged too: they are part of the evidence

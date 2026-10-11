@@ -89,7 +89,9 @@ class MockLLM:
         system = messages[0]["content"]
         user = messages[-1]["content"]
         if system.startswith("TASK: translate"):
-            return f"(translated) {user}"
+            return f"(translated) {user.replace('<text>', '').replace('</text>', '').strip()}"
+        if system.startswith("TASK: general"):
+            return "This is a mock general-knowledge answer."
         if system.startswith("TASK: route"):
             return "money"
         if system.startswith("TASK: extract"):

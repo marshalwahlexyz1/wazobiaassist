@@ -20,7 +20,8 @@ def main() -> None:
     args = parser.parse_args()
 
     r = Assistant(Settings()).ask(args.lang, text=args.text, audio_path=args.audio,
-                                  off_topic_reply=t(args.lang, "off_topic"))
+                                  off_topic_reply=t(args.lang, "off_topic"),
+                                  general_note=t(args.lang, "general_note"))
     print(f"Heard:        {r.transcript}")
     print(f"In English:   {r.question_en}")
     print(f"Domain:       {r.domain}")

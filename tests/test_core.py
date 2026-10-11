@@ -378,3 +378,48 @@ def test_full_pipeline_product_question(settings, tmp_path):
     r = a.ask("en", text="Is Indomie chicken noodles NAFDAC approved?")
     assert r.domain == "products" and "A8-0121" in r.answer
     assert r.sources == ["NAFDAC Food Products Database"]
+
+
+# --- general knowledge, citations, translation guards ----------------------------
+
+def test_general_questions_get_labelled_memory_answers(settings):
+    a = Assistant(settings)
+    a.route = lambda q: "general"
+    r = a.ask("en", text="Who is the president of Nigeria?", general_note="NOTE:", off_topic_reply="MENU")
+    assert r.domain == "general" and r.answer.startswith("NOTE:") and r.sources == []
+
+
+def test_sensitive_general_questions_fall_back_to_the_menu(settings):
+    a = Assistant(settings)
+    a.route = lambda q: "general"
+    a.llm.chat = lambda messages, max_tokens=400: "SAFETY"
+    r = a.ask("en", text="Paracetamol dose for a child?", general_note="NOTE:", off_topic_reply="MENU")
+    assert r.domain == "other" and r.answer == "MENU"
+
+
+def test_made_up_citations_are_removed():
+    from app.assistant import _clean_citations
+    from app.domains import Chunk
+
+    chunks = [Chunk("text", "NIMC (https://nimc.gov.ng)"), Chunk("text", "WazobiaAssist scam patterns (from CBN)")]
+    assert _clean_citations("Dial *346#. (Source: NIMC)", chunks) == "Dial *346#. (Source: NIMC)"
+    assert _clean_citations("I do not know. [Source: NBS]", chunks) == "I do not know."
+    assert _clean_citations("See passage [1] for more. (Source: WazobiaAssist scam patterns)", chunks) \
+        == "See passage for more. (Source: WazobiaAssist scam patterns)"
+
+
+def test_an_answered_question_is_cut_back_to_the_question():
+    from app.assistant import _looks_like_an_answer
+
+    q = "Ta yaya zan sami lambar NIN?"
+    assert _looks_like_an_answer(q, "To find your NIN, follow these steps:\n\n1. Dial *346#.\n2. Wait.")
+    assert not _looks_like_an_answer(q, "How do I get my NIN number?")
+
+
+
+def test_translation_keeps_codes_or_attaches_the_english(settings):
+    a = Assistant(settings)
+    a.llm.chat = lambda messages, max_tokens=400: "Kira *346# don samun NIN."
+    assert a.translate("Dial *346# to get your NIN.", "en", "ha") == "Kira *346# don samun NIN."
+    a.llm.chat = lambda messages, max_tokens=400: "Kira lambar don samun NIN."
+    assert a.translate("Dial *346# to get your NIN.", "en", "ha").endswith("(English: Dial *346# to get your NIN.)")
