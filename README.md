@@ -145,7 +145,7 @@ Without Google Cloud (e.g. a rented RunPod or Lambda GPU), follow the same steps
 ### Channels
 
 - **Telegram:** message @BotFather, `/newbot`, put the token in `TELEGRAM_BOT_TOKEN`. The bot starts with the server.
-- **WhatsApp (Twilio sandbox):** in the Twilio console, open Messaging → Try it out → WhatsApp sandbox. Put the account SID and auth token in `.env`. Set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must first send the sandbox's `join <code>` message to the sandbox number.
+- **WhatsApp (Twilio sandbox):** in the Twilio Console, open Messaging → Try it out → Send a WhatsApp message. Note the sandbox number and join phrase shown there (ours: +1 737 232 4091, `join twilio-trial`) and set `TWILIO_WHATSAPP_FROM=whatsapp:<that number>`. Put the account SID and auth token in `.env`. In the Sandbox settings tab, set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must send the join phrase first, and on a trial account each tester's number must also be added under "Verified testers".
 - **Web:** open `https://<NGROK_DOMAIN>`.
 
 ## Users' commands

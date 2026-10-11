@@ -72,7 +72,7 @@ class Settings:
     twilio_sid: str = field(default_factory=lambda: _env("TWILIO_ACCOUNT_SID"))
     twilio_token: str = field(default_factory=lambda: _env("TWILIO_AUTH_TOKEN"))
     twilio_whatsapp_from: str = field(
-        default_factory=lambda: _env("TWILIO_WHATSAPP_FROM", "whatsapp:+14155238886")
+        default_factory=lambda: _env("TWILIO_WHATSAPP_FROM", "whatsapp:+17372324091")
     )
     # Public https address of this server (defaults to https://NGROK_DOMAIN). Needed for
     # Twilio request signature checks and for sending voice replies on WhatsApp.
