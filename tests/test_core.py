@@ -470,3 +470,21 @@ def test_github_pages_origin_may_call_the_api(monkeypatch, tmp_path):
     r = client.options("/api/ask", headers={"Origin": "https://evil.example", "Access-Control-Request-Method": "POST"})
     assert r.headers.get("access-control-allow-origin") is None
     sys.modules.pop("app.server", None)
+
+
+def test_web_page_and_logos_are_served(monkeypatch, tmp_path):
+    import importlib
+    import sys
+
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setenv("MOCK", "1")
+    monkeypatch.setenv("DB_PATH", str(tmp_path / "db.sqlite"))
+    sys.modules.pop("app.server", None)
+    client = TestClient(importlib.import_module("app.server").app)
+    page = client.get("/").text
+    assert "powered by Awarri Technologies" in page
+    for logo in ("fmcide", "ncair", "ondi"):
+        assert f"logos/{logo}.png" in page
+        assert client.get(f"/logos/{logo}.png").headers["content-type"] == "image/png"
+    sys.modules.pop("app.server", None)

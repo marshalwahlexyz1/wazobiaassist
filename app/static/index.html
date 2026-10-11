@@ -2,145 +2,414 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- The bot's server. Empty: the server that served this page. On GitHub Pages the
      deploy workflow fills it in; ?api=<url> in the address overrides it for testing. -->
 <meta name="wazobia-api" content="">
+<meta name="description" content="Ask by voice or text in Hausa, Igbo, Yorùbá or English and get trustworthy answers from official sources. Built on N-ATLAS.">
+<meta name="theme-color" content="#008751">
 <title>WazobiaAssist</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23008751'/%3E%3Cpath d='M18 26h4v12h-4zM26 20h4v24h-4zM34 16h4v32h-4zM42 24h4v16h-4z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#f6f7f4; --card:#fff; --ink:#1c2420; --muted:#5d6a63; --accent:#0b7a4b; --accent-ink:#fff; --line:#dfe4e0; }
+  :root {
+    --bg: #f5f7f2; --bg-2: #e9f2ea; --card: #ffffff; --ink: #14201a; --muted: #5a6a61;
+    --line: #dde5df; --green: #008751; --green-2: #00a862; --green-ink: #ffffff;
+    --gold: #f2b705; --red: #d64545; --bot: #ffffff; --me: #008751; --me-ink: #ffffff;
+    --shadow: 0 10px 30px rgba(10, 60, 35, .10);
+  }
   @media (prefers-color-scheme: dark) {
-    :root { --bg:#111614; --card:#1a211e; --ink:#e8eee9; --muted:#9aa8a0; --accent:#3cbf7f; --accent-ink:#0b1410; --line:#2c3631; }
+    :root:not([data-theme="light"]) {
+      --bg: #0d1411; --bg-2: #10201a; --card: #16201b; --ink: #e9f1ec; --muted: #9db0a5;
+      --line: #263530; --green: #1fbf75; --green-2: #39d98a; --green-ink: #06140d;
+      --gold: #f5c64a; --red: #ff6b6b; --bot: #19251f; --me: #1fbf75; --me-ink: #06140d;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d1411; --bg-2: #10201a; --card: #16201b; --ink: #e9f1ec; --muted: #9db0a5;
+    --line: #263530; --green: #1fbf75; --green-2: #39d98a; --green-ink: #06140d;
+    --gold: #f5c64a; --red: #ff6b6b; --bot: #19251f; --me: #1fbf75; --me-ink: #06140d;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .35);
   }
   * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  main { max-width:640px; margin:0 auto; padding:24px 16px 48px; }
-  h1 { font-size:1.6rem; margin:0 0 4px; }
-  .sub { color:var(--muted); margin:0 0 20px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:16px; }
-  label { font-weight:600; display:block; margin-bottom:6px; }
-  select, textarea { width:100%; font:inherit; color:inherit; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px; }
-  textarea { min-height:80px; resize:vertical; }
-  .row { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
-  button { font:inherit; font-weight:600; border:0; border-radius:10px; padding:12px 16px; cursor:pointer; background:var(--accent); color:var(--accent-ink); }
-  button.secondary { background:transparent; color:var(--ink); border:1px solid var(--line); }
-  button.recording { background:#c0392b; color:#fff; }
-  button:disabled { opacity:.5; cursor:default; }
-  #answer { white-space:pre-wrap; }
-  .muted { color:var(--muted); font-size:.9rem; }
-  .hidden { display:none; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.55 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    min-height: 100vh; overflow-x: hidden;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  .hidden { display: none !important; }
+  button { font: inherit; cursor: pointer; }
+
+  /* ---- header + hero ---- */
+  header.hero {
+    position: relative; overflow: hidden; color: #fff;
+    background:
+      radial-gradient(1200px 400px at 85% -10%, rgba(242,183,5,.35), transparent 60%),
+      radial-gradient(900px 500px at -10% 120%, rgba(0,168,98,.55), transparent 60%),
+      linear-gradient(135deg, #006b40 0%, #008751 55%, #00a862 100%);
+    padding: 18px 0 64px;
+  }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.01em; font-size: 1.15rem; }
+  .logo { width: 36px; height: 36px; border-radius: 11px; background: rgba(255,255,255,.16); display: grid; place-items: center; }
+  .flag { display: inline-block; width: 18px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; background: linear-gradient(90deg, #008751 33.3%, #fff 33.3% 66.6%, #008751 66.6%); box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+  .badge { font-size: .78rem; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.16); white-space: nowrap; }
+  .hero h1 { font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1.08; letter-spacing: -.02em; margin: 34px 0 12px; font-weight: 800; }
+  .hero h1 .hi { display: inline-block; color: var(--gold); }
+  .hero h1 .hi.swap { animation: swap .5s ease; }
+  @keyframes swap { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .hero p.lead { margin: 0; max-width: 34rem; font-size: 1.05rem; color: rgba(255,255,255,.88); }
+  .wave { position: absolute; right: -20px; bottom: 10px; display: flex; gap: 6px; align-items: flex-end; height: 90px; opacity: .22; pointer-events: none; }
+  .wave i { width: 8px; border-radius: 8px; background: #fff; animation: bar 1.6s ease-in-out infinite; }
+  .wave i:nth-child(odd) { animation-delay: .2s; } .wave i:nth-child(3n) { animation-delay: .5s; } .wave i:nth-child(4n) { animation-delay: .8s; }
+  @keyframes bar { 0%, 100% { height: 18px; } 50% { height: 86px; } }
+
+  /* ---- language pills ---- */
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 16px; margin-top: -40px; position: relative; }
+  .label { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
+  .langs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .lang { border: 1.5px solid var(--line); background: transparent; color: var(--ink); border-radius: 14px; padding: 10px 6px; text-align: center; transition: .15s; }
+  .lang b { display: block; font-size: .98rem; }
+  .lang small { display: block; color: var(--muted); font-size: .76rem; }
+  .lang[aria-checked="true"] { border-color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); box-shadow: inset 0 0 0 1px var(--green); }
+  .lang:hover { border-color: var(--green); }
+
+  /* ---- topics ---- */
+  .topics { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 6px; margin: 16px -2px 0; scrollbar-width: none; }
+  .topics::-webkit-scrollbar { display: none; }
+  @media (min-width: 640px) { .topics { flex-wrap: wrap; overflow: visible; } }
+  .topic { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 8px 12px; border-radius: 999px; font-weight: 600; font-size: .9rem; transition: .15s; }
+  .topic:hover { border-color: var(--green); transform: translateY(-1px); }
+  .topic span { font-size: 1.1rem; }
+
+  /* ---- chat ---- */
+  .thread { display: flex; flex-direction: column; gap: 14px; padding: 18px 0 8px; min-height: 120px; }
+  .msg { max-width: 88%; padding: 12px 14px; border-radius: 18px; white-space: pre-wrap; word-wrap: break-word; animation: pop .25s ease; }
+  @keyframes pop { from { opacity: 0; transform: translateY(6px) scale(.98); } to { opacity: 1; transform: none; } }
+  .me { align-self: flex-end; background: var(--me); color: var(--me-ink); border-bottom-right-radius: 6px; }
+  .bot { align-self: flex-start; background: var(--bot); border: 1px solid var(--line); border-bottom-left-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+  .bot .who { display: flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 700; color: var(--green); margin-bottom: 4px; }
+  .bot .rate { display: flex; gap: 6px; margin-top: 10px; }
+  .bot .rate button { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 4px 12px; font-size: .85rem; }
+  .bot .rate button:hover { border-color: var(--green); }
+  .bot .rate .done { font-size: .85rem; color: var(--muted); }
+  .bot audio { width: 100%; margin-top: 8px; }
+  .typing { display: inline-flex; gap: 5px; padding: 4px 2px; }
+  .typing i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); opacity: .4; animation: dot 1.2s infinite; }
+  .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes dot { 0%, 80%, 100% { opacity: .25; transform: none; } 40% { opacity: 1; transform: translateY(-4px); } }
+  .empty { text-align: center; color: var(--muted); padding: 10px 8px 0; }
+  .empty h2 { color: var(--ink); font-size: 1.15rem; margin: 0 0 4px; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+  .ex { border: 1px dashed color-mix(in srgb, var(--green) 55%, var(--line)); background: color-mix(in srgb, var(--green) 6%, transparent); color: var(--ink); border-radius: 14px; padding: 8px 12px; font-size: .9rem; text-align: left; max-width: 100%; }
+  .ex:hover { border-style: solid; }
+
+  /* ---- composer ---- */
+  .composer-wrap { position: sticky; bottom: 0; padding: 10px 0 calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--bg) 70%, transparent); }
+  .composer { display: flex; align-items: flex-end; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 6px 6px 6px 16px; box-shadow: var(--shadow); }
+  .composer textarea { flex: 1; min-width: 0; border: 0; outline: 0; resize: none; background: transparent; color: var(--ink); font: inherit; padding: 10px 0; max-height: 140px; }
+  .round { flex: 0 0 auto; width: 48px; height: 48px; border-radius: 50%; border: 0; display: grid; place-items: center; transition: transform .1s; }
+  .round:active { transform: scale(.94); }
+  .send { background: var(--ink); color: var(--bg); }
+  .mic { position: relative; background: var(--green); color: var(--green-ink); }
+  .mic.rec { background: var(--red); color: #fff; }
+  .mic.rec::before, .mic.rec::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--red); animation: ring 1.4s ease-out infinite; }
+  .mic.rec::after { animation-delay: .7s; }
+  @keyframes ring { from { transform: scale(1); opacity: .8; } to { transform: scale(1.8); opacity: 0; } }
+  .round:disabled { opacity: .45; cursor: default; }
+  .rec-note { text-align: center; font-size: .85rem; color: var(--red); font-weight: 600; margin-top: 6px; }
+
+  .banner { margin: 14px 0 0; padding: 10px 14px; border-radius: 14px; background: color-mix(in srgb, var(--gold) 18%, var(--card)); border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line)); font-size: .92rem; }
+  footer { color: var(--muted); font-size: .82rem; text-align: center; padding: 4px 0 20px; }
+  footer a { color: inherit; }
+  .partners { margin: 18px 0 10px; }
+  /* White strip: the official logos are dark-on-white and must stay readable in dark mode. */
+  .logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px 28px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+  .logos img { height: 40px; width: auto; max-width: 100%; }
+  .logos img[src*="ondi"] { height: 48px; }
+  .attribution { max-width: 36rem; margin: 10px auto 0; font-size: .78rem; }
+  @media (max-width: 480px) {
+    .langs { grid-template-columns: repeat(2, 1fr); }
+    .msg { max-width: 94%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <h1>WazobiaAssist</h1>
-  <p class="sub">Ask by voice or text in Hausa, Igbo, Yorùbá or English. Built on N-ATLAS.</p>
-
-  <div class="card">
-    <label for="lang">Language</label>
-    <select id="lang">
-      <option value="ha">Hausa</option>
-      <option value="ig">Igbo</option>
-      <option value="yo">Yorùbá</option>
-      <option value="en" selected>English</option>
-    </select>
-    <p class="muted">Topics: farming, health, school, government services (NIN, PVC, BVN), money and scams.
-      Questions and answers are saved anonymously to improve the service.</p>
-  </div>
-
-  <div class="card">
-    <label for="text">Your question</label>
-    <textarea id="text" placeholder="Type here, or press Record and speak"></textarea>
-    <div class="row">
-      <button id="record" type="button">🎤 Record</button>
-      <button id="send" type="button">Ask</button>
+<header class="hero">
+  <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M5 10v4M9 6v12M13 3v18M17 7v10M21 10v4"/></svg>
+        </span>
+        WazobiaAssist
+      </div>
+      <span class="badge"><span class="flag" aria-hidden="true"></span>Built on N-ATLAS</span>
     </div>
+    <h1><span class="hi" id="hi">Sannu!</span> Ask in your language.<br>Get answers you can trust.</h1>
+    <p class="lead">Speak or type in Hausa, Igbo, Yorùbá or English. Answers come from official sources like NIMC, CBN, WHO, JAMB and NAFDAC.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel" aria-label="Choose your language">
+    <p class="label">Your language</p>
+    <div class="langs" role="radiogroup" aria-label="Language">
+      <button class="lang" role="radio" data-lang="ha" type="button"><b>Hausa</b><small>Sannu</small></button>
+      <button class="lang" role="radio" data-lang="ig" type="button"><b>Igbo</b><small>Nnọọ</small></button>
+      <button class="lang" role="radio" data-lang="yo" type="button"><b>Yorùbá</b><small>Ẹ n lẹ́</small></button>
+      <button class="lang" role="radio" data-lang="en" type="button"><b>English</b><small>Hello</small></button>
+    </div>
+    <div class="topics" aria-label="Topics">
+      <button class="topic" data-topic="money" type="button"><span>💸</span>Scams & money</button>
+      <button class="topic" data-topic="civic" type="button"><span>🪪</span>NIN, PVC, CAC</button>
+      <button class="topic" data-topic="health" type="button"><span>🩺</span>Health</button>
+      <button class="topic" data-topic="agriculture" type="button"><span>🌱</span>Farming</button>
+      <button class="topic" data-topic="education" type="button"><span>🎓</span>School & exams</button>
+      <button class="topic" data-topic="products" type="button"><span>💊</span>NAFDAC check</button>
+      <button class="topic" data-topic="laws" type="button"><span>⚖️</span>Your rights</button>
+    </div>
+    <div id="offline" class="banner hidden" role="status">The assistant is offline right now. Please try again a little later.</div>
+  </section>
+
+  <section class="thread" id="thread" aria-live="polite" aria-label="Conversation">
+    <div class="empty" id="empty">
+      <h2>Tap 🎤 and speak, or try one of these</h2>
+      <div>Your question and the answer appear here.</div>
+      <div class="examples" id="examples"></div>
+    </div>
+  </section>
+
+  <div class="composer-wrap">
+    <div class="composer">
+      <textarea id="text" rows="1" placeholder="Type your question…" aria-label="Your question"></textarea>
+      <button class="round mic" id="record" type="button" aria-label="Record a voice question">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>
+      </button>
+      <button class="round send" id="send" type="button" aria-label="Send">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+    <div class="rec-note hidden" id="recnote">● Recording <span id="timer">0:00</span>. Tap the red button to send.</div>
   </div>
 
-  <div id="result" class="card hidden" aria-live="polite">
-    <div id="answer"></div>
-    <audio id="audio" class="hidden" controls></audio>
-    <div id="rating" class="row hidden">
-      <button class="secondary" data-rating="up" type="button">👍 Helpful</button>
-      <button class="secondary" data-rating="down" type="button">👎 Not helpful</button>
-    </div>
-    <p id="thanks" class="muted hidden">Thank you!</p>
-  </div>
+  <footer>
+    Questions and answers are saved anonymously (no name or phone number) to improve the service.<br>
+    Answers marked “General knowledge” are not from an official source. For emergencies, go to the nearest health facility.
+    <section class="partners" aria-label="National AI Innovation Challenge">
+      <p class="label">Built for the National AI Innovation Challenge 2026, organised by</p>
+      <div class="logos">
+        <img src="logos/fmcide.png" alt="Federal Ministry of Communications, Innovation and Digital Economy" width="879" height="217">
+        <img src="logos/ncair.png" alt="National Centre for Artificial Intelligence and Robotics (NCAIR)" width="397" height="144">
+        <img src="logos/ondi.png" alt="Office for Nigerian Digital Innovation (ONDI)" width="460" height="185">
+      </div>
+    </section>
+    <p class="attribution">
+      N-ATLaS is an initiative of the Federal Ministry of Communications, Innovation and Digital Economy, and powered by Awarri Technologies.
+      WazobiaAssist is an independent challenge entry built on N-ATLaS.
+    </p>
+  </footer>
 </main>
+
 <script>
-  function sessionId() {
-    let id = null;
-    try { id = localStorage.getItem("wazobia-session"); } catch (e) {}
-    if (!id) {
-      id = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now());
-      try { localStorage.setItem("wazobia-session", id); } catch (e) {}
-    }
-    return id;
-  }
-  const session = sessionId();
   const $ = (id) => document.getElementById(id);
   const API = (new URLSearchParams(location.search).get("api")
     || document.querySelector('meta[name="wazobia-api"]').content || "").replace(/\/$/, "");
   // Free ngrok addresses show browsers a warning page unless this header is sent.
   const HEADERS = { "ngrok-skip-browser-warning": "1" };
-  let recorder = null, chunks = [], lastId = null;
 
-  async function ask(audioBlob) {
-    const form = new FormData();
-    form.append("session_id", session);
-    form.append("lang", $("lang").value);
-    form.append("text", audioBlob ? "" : $("text").value);
-    if (audioBlob) form.append("audio", audioBlob, "voice.webm");
-    $("send").disabled = $("record").disabled = true;
-    $("result").classList.remove("hidden");
-    $("answer").textContent = "…";
-    ["audio", "rating", "thanks"].forEach((id) => $(id).classList.add("hidden"));
-    try {
-      const res = await fetch(API + "/api/ask", { method: "POST", body: form, headers: HEADERS });
-      const data = await res.json();
-      $("answer").textContent = data.answer || "Sorry, something went wrong.";
-      lastId = data.interaction_id;
-      if (lastId) $("rating").classList.remove("hidden");
-      if (data.audio_url) { $("audio").src = API + data.audio_url; $("audio").classList.remove("hidden"); }
-    } catch (e) {
-      $("answer").textContent = "Sorry, the assistant could not be reached. It may be offline; please try again later.";
-    } finally {
-      $("send").disabled = $("record").disabled = false;
+  function store(key, value) {
+    try { if (value === undefined) return localStorage.getItem(key); localStorage.setItem(key, value); } catch (e) { return null; }
+  }
+  function sessionId() {
+    let id = store("wazobia-session");
+    if (!id) {
+      id = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now();
+      store("wazobia-session", id);
     }
+    return id;
+  }
+  const session = sessionId();
+
+  // Example questions per language and topic. Hausa, Igbo and Yorùbá are drafts for native-speaker review.
+  const EXAMPLES = {
+    en: {
+      money: "Someone says CBN is giving grants if I pay a fee. Is it real?",
+      civic: "I forgot my NIN. How can I get it back?",
+      health: "What are the danger signs in pregnancy?",
+      agriculture: "How do I control fall armyworm on my maize?",
+      education: "How do I create a JAMB profile?",
+      products: "Is Indomie noodles registered with NAFDAC?",
+      laws: "Can the police arrest me without telling me why?",
+    },
+    ha: {
+      money: "An ce CBN tana ba da tallafi idan na biya kudi. Gaskiya ne?",
+      civic: "Ta yaya zan sami lambar NIN?",
+      health: "Wadanne alamu ne masu hadari ga mace mai ciki?",
+    },
+    ig: {
+      civic: "Kedu ka m ga-esi nweta NIN m?",
+      agriculture: "Kedu mgbe kacha mma iji kụọ ọka?",
+    },
+    yo: {
+      money: "Ẹnìkan ní kí n san owó kí n tó gba ẹ̀bùn láti ọ̀dọ̀ CBN. Ṣé òótọ́ ni?",
+      civic: "Báwo ni mo ṣe lè forúkọ sílẹ̀ fún káàdì ìdìbò (PVC)?",
+      education: "Ṣé òótọ́ ni pé àwọn kan ń ta ìbéèrè WAEC ṣáájú ìdánwò?",
+    },
+  };
+  const PLACEHOLDER = { en: "Type your question…", ha: "Rubuta tambayarka…", ig: "Dee ajụjụ gị…", yo: "Kọ ìbéèrè rẹ…" };
+
+  let lang = store("wazobia-lang") || "en";
+  function setLang(code) {
+    lang = code;
+    store("wazobia-lang", code);
+    document.querySelectorAll(".lang").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.lang === code)));
+    $("text").placeholder = PLACEHOLDER[code];
+    const box = $("examples");
+    box.replaceChildren();
+    const own = EXAMPLES[code], all = EXAMPLES.en;
+    Object.keys(all).forEach((topic) => {
+      if (code !== "en" && !own[topic]) return;
+      const b = document.createElement("button");
+      b.className = "ex"; b.type = "button"; b.textContent = (own[topic] || all[topic]);
+      b.onclick = () => ask(b.textContent);
+      box.appendChild(b);
+    });
+  }
+  document.querySelectorAll(".lang").forEach((b) => b.onclick = () => setLang(b.dataset.lang));
+  document.querySelectorAll(".topic").forEach((b) => b.onclick = () => {
+    const q = (EXAMPLES[lang] && EXAMPLES[lang][b.dataset.topic]) || EXAMPLES.en[b.dataset.topic];
+    $("text").value = q; grow(); $("text").focus();
+  });
+  setLang(lang);
+
+  // Greeting that cycles through the four languages.
+  const HI = ["Sannu!", "Nnọọ!", "Ẹ n lẹ́!", "Hello!"];
+  let hiIndex = 0;
+  setInterval(() => {
+    hiIndex = (hiIndex + 1) % HI.length;
+    const el = $("hi");
+    el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap");
+    el.textContent = HI[hiIndex];
+  }, 2200);
+
+  function grow() { const t = $("text"); t.style.height = "auto"; t.style.height = Math.min(t.scrollHeight, 140) + "px"; }
+  $("text").addEventListener("input", grow);
+  $("text").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("send").click(); }
+  });
+
+  function bubble(cls, text) {
+    $("empty").classList.add("hidden");
+    const div = document.createElement("div");
+    div.className = "msg " + cls;
+    if (text !== undefined) div.textContent = text;
+    $("thread").appendChild(div);
+    div.scrollIntoView({ behavior: "smooth", block: "end" });
+    return div;
   }
 
-  $("send").onclick = () => { if ($("text").value.trim()) ask(null); };
+  function botBubble() {
+    const div = bubble("bot");
+    div.innerHTML = '<div class="who"><span class="flag" aria-hidden="true"></span>WazobiaAssist</div><div class="typing" aria-label="Thinking"><i></i><i></i><i></i></div>';
+    return div;
+  }
 
-  $("record").onclick = async () => {
-    if (recorder && recorder.state === "recording") { recorder.stop(); return; }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      recorder = new MediaRecorder(stream);
-      chunks = [];
-      recorder.ondataavailable = (e) => chunks.push(e.data);
-      recorder.onstop = () => {
-        stream.getTracks().forEach((t) => t.stop());
-        $("record").textContent = "🎤 Record";
-        $("record").classList.remove("recording");
-        ask(new Blob(chunks, { type: recorder.mimeType }));
-      };
-      recorder.start();
-      $("record").textContent = "⏹ Stop and send";
-      $("record").classList.add("recording");
-    } catch (e) {
-      alert("Microphone not available. Please type your question.");
+  function showAnswer(div, data) {
+    div.querySelector(".typing").remove();
+    const body = document.createElement("div");
+    body.textContent = data.answer || "Sorry, something went wrong.";
+    div.appendChild(body);
+    if (data.audio_url) {
+      const audio = document.createElement("audio");
+      audio.controls = true; audio.src = API + data.audio_url;
+      div.appendChild(audio);
     }
-  };
+    if (data.interaction_id) {
+      const rate = document.createElement("div");
+      rate.className = "rate";
+      [["up", "👍 Helpful"], ["down", "👎 Not helpful"]].forEach(([value, label]) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.textContent = label;
+        b.onclick = async () => {
+          rate.innerHTML = '<span class="done">Thank you!</span>';
+          const form = new FormData();
+          form.append("session_id", session);
+          form.append("interaction_id", data.interaction_id);
+          form.append("rating", value);
+          try { await fetch(API + "/api/rate", { method: "POST", body: form, headers: HEADERS }); } catch (e) {}
+        };
+        rate.appendChild(b);
+      });
+      div.appendChild(rate);
+    }
+    div.scrollIntoView({ behavior: "smooth", block: "end" });
+  }
 
-  document.querySelectorAll("[data-rating]").forEach((b) => b.onclick = async () => {
+  let busy = false;
+  async function ask(text, audioBlob) {
+    if (busy || (!audioBlob && !text.trim())) return;
+    busy = true; $("send").disabled = $("record").disabled = true;
+    bubble("me", audioBlob ? "🎤 Voice question" : text.trim());
+    $("text").value = ""; grow();
+    const reply = botBubble();
     const form = new FormData();
     form.append("session_id", session);
-    form.append("interaction_id", lastId);
-    form.append("rating", b.dataset.rating);
-    await fetch(API + "/api/rate", { method: "POST", body: form, headers: HEADERS });
-    $("rating").classList.add("hidden");
-    $("thanks").classList.remove("hidden");
-  });
+    form.append("lang", lang);
+    form.append("text", audioBlob ? "" : text.trim());
+    if (audioBlob) form.append("audio", audioBlob, "voice.webm");
+    try {
+      const res = await fetch(API + "/api/ask", { method: "POST", body: form, headers: HEADERS });
+      if (!res.ok) throw new Error(res.status);
+      showAnswer(reply, await res.json());
+      $("offline").classList.add("hidden");
+    } catch (e) {
+      showAnswer(reply, { answer: "Sorry, the assistant could not be reached. It may be offline; please try again later." });
+    } finally {
+      busy = false; $("send").disabled = $("record").disabled = false;
+    }
+  }
+  $("send").onclick = () => ask($("text").value);
+
+  // Voice recording (stops by itself after 60 seconds).
+  let recorder = null, chunks = [], timer = null;
+  $("record").onclick = async () => {
+    if (recorder && recorder.state === "recording") { recorder.stop(); return; }
+    let stream;
+    try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+    catch (e) { bubble("bot", "I can't use the microphone here. Please allow it in your browser, or type your question."); return; }
+    recorder = new MediaRecorder(stream);
+    chunks = [];
+    recorder.ondataavailable = (e) => chunks.push(e.data);
+    recorder.onstop = () => {
+      stream.getTracks().forEach((t) => t.stop());
+      clearInterval(timer);
+      $("record").classList.remove("rec"); $("recnote").classList.add("hidden");
+      ask("", new Blob(chunks, { type: recorder.mimeType }));
+    };
+    recorder.start();
+    const started = Date.now();
+    $("record").classList.add("rec"); $("recnote").classList.remove("hidden"); $("timer").textContent = "0:00";
+    timer = setInterval(() => {
+      const s = Math.floor((Date.now() - started) / 1000);
+      $("timer").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+      if (s >= 60 && recorder.state === "recording") recorder.stop();
+    }, 250);
+  };
+
+  // Tell people early if the server is down.
+  fetch(API + "/health", { headers: HEADERS })
+    .then((r) => { if (!r.ok) throw 0; })
+    .catch(() => $("offline").classList.remove("hidden"));
 </script>
 </body>
 </html>
