@@ -1,10 +1,24 @@
 # WazobiaAssist
 
-A voice-first assistant built on **N-ATLAS**. Nigerians send a voice note in Hausa, Igbo, Yoruba or English and get a short, trustworthy answer in the same language, about agriculture, health, education, government services, or money and scams. Available on WhatsApp, Telegram and a web page.
+A voice assistant for Nigerians, built on **N-ATLAS**. You send a voice note or text in Hausa, Igbo, Yoruba or English, and it answers in the same language from official Nigerian sources, naming the source, or checks your question against an official register instead of guessing. It works on WhatsApp, Telegram and a web page.
 
 National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First Access, Track B (Innovation & Enterprise).
 
-**Flagship domains: scam checking and government services**, which no other N-ATLAS project covers. Farming, health and education show that the platform scales.
+## What it does
+
+**1. Checks a product against NAFDAC's registers.** Ask "Is Emzor paracetamol registered?" or read out the NAFDAC number on the pack. The assistant searches NAFDAC's Greenbook (about 8,900 drugs, vaccines, medical devices and herbal products, searched live) and NAFDAC's Food Products Database (28,481 foods, refreshed daily) and replies with the product name, NAFDAC number, company and whether the registration is valid or expired. Example: NAFDAC number A8-102316L comes back as "registration expired on 19 December 2024". It never calls a product fake just because it isn't found.
+
+**2. Explains your legal rights with the exact law.** "Can the police arrest me for my brother's debt?" or "Can a company share my data?" is answered from the Constitution's fundamental rights, the Police Act 2020, the Administration of Criminal Justice Act 2015, the Nigeria Data Protection Act 2023, the Cybercrimes Act, the EFCC Act, the Advance Fee Fraud Act and the consumer rights in the FCCPA 2018. Answers name the law and section and point to free help from the Legal Aid Council. The 270 passages quoted from these laws were checked against the source texts.
+
+**3. Walks you through government procedures with codes checked against the official pages.** Getting or retrieving a NIN (`*346#`, NIMC), checking a BVN (`*565*0#`, NIBSS), registering to vote and collecting a PVC (INEC), applying for a passport (Nigeria Immigration Service), registering a business name (CAC), and creating a JAMB profile (SMS to 55019 or 66019).
+
+**It also answers everyday questions** on health (the NPHCDA immunisation schedule and WHO danger signs for pregnancy, newborns, fever, diarrhoea and pneumonia), farming (IITA, FAO, NAERLS and ICRISAT guides, NiMet's 2026 forecast), education (JAMB, WAEC, NECO, UBE, NELFUND) and money safety (CBN, SEC, FCCPC, NDIC and EFCC guidance plus 20 common scam patterns).
+
+**Why the answers can be trusted:**
+- Answers come only from curated official documents or live registers, and say "I don't know" otherwise.
+- Every answer names its source.
+- Numbers, USSD codes, NAFDAC numbers and links are protected so translation can't change them.
+- Health answers send danger signs to a health facility; legal answers say they are information, not legal advice.
 
 ## How it works
 
@@ -41,8 +55,8 @@ Every live document was written from official pages opened on 8 Oct 2026, and ev
 
 | Domain | Live documents | Main sources | Not covered yet |
 |---|---|---|---|
-| money (flagship) | 20 scam patterns; CBN complaints and fraud warnings; SEC unregistered schemes; FCCPC loan-app rules; NDIC deposit insurance; reporting fraud to EFCC/police | CBN, SEC, FCCPC, NDIC, EFCC, NPF-NCCC | wrong-transfer / fake-alert rules (CBN documents blocked automated download) |
-| civic (flagship) | NIN enrolment; NIN retrieval; BVN; NIN-SIM linkage; voter registration and PVC; passport; CAC business name | NIMC, NIBSS, NCC, INEC, NIS, CAC | birth certificate, driver's licence |
+| money | 20 scam patterns; CBN complaints and fraud warnings; SEC unregistered schemes; FCCPC loan-app rules; NDIC deposit insurance; reporting fraud to EFCC/police | CBN, SEC, FCCPC, NDIC, EFCC, NPF-NCCC | wrong-transfer / fake-alert rules (CBN documents blocked automated download) |
+| civic | NIN enrolment; NIN retrieval; BVN; NIN-SIM linkage; voter registration and PVC; passport; CAC business name | NIMC, NIBSS, NCC, INEC, NIS, CAC | birth certificate, driver's licence |
 | health | immunisation schedule; pregnancy danger signs; antenatal visits; newborn danger signs; mother after delivery; malaria and fever; diarrhoea; pneumonia | NPHCDA card (via UNICEF Nigeria), WHO | Federal Ministry of Health / NCDC material |
 | education | JAMB profile and UTME; JAMB CAPS; WAEC; NECO; free basic education (UBE); NELFUND; exam scams | JAMB, WAEC, NECO, UBEC, NELFUND | JAMB result SMS, WAEC/NECO 2026 fraud warnings |
 | agriculture | maize; fall armyworm; cowpea storage; cassava; rice; sorghum; grain storage and aflatoxin; NiMet 2026 seasonal prediction | IITA, FAO, Purdue (PICS), NAERLS, ICRISAT, NiMet | yam, millet, groundnut, soybean, livestock |
