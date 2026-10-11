@@ -3,10 +3,13 @@ speakers on the team must review them before launch (plan, Fri 9 Oct)."""
 
 from .config import LANGUAGES
 
-LANGUAGE_LABELS = {"ha": "Hausa", "ig": "Igbo", "yo": "Yorùbá", "en": "English"}
+# English voice notes use NCAIR's Nigerian-accented English speech model.
+LANGUAGE_LABELS = {"ha": "Hausa", "ig": "Igbo", "yo": "Yorùbá", "en": "English (Nigerian)"}
 
 LANGUAGE_MENU = (
     "Welcome to WazobiaAssist / Barka da zuwa / Nnọọ / Ẹ kú àbọ̀!\n\n"
+    "Ask questions about Nigeria by voice note or text: scams and money, NIN, PVC and other "
+    "government services, health, farming, school and exams, NAFDAC products and your rights.\n\n"
     + "\n".join(f"{i}. {LANGUAGE_LABELS[code]}" for i, code in enumerate(LANGUAGES, 1))
     + "\n\nReply with a number / Amsa da lamba / Zaa na nọmba / Fèsì pẹ̀lú nọ́mbà"
 )
@@ -14,9 +17,11 @@ LANGUAGE_MENU = (
 TEXT = {
     "en": {
         "privacy": (
-            "WazobiaAssist answers questions about farming, health, school, government services, "
-            "and money and scams. We save your questions and our answers anonymously (no name or "
-            "phone number) to improve the service. Send DELETE at any time to erase your data."
+            "WazobiaAssist answers your questions about Nigeria: scams and money, NIN, PVC, BVN and "
+            "other government services, health, farming, school and exams, NAFDAC product checks, and "
+            "your legal rights. Answers come from official sources such as NIMC, CBN, WHO, JAMB and "
+            "NAFDAC. We save your questions and our answers anonymously (no name or phone number) to "
+            "improve the service. Send DELETE at any time to erase your data."
         ),
         "ready": "Ask your question by voice note or text.",
         "listening": "Listening...",
@@ -27,8 +32,9 @@ TEXT = {
         "thanks": "Thank you!",
         "deleted": "Your data has been deleted. Send any message to start again.",
         "off_topic": (
-            "I can help with farming, health, school and exams, government services (NIN, PVC, BVN), "
-            "and money and scams. Please ask a question about one of these."
+            "I answer questions about Nigeria: scams and money, government services (NIN, PVC, BVN, "
+            "CAC), health, farming, school and exams, NAFDAC products and your rights. Please ask a "
+            "question about one of these."
         ),
         "general_note": "ℹ️ General knowledge, not from an official source. It may be out of date:",
         "error": "Sorry, something went wrong. Please try again.",
@@ -36,8 +42,10 @@ TEXT = {
     },
     "ha": {
         "privacy": (
-            "WazobiaAssist yana amsa tambayoyi game da noma, lafiya, makaranta, ayyukan gwamnati, "
-            "da kuɗi da yaudara. Muna adana tambayoyinka da amsoshinmu ba tare da sunanka ko lambar "
+            "WazobiaAssist yana amsa tambayoyinka game da Najeriya: yaudara da kuɗi, NIN, PVC, BVN da "
+            "sauran ayyukan gwamnati, lafiya, noma, makaranta da jarrabawa, binciken kayayyakin NAFDAC, "
+            "da haƙƙoƙinka a shari'a. Amsoshin sun fito daga majiyoyin hukuma kamar NIMC, CBN, WHO, "
+            "JAMB da NAFDAC. Muna adana tambayoyinka da amsoshinmu ba tare da sunanka ko lambar "
             "wayarka ba, don inganta sabis. Aiko DELETE a kowane lokaci don goge bayananka."
         ),
         "ready": "Yi tambayarka ta saƙon murya ko rubutu.",
@@ -49,8 +57,9 @@ TEXT = {
         "thanks": "Na gode!",
         "deleted": "An goge bayananka. Aiko kowane saƙo don sake farawa.",
         "off_topic": (
-            "Zan iya taimaka maka game da noma, lafiya, makaranta da jarrabawa, ayyukan gwamnati "
-            "(NIN, PVC, BVN), da kuɗi da yaudara. Don Allah yi tambaya game da ɗaya daga cikinsu."
+            "Ina amsa tambayoyi game da Najeriya: yaudara da kuɗi, ayyukan gwamnati (NIN, PVC, BVN, "
+            "CAC), lafiya, noma, makaranta da jarrabawa, kayayyakin NAFDAC da haƙƙoƙinka. Don Allah yi "
+            "tambaya game da ɗaya daga cikinsu."
         ),
         "general_note": "ℹ️ Ilimi na gaba ɗaya, ba daga majiyar hukuma ba. Yana iya zama ba na yanzu ba:",
         "error": "Yi haƙuri, an sami matsala. Sake gwadawa.",
@@ -58,8 +67,9 @@ TEXT = {
     },
     "ig": {
         "privacy": (
-            "WazobiaAssist na-aza ajụjụ gbasara ọrụ ugbo, ahụike, ụlọ akwụkwọ, ọrụ gọọmentị, "
-            "na ego na aghụghọ. Anyị na-echekwa ajụjụ gị na azịza anyị na-enweghị aha gị ma ọ bụ "
+            "WazobiaAssist na-aza ajụjụ gị gbasara Naịjirịa: aghụghọ na ego, NIN, PVC, BVN na ọrụ "
+            "gọọmentị ndị ọzọ, ahụike, ọrụ ugbo, ụlọ akwụkwọ na ule, nlele ngwaahịa NAFDAC, na ikike gị "
+            "n'iwu. Azịza si n'isi iyi gọọmentị dịka NIMC, CBN, WHO, JAMB na NAFDAC. Anyị na-echekwa ajụjụ gị na azịza anyị na-enweghị aha gị ma ọ bụ "
             "nọmba ekwentị gị, iji mee ka ọrụ a ka mma. Ziga DELETE mgbe ọ bụla iji hichapụ data gị."
         ),
         "ready": "Jụọ ajụjụ gị site na ozi olu ma ọ bụ ederede.",
@@ -71,8 +81,9 @@ TEXT = {
         "thanks": "Daalụ!",
         "deleted": "Ehichapụla data gị. Ziga ozi ọ bụla ka ịmalite ọzọ.",
         "off_topic": (
-            "Enwere m ike inyere gị aka gbasara ọrụ ugbo, ahụike, ụlọ akwụkwọ na ule, ọrụ gọọmentị "
-            "(NIN, PVC, BVN), na ego na aghụghọ. Biko jụọ ajụjụ gbasara otu n'ime ha."
+            "Ana m aza ajụjụ gbasara Naịjirịa: aghụghọ na ego, ọrụ gọọmentị (NIN, PVC, BVN, CAC), "
+            "ahụike, ọrụ ugbo, ụlọ akwụkwọ na ule, ngwaahịa NAFDAC na ikike gị. Biko jụọ ajụjụ gbasara "
+            "otu n'ime ha."
         ),
         "general_note": "ℹ️ Ihe ọmụma izugbe, ọ bụghị site na isi iyi gọọmentị. O nwere ike ọ bụghị nke ugbu a:",
         "error": "Ndo, nsogbu mere. Biko nwaa ọzọ.",
@@ -80,8 +91,9 @@ TEXT = {
     },
     "yo": {
         "privacy": (
-            "WazobiaAssist ń dáhùn ìbéèrè nípa iṣẹ́ àgbẹ̀, ìlera, ilé-ìwé, iṣẹ́ ìjọba, àti owó àti "
-            "jìbìtì. A ń tọ́jú ìbéèrè yín àti ìdáhùn wa láìsí orúkọ tàbí nọ́mbà fóònù yín, láti mú "
+            "WazobiaAssist ń dáhùn ìbéèrè yín nípa Nàìjíríà: jìbìtì àti owó, NIN, PVC, BVN àti àwọn "
+            "iṣẹ́ ìjọba mìíràn, ìlera, iṣẹ́ àgbẹ̀, ilé-ìwé àti ìdánwò, àyẹ̀wò ọjà NAFDAC, àti ẹ̀tọ́ yín "
+            "lábẹ́ òfin. Ìdáhùn wá láti orísun ìjọba bíi NIMC, CBN, WHO, JAMB àti NAFDAC. A ń tọ́jú ìbéèrè yín àti ìdáhùn wa láìsí orúkọ tàbí nọ́mbà fóònù yín, láti mú "
             "iṣẹ́ náà dára sí i. Ẹ fi DELETE ránṣẹ́ nígbàkígbà láti pa data yín rẹ́."
         ),
         "ready": "Ẹ béèrè ìbéèrè yín pẹ̀lú ohùn tàbí ọ̀rọ̀ kíkọ.",
@@ -93,8 +105,9 @@ TEXT = {
         "thanks": "Ẹ ṣé!",
         "deleted": "A ti pa data yín rẹ́. Ẹ fi ọ̀rọ̀ èyíkéyìí ránṣẹ́ láti bẹ̀rẹ̀ lẹ́ẹ̀kan sí i.",
         "off_topic": (
-            "Mo lè ràn yín lọ́wọ́ nípa iṣẹ́ àgbẹ̀, ìlera, ilé-ìwé àti ìdánwò, iṣẹ́ ìjọba "
-            "(NIN, PVC, BVN), àti owó àti jìbìtì. Ẹ jọ̀ọ́ ẹ béèrè nípa ọ̀kan nínú wọn."
+            "Mo ń dáhùn ìbéèrè nípa Nàìjíríà: jìbìtì àti owó, iṣẹ́ ìjọba (NIN, PVC, BVN, CAC), "
+            "ìlera, iṣẹ́ àgbẹ̀, ilé-ìwé àti ìdánwò, ọjà NAFDAC àti ẹ̀tọ́ yín. Ẹ jọ̀ọ́ ẹ béèrè nípa "
+            "ọ̀kan nínú wọn."
         ),
         "general_note": "ℹ️ Ìmọ̀ gbogbogbò ni, kì í ṣe láti orísun ìjọba. Ó lè ti yí padà:",
         "error": "Ẹ má bínú, ìṣòro kan ṣẹlẹ̀. Ẹ tún gbìyànjú.",
