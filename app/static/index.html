@@ -7,203 +7,295 @@
      deploy workflow fills it in; ?api=<url> in the address overrides it for testing. -->
 <meta name="wazobia-api" content="">
 <meta name="description" content="Ask by voice or text in Hausa, Igbo, Yorùbá or English and get trustworthy answers from official sources. Built on N-ATLAS.">
-<meta name="theme-color" content="#008751">
+<meta name="theme-color" content="#8a4fe6">
 <title>WazobiaAssist</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23008751'/%3E%3Cpath d='M18 26h4v12h-4zM26 20h4v24h-4zM34 16h4v32h-4zM42 24h4v16h-4z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23f08a6c'/%3E%3Cstop offset='1' stop-color='%238a4fe6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M18 26h4v12h-4zM26 20h4v24h-4zM34 16h4v32h-4zM42 24h4v16h-4z' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f5f7f2; --bg-2: #e9f2ea; --card: #ffffff; --ink: #14201a; --muted: #5a6a61;
-    --line: #dde5df; --green: #008751; --green-2: #00a862; --green-ink: #ffffff;
-    --gold: #f2b705; --red: #d64545; --bot: #ffffff; --me: #008751; --me-ink: #ffffff;
-    --shadow: 0 10px 30px rgba(10, 60, 35, .10);
+    --page-a: #eba48b; --page-b: #c98ac0; --page-c: #8a4fe6;
+    --shell: #f4f2f7; --card: #ffffff; --ink: #1d1a26; --muted: #686377; --line: #e4dfec;
+    --accent: #8a4fe6; --accent-2: #b46ef0; --accent-ink: #ffffff; --warm: #f08a6c;
+    --red: #e0475b; --me: #8a4fe6; --me-ink: #ffffff; --bot: #ffffff;
+    --shadow: 0 12px 34px rgba(60, 30, 110, .12); --shadow-sm: 0 4px 14px rgba(60, 30, 110, .08);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0d1411; --bg-2: #10201a; --card: #16201b; --ink: #e9f1ec; --muted: #9db0a5;
-      --line: #263530; --green: #1fbf75; --green-2: #39d98a; --green-ink: #06140d;
-      --gold: #f5c64a; --red: #ff6b6b; --bot: #19251f; --me: #1fbf75; --me-ink: #06140d;
-      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      --page-a: #3b1f2e; --page-b: #2c1d40; --page-c: #1c1236;
+      --shell: #15121d; --card: #1e1a29; --ink: #efeaf7; --muted: #a59eb6; --line: #2e283c;
+      --accent: #a777ff; --accent-2: #c79bff; --accent-ink: #160d26; --warm: #ff9b7d;
+      --red: #ff6b7d; --me: #a777ff; --me-ink: #160d26; --bot: #1e1a29;
+      --shadow: 0 12px 34px rgba(0, 0, 0, .45); --shadow-sm: 0 4px 14px rgba(0, 0, 0, .35);
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0d1411; --bg-2: #10201a; --card: #16201b; --ink: #e9f1ec; --muted: #9db0a5;
-    --line: #263530; --green: #1fbf75; --green-2: #39d98a; --green-ink: #06140d;
-    --gold: #f5c64a; --red: #ff6b6b; --bot: #19251f; --me: #1fbf75; --me-ink: #06140d;
-    --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    --page-a: #3b1f2e; --page-b: #2c1d40; --page-c: #1c1236;
+    --shell: #15121d; --card: #1e1a29; --ink: #efeaf7; --muted: #a59eb6; --line: #2e283c;
+    --accent: #a777ff; --accent-2: #c79bff; --accent-ink: #160d26; --warm: #ff9b7d;
+    --red: #ff6b7d; --me: #a777ff; --me-ink: #160d26; --bot: #1e1a29;
+    --shadow: 0 12px 34px rgba(0, 0, 0, .45); --shadow-sm: 0 4px 14px rgba(0, 0, 0, .35);
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
-    margin: 0; background: var(--bg); color: var(--ink);
+    margin: 0; color: var(--ink); min-height: 100vh; overflow-x: hidden;
     font: 16px/1.55 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-    min-height: 100vh; overflow-x: hidden;
+    background: var(--page-c);
   }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  /* The gradient covers the whole page, however long the conversation gets. */
+  html { min-height: 100%; background: linear-gradient(180deg, var(--page-a) 0%, var(--page-b) 40%, var(--page-c) 100%); }
+  body { background: transparent; }
   .hidden { display: none !important; }
   button { font: inherit; cursor: pointer; }
+  a { color: inherit; }
 
-  /* ---- header + hero ---- */
-  header.hero {
-    position: relative; overflow: hidden; color: #fff;
-    background:
-      radial-gradient(1200px 400px at 85% -10%, rgba(242,183,5,.35), transparent 60%),
-      radial-gradient(900px 500px at -10% 120%, rgba(0,168,98,.55), transparent 60%),
-      linear-gradient(135deg, #006b40 0%, #008751 55%, #00a862 100%);
-    padding: 18px 0 64px;
-  }
+  /* ---- the big rounded frame ---- */
+  .shell { max-width: 1120px; margin: 28px auto; background: var(--shell); border-radius: 30px; box-shadow: 0 30px 80px rgba(40, 10, 80, .25); padding: 18px 28px 8px; }
+  @media (max-width: 640px) { .shell { margin: 10px; padding: 14px 16px 6px; border-radius: 22px; } }
+
+  /* ---- top bar ---- */
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.01em; font-size: 1.15rem; }
-  .logo { width: 36px; height: 36px; border-radius: 11px; background: rgba(255,255,255,.16); display: grid; place-items: center; }
-  .flag { display: inline-block; width: 18px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; background: linear-gradient(90deg, #008751 33.3%, #fff 33.3% 66.6%, #008751 66.6%); box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
-  .badge { font-size: .78rem; font-weight: 600; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.16); white-space: nowrap; }
-  .hero h1 { font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1.08; letter-spacing: -.02em; margin: 34px 0 12px; font-weight: 800; }
-  .hero h1 .hi { display: inline-block; color: var(--gold); }
-  .hero h1 .hi.swap { animation: swap .5s ease; }
-  @keyframes swap { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-  .hero p.lead { margin: 0; max-width: 34rem; font-size: 1.05rem; color: rgba(255,255,255,.88); }
-  .wave { position: absolute; right: -20px; bottom: 10px; display: flex; gap: 6px; align-items: flex-end; height: 90px; opacity: .22; pointer-events: none; }
-  .wave i { width: 8px; border-radius: 8px; background: #fff; animation: bar 1.6s ease-in-out infinite; }
-  .wave i:nth-child(odd) { animation-delay: .2s; } .wave i:nth-child(3n) { animation-delay: .5s; } .wave i:nth-child(4n) { animation-delay: .8s; }
-  @keyframes bar { 0%, 100% { height: 18px; } 50% { height: 86px; } }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.08rem; letter-spacing: -.01em; }
+  .bars { display: inline-flex; align-items: center; gap: 2px; height: 26px; }
+  .bars i { width: 3px; border-radius: 3px; background: linear-gradient(var(--warm), var(--accent)); }
+  .bars i:nth-child(1) { height: 30%; } .bars i:nth-child(2) { height: 60%; } .bars i:nth-child(3) { height: 100%; }
+  .bars i:nth-child(4) { height: 75%; } .bars i:nth-child(5) { height: 45%; } .bars i:nth-child(6) { height: 85%; } .bars i:nth-child(7) { height: 35%; }
+  .nav { display: flex; gap: 2px; background: var(--card); border-radius: 14px; padding: 5px; box-shadow: var(--shadow-sm); }
+  .nav a { text-decoration: none; font-weight: 600; font-size: .9rem; padding: 7px 14px; border-radius: 10px; }
+  .nav a:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .pillbtn { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--accent); color: var(--accent); background: transparent; border-radius: 14px; padding: 8px 14px; font-weight: 700; font-size: .88rem; white-space: nowrap; }
+  @media (max-width: 820px) { .nav { display: none; } }
+  @media (max-width: 420px) { .pillbtn .long { display: none; } }
 
-  /* ---- language pills ---- */
-  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 16px; margin-top: -40px; position: relative; }
-  .label { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
-  .langs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .lang { border: 1.5px solid var(--line); background: transparent; color: var(--ink); border-radius: 14px; padding: 10px 6px; text-align: center; transition: .15s; }
-  .lang b { display: block; font-size: .98rem; }
-  .lang small { display: block; color: var(--muted); font-size: .76rem; }
-  .lang[aria-checked="true"] { border-color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); box-shadow: inset 0 0 0 1px var(--green); }
-  .lang:hover { border-color: var(--green); }
+  /* ---- hero ---- */
+  .hero { text-align: center; padding: 34px 0 6px; }
+  .hero h1 { font-size: clamp(1.7rem, 4.6vw, 2.7rem); line-height: 1.25; letter-spacing: -.02em; margin: 0 auto; max-width: 18em; font-weight: 800; }
+  .wavepill { display: inline-flex; align-items: center; gap: 8px; background: var(--card); border-radius: 16px; padding: 4px 14px; box-shadow: var(--shadow-sm); vertical-align: middle; font-size: .55em; }
+  .wavepill .bars { height: 1.6em; }
+  .wavepill .bars i { animation: bar 1.4s ease-in-out infinite; }
+  .wavepill .bars i:nth-child(2n) { animation-delay: .2s; } .wavepill .bars i:nth-child(3n) { animation-delay: .45s; }
+  @keyframes bar { 0%, 100% { transform: scaleY(.55); } 50% { transform: scaleY(1); } }
+  #hi { min-width: 4.6em; display: inline-block; background: linear-gradient(90deg, var(--warm), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
+  #hi.swap { animation: swap .5s ease; }
+  @keyframes swap { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { margin: 14px auto 0; max-width: 40rem; color: var(--muted); font-size: 1.02rem; }
+
+  /* ---- language pills (the hero's call to action) ---- */
+  .langs { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 20px 0 0; }
+  .lang { border: 0; background: var(--card); color: var(--ink); border-radius: 14px; padding: 9px 16px; box-shadow: var(--shadow-sm); transition: .15s; text-align: center; }
+  .lang b { display: block; font-size: .95rem; }
+  .lang small { display: block; color: var(--muted); font-size: .74rem; }
+  .lang[aria-checked="true"] { background: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 40%, transparent); }
+  .lang[aria-checked="true"] small { color: inherit; opacity: .85; }
+  .lang:hover { transform: translateY(-1px); }
+
+  /* ---- stage: orb + floating cards ---- */
+  .stage { position: relative; height: 430px; margin-top: 8px; }
+  .lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .lines path { fill: none; stroke: color-mix(in srgb, var(--muted) 55%, transparent); stroke-width: 1.2; }
+  .lines circle { fill: var(--muted); }
+  .orb-wrap { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .orb {
+    position: relative; width: 210px; height: 210px; border-radius: 50%; border: 0; padding: 0; overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #1b0f33 0%, #0b0716 70%);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--card) 70%, transparent), 0 20px 60px rgba(138, 79, 230, .45), 0 0 90px rgba(240, 138, 108, .35);
+  }
+  .orb::before, .orb::after { content: ""; position: absolute; inset: 14%; border-radius: 42% 58% 55% 45% / 48% 40% 60% 52%; filter: blur(2px); mix-blend-mode: screen; }
+  .orb::before { background: conic-gradient(from 0deg, #f08a6c, #c86df0, #6a3df0, #f0a07a, #f08a6c); opacity: .85; animation: spin 9s linear infinite; }
+  .orb::after { inset: 22%; background: conic-gradient(from 120deg, #ffb59c, #8a4fe6, #e46bd8, #ffb59c); opacity: .7; animation: spin 6s linear infinite reverse; }
+  .orb .core { position: absolute; inset: 38%; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,.25) 60%, transparent 70%); display: grid; place-items: center; z-index: 1; }
+  .orb .core svg { color: #4b1fa0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .orb.rec::before { animation-duration: 2.2s; } .orb.rec::after { animation-duration: 1.6s; }
+  .orb.rec { box-shadow: 0 0 0 6px color-mix(in srgb, var(--red) 40%, transparent), 0 20px 60px rgba(224, 71, 91, .5), 0 0 110px rgba(240, 138, 108, .5); }
+  .orb:disabled { opacity: .6; cursor: default; }
+  .orb:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
+  .orb-label { font-weight: 700; font-size: .95rem; }
+  .orb-label .t { color: var(--red); }
+
+  .fcard { position: absolute; background: var(--card); border-radius: 16px; padding: 12px 14px; box-shadow: var(--shadow); max-width: 240px; font-size: .88rem; }
+  .fcard .k { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.05rem; }
+  .fcard .k span { font-size: 1.2rem; }
+  .fcard .s { color: var(--accent); font-weight: 700; }
+  .fcard .m { color: var(--muted); }
+  .fnote { position: absolute; max-width: 250px; font-size: .9rem; color: var(--muted); }
+  .c1 { left: 4%; top: 6%; } .c2 { left: 1%; top: 62%; } .c3 { right: 3%; top: 10%; } .c4 { right: 1%; top: 60%; }
+  @media (max-width: 900px) {
+    .stage { height: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 250px; margin-top: 30px; }
+    .lines { display: none; }
+    .orb-wrap { top: 0; transform: translateX(-50%); }
+    .orb { width: 180px; height: 180px; }
+    .fcard, .fnote { position: static; max-width: none; }
+    .fnote { grid-column: 1 / -1; text-align: center; }
+  }
+  @media (max-width: 480px) { .stage { grid-template-columns: 1fr; } }
 
   /* ---- topics ---- */
-  .topics { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 6px; margin: 16px -2px 0; scrollbar-width: none; }
-  .topics::-webkit-scrollbar { display: none; }
-  @media (min-width: 640px) { .topics { flex-wrap: wrap; overflow: visible; } }
-  .topic { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 8px 12px; border-radius: 999px; font-weight: 600; font-size: .9rem; transition: .15s; }
-  .topic:hover { border-color: var(--green); transform: translateY(-1px); }
-  .topic span { font-size: 1.1rem; }
+  .topics { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 22px 0 0; }
+  .topic { display: flex; align-items: center; gap: 7px; border: 0; background: var(--card); color: var(--ink); padding: 8px 13px; border-radius: 12px; font-weight: 600; font-size: .88rem; box-shadow: var(--shadow-sm); transition: .15s; }
+  .topic:hover { transform: translateY(-1px); color: var(--accent); }
+  .topic span { font-size: 1.05rem; }
 
-  /* ---- chat ---- */
-  .thread { display: flex; flex-direction: column; gap: 14px; padding: 18px 0 8px; min-height: 120px; }
+  /* ---- conversation card ---- */
+  .chat { max-width: 780px; margin: 26px auto 0; background: var(--card); border-radius: 24px; box-shadow: var(--shadow); padding: 6px 16px 0; scroll-margin-top: 16px; }
+  .thread { display: flex; flex-direction: column; gap: 14px; padding: 16px 0 8px; min-height: 120px; }
   .msg { max-width: 88%; padding: 12px 14px; border-radius: 18px; white-space: pre-wrap; word-wrap: break-word; animation: pop .25s ease; }
   @keyframes pop { from { opacity: 0; transform: translateY(6px) scale(.98); } to { opacity: 1; transform: none; } }
-  .me { align-self: flex-end; background: var(--me); color: var(--me-ink); border-bottom-right-radius: 6px; }
-  .bot { align-self: flex-start; background: var(--bot); border: 1px solid var(--line); border-bottom-left-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
-  .bot .who { display: flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 700; color: var(--green); margin-bottom: 4px; }
+  .me { align-self: flex-end; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--me-ink); border-bottom-right-radius: 6px; }
+  .bot { align-self: flex-start; background: var(--shell); border-bottom-left-radius: 6px; }
+  .bot .who { display: flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
   .bot .rate { display: flex; gap: 6px; margin-top: 10px; }
-  .bot .rate button { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 4px 12px; font-size: .85rem; }
-  .bot .rate button:hover { border-color: var(--green); }
+  .bot .rate button { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 4px 12px; font-size: .85rem; }
+  .bot .rate button:hover { border-color: var(--accent); }
   .bot .rate .done { font-size: .85rem; color: var(--muted); }
   .bot audio { width: 100%; margin-top: 8px; }
+  .flag { display: inline-block; width: 18px; height: 12px; border-radius: 2px; vertical-align: -1px; background: linear-gradient(90deg, #008751 33.3%, #fff 33.3% 66.6%, #008751 66.6%); box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
   .typing { display: inline-flex; gap: 5px; padding: 4px 2px; }
-  .typing i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); opacity: .4; animation: dot 1.2s infinite; }
+  .typing i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: .4; animation: dot 1.2s infinite; }
   .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
   @keyframes dot { 0%, 80%, 100% { opacity: .25; transform: none; } 40% { opacity: 1; transform: translateY(-4px); } }
   .empty { text-align: center; color: var(--muted); padding: 10px 8px 0; }
-  .empty h2 { color: var(--ink); font-size: 1.15rem; margin: 0 0 4px; }
+  .empty h2 { color: var(--ink); font-size: 1.1rem; margin: 0 0 4px; }
   .examples { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
-  .ex { border: 1px dashed color-mix(in srgb, var(--green) 55%, var(--line)); background: color-mix(in srgb, var(--green) 6%, transparent); color: var(--ink); border-radius: 14px; padding: 8px 12px; font-size: .9rem; text-align: left; max-width: 100%; }
+  .ex { border: 1px dashed color-mix(in srgb, var(--accent) 55%, var(--line)); background: color-mix(in srgb, var(--accent) 6%, transparent); color: var(--ink); border-radius: 14px; padding: 8px 12px; font-size: .9rem; text-align: left; max-width: 100%; }
   .ex:hover { border-style: solid; }
 
-  /* ---- composer ---- */
-  .composer-wrap { position: sticky; bottom: 0; padding: 10px 0 calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--bg) 70%, transparent); }
-  .composer { display: flex; align-items: flex-end; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 6px 6px 6px 16px; box-shadow: var(--shadow); }
+  .composer-wrap { position: sticky; bottom: 0; padding: 10px 0 calc(14px + env(safe-area-inset-bottom)); background: linear-gradient(to top, var(--card) 75%, transparent); }
+  .composer { display: flex; align-items: flex-end; gap: 8px; background: var(--shell); border-radius: 22px; padding: 6px 6px 6px 16px; }
   .composer textarea { flex: 1; min-width: 0; border: 0; outline: 0; resize: none; background: transparent; color: var(--ink); font: inherit; padding: 10px 0; max-height: 140px; }
-  .round { flex: 0 0 auto; width: 48px; height: 48px; border-radius: 50%; border: 0; display: grid; place-items: center; transition: transform .1s; }
+  .round { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; border: 0; display: grid; place-items: center; transition: transform .1s; }
   .round:active { transform: scale(.94); }
-  .send { background: var(--ink); color: var(--bg); }
-  .mic { position: relative; background: var(--green); color: var(--green-ink); }
-  .mic.rec { background: var(--red); color: #fff; }
+  .send { background: var(--ink); color: var(--shell); }
+  .mic { position: relative; background: linear-gradient(135deg, var(--warm), var(--accent)); color: #fff; }
+  .mic.rec { background: var(--red); }
   .mic.rec::before, .mic.rec::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--red); animation: ring 1.4s ease-out infinite; }
   .mic.rec::after { animation-delay: .7s; }
   @keyframes ring { from { transform: scale(1); opacity: .8; } to { transform: scale(1.8); opacity: 0; } }
   .round:disabled { opacity: .45; cursor: default; }
   .rec-note { text-align: center; font-size: .85rem; color: var(--red); font-weight: 600; margin-top: 6px; }
 
-  .banner { margin: 14px 0 0; padding: 10px 14px; border-radius: 14px; background: color-mix(in srgb, var(--gold) 18%, var(--card)); border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line)); font-size: .92rem; }
-  footer { color: var(--muted); font-size: .82rem; text-align: center; padding: 4px 0 20px; }
-  footer a { color: inherit; }
-  .partners { margin: 18px 0 10px; }
+  .banner { margin: 16px auto 0; max-width: 780px; padding: 10px 14px; border-radius: 14px; background: color-mix(in srgb, var(--warm) 16%, var(--card)); border: 1px solid color-mix(in srgb, var(--warm) 45%, var(--line)); font-size: .92rem; text-align: center; }
+
+  /* ---- sources strip + footer ---- */
+  .sources { margin: 30px auto 0; background: var(--card); border-radius: 22px 22px 0 0; padding: 18px 18px 6px; text-align: center; box-shadow: var(--shadow-sm); }
+  .sources p { margin: 0 0 12px; color: var(--muted); font-size: .9rem; }
+  .src { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; font-weight: 800; letter-spacing: .02em; color: color-mix(in srgb, var(--ink) 75%, transparent); font-size: 1.02rem; padding-bottom: 12px; }
+  footer { color: var(--muted); font-size: .82rem; text-align: center; padding: 14px 0 20px; background: var(--card); border-radius: 0 0 22px 22px; box-shadow: var(--shadow-sm); }
+  .partners { margin: 16px 0 8px; }
+  .label { font-size: .76rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
   /* White strip: the official logos are dark-on-white and must stay readable in dark mode. */
-  .logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px 28px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+  .logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 18px 28px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; margin: 0 12px; }
   .logos img { height: 40px; width: auto; max-width: 100%; }
   .logos img[src*="ondi"] { height: 48px; }
-  .attribution { max-width: 36rem; margin: 10px auto 0; font-size: .78rem; }
-  @media (max-width: 480px) {
-    .langs { grid-template-columns: repeat(2, 1fr); }
-    .msg { max-width: 94%; }
-  }
+  .attribution { max-width: 36rem; margin: 10px auto 0; font-size: .78rem; padding: 0 12px; }
+  .bottom-space { height: 12px; }
+  @media (max-width: 480px) { .msg { max-width: 94%; } }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
 </style>
 </head>
 <body>
-<header class="hero">
-  <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <span class="logo" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M5 10v4M9 6v12M13 3v18M17 7v10M21 10v4"/></svg>
-        </span>
-        WazobiaAssist
-      </div>
-      <span class="badge"><span class="flag" aria-hidden="true"></span>Built on N-ATLAS</span>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      WazobiaAssist
     </div>
-    <h1><span class="hi" id="hi">Sannu!</span> Ask in your language.<br>Get answers you can trust.</h1>
-    <p class="lead">Questions about Nigeria, answered: scams and money, NIN and PVC, health, farming, school, NAFDAC products and your rights. Speak or type in Hausa, Igbo, Yorùbá or Nigerian English. Answers come from official sources like NIMC, CBN, WHO, JAMB and NAFDAC.</p>
-  </div>
-</header>
+    <nav class="nav" aria-label="Sections">
+      <a href="#features">What it does</a>
+      <a href="#ask">Ask</a>
+      <a href="#sources">Sources</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+    <span class="pillbtn"><span class="flag" aria-hidden="true"></span><span class="long">Built on </span>N-ATLAS</span>
+  </header>
 
-<main class="wrap">
-  <section class="panel" aria-label="Choose your language">
-    <p class="label">Your language</p>
+  <section class="hero">
+    <h1>Say <span class="wavepill"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span id="hi">Sannu!</span><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></span> and ask about Nigeria in <span class="grad">your own language</span></h1>
+    <p class="lead">Speak or type in Hausa, Igbo, Yorùbá or Nigerian English. Check a product with NAFDAC, learn your rights from the law itself, get the right codes for NIN and BVN, and ask about health, farming and school. Every answer names its official source.</p>
     <div class="langs" role="radiogroup" aria-label="Language">
       <button class="lang" role="radio" data-lang="ha" type="button"><b>Hausa</b><small>Sannu</small></button>
       <button class="lang" role="radio" data-lang="ig" type="button"><b>Igbo</b><small>Nnọọ</small></button>
       <button class="lang" role="radio" data-lang="yo" type="button"><b>Yorùbá</b><small>Ẹ n lẹ́</small></button>
       <button class="lang" role="radio" data-lang="en" type="button"><b>English</b><small>Nigerian accent</small></button>
     </div>
-    <div class="topics" aria-label="Topics">
-      <button class="topic" data-topic="money" type="button"><span>💸</span>Scams & money</button>
-      <button class="topic" data-topic="civic" type="button"><span>🪪</span>NIN, PVC, CAC</button>
-      <button class="topic" data-topic="health" type="button"><span>🩺</span>Health</button>
-      <button class="topic" data-topic="agriculture" type="button"><span>🌱</span>Farming</button>
-      <button class="topic" data-topic="education" type="button"><span>🎓</span>School & exams</button>
-      <button class="topic" data-topic="products" type="button"><span>💊</span>NAFDAC check</button>
-      <button class="topic" data-topic="laws" type="button"><span>⚖️</span>Your rights</button>
-    </div>
-    <div id="offline" class="banner hidden" role="status">The assistant is offline right now. Please try again a little later.</div>
   </section>
 
-  <section class="thread" id="thread" aria-live="polite" aria-label="Conversation">
-    <div class="empty" id="empty">
-      <h2>Tap 🎤 and speak, or try one of these</h2>
-      <div>Your question and the answer appear here.</div>
-      <div class="examples" id="examples"></div>
+  <section class="stage" id="features" aria-label="What it does">
+    <svg class="lines" viewBox="0 0 1000 430" preserveAspectRatio="none" aria-hidden="true">
+      <path vector-effect="non-scaling-stroke" d="M250 58 H330 V215 H395"/>
+      <path vector-effect="non-scaling-stroke" d="M110 112 V262"/>
+      <path vector-effect="non-scaling-stroke" d="M740 92 H675 V215 H605"/>
+      <path vector-effect="non-scaling-stroke" d="M675 215 V285 H740"/>
+    </svg>
+
+    <div class="orb-wrap">
+      <button class="orb js-record" id="record" type="button" aria-label="Tap to speak your question">
+        <span class="core"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></span>
+      </button>
+      <div class="orb-label" id="orblabel">Tap to speak</div>
     </div>
+
+    <div class="fcard c1">
+      <div class="k"><span aria-hidden="true">💊</span>NAFDAC check</div>
+      <div class="m">28,481 foods and about 8,900 drugs. <span class="s">Valid or expired?</span></div>
+    </div>
+    <div class="fcard c2">
+      <div class="k"><span aria-hidden="true">⚖️</span>Your rights</div>
+      <div class="m">10 Nigerian laws, quoted <span class="s">section by section</span></div>
+    </div>
+    <div class="fcard c3">
+      <div class="k"><span aria-hidden="true">🪪</span>Government services</div>
+      <div class="m">NIN *346#, BVN *565*0#, PVC, JAMB: <span class="s">verified codes</span></div>
+    </div>
+    <p class="fnote c4">Answers come only from official documents and registers, name their source, and say "I don't know" instead of guessing.</p>
   </section>
 
-  <div class="composer-wrap">
-    <div class="composer">
-      <textarea id="text" rows="1" placeholder="Type your question…" aria-label="Your question"></textarea>
-      <button class="round mic" id="record" type="button" aria-label="Record a voice question">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>
-      </button>
-      <button class="round send" id="send" type="button" aria-label="Send">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </button>
-    </div>
-    <div class="rec-note hidden" id="recnote">● Recording <span id="timer">0:00</span>. Tap the red button to send.</div>
+  <div class="topics" aria-label="Topics">
+    <button class="topic" data-topic="products" type="button"><span>💊</span>NAFDAC check</button>
+    <button class="topic" data-topic="laws" type="button"><span>⚖️</span>Your rights</button>
+    <button class="topic" data-topic="civic" type="button"><span>🪪</span>NIN, PVC, CAC</button>
+    <button class="topic" data-topic="health" type="button"><span>🩺</span>Health</button>
+    <button class="topic" data-topic="agriculture" type="button"><span>🌱</span>Farming</button>
+    <button class="topic" data-topic="education" type="button"><span>🎓</span>School & exams</button>
+    <button class="topic" data-topic="money" type="button"><span>💸</span>Scams & money</button>
   </div>
 
-  <footer>
-    Questions and answers are saved anonymously (no name or phone number) to improve the service.<br>
+  <div id="offline" class="banner hidden" role="status">The assistant is offline right now. Please try again a little later.</div>
+
+  <section class="chat" id="ask" aria-label="Ask a question">
+    <div class="thread" id="thread" aria-live="polite" aria-label="Conversation">
+      <div class="empty" id="empty">
+        <h2>Tap the orb and speak, or try one of these</h2>
+        <div>Your question and the answer appear here.</div>
+        <div class="examples" id="examples"></div>
+      </div>
+    </div>
+
+    <div class="composer-wrap">
+      <div class="composer">
+        <textarea id="text" rows="1" placeholder="Type your question…" aria-label="Your question"></textarea>
+        <button class="round mic js-record" type="button" aria-label="Record a voice question">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>
+        </button>
+        <button class="round send" id="send" type="button" aria-label="Send">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="rec-note hidden" id="recnote">● Recording <span id="timer">0:00</span>. Tap again to send.</div>
+    </div>
+  </section>
+
+  <section class="sources" id="sources" aria-label="Sources">
+    <p>Answers come from official public information published by</p>
+    <div class="src"><span>NAFDAC</span><span>NIMC</span><span>NIBSS</span><span>INEC</span><span>JAMB</span><span>CBN</span><span>NPHCDA</span><span>WHO</span><span>IITA</span></div>
+  </section>
+  <footer id="privacy">
+    Questions and answers are saved anonymously (no name or phone number) to improve the service. Send DELETE in the chat apps to erase yours.<br>
     Answers marked “General knowledge” are not from an official source. For emergencies, go to the nearest health facility.
     <section class="partners" aria-label="National AI Innovation Challenge">
       <p class="label">Built for the National AI Innovation Challenge 2026, organised by</p>
@@ -218,7 +310,8 @@
       WazobiaAssist is an independent challenge entry built on N-ATLaS.
     </p>
   </footer>
-</main>
+  <div class="bottom-space"></div>
+</div>
 
 <script>
   const $ = (id) => document.getElementById(id);
@@ -243,13 +336,13 @@
   // Example questions per language and topic. Hausa, Igbo and Yorùbá are drafts for native-speaker review.
   const EXAMPLES = {
     en: {
-      money: "Someone says CBN is giving grants if I pay a fee. Is it real?",
+      products: "Is Indomie noodles registered with NAFDAC?",
+      laws: "Can the police arrest me without telling me why?",
       civic: "I forgot my NIN. How can I get it back?",
       health: "What are the danger signs in pregnancy?",
       agriculture: "How do I control fall armyworm on my maize?",
       education: "How do I create a JAMB profile?",
-      products: "Is Indomie noodles registered with NAFDAC?",
-      laws: "Can the police arrest me without telling me why?",
+      money: "Someone says CBN is giving grants if I pay a fee. Is it real?",
     },
     ha: {
       money: "An ce CBN tana ba da tallafi idan na biya kudi. Gaskiya ne?",
@@ -288,7 +381,9 @@
   document.querySelectorAll(".lang").forEach((b) => b.onclick = () => setLang(b.dataset.lang));
   document.querySelectorAll(".topic").forEach((b) => b.onclick = () => {
     const q = (EXAMPLES[lang] && EXAMPLES[lang][b.dataset.topic]) || EXAMPLES.en[b.dataset.topic];
-    $("text").value = q; grow(); $("text").focus();
+    $("text").value = q; grow();
+    $("ask").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("text").focus({ preventScroll: true });
   });
   setLang(lang);
 
@@ -355,10 +450,13 @@
     div.scrollIntoView({ behavior: "smooth", block: "end" });
   }
 
+  const recButtons = document.querySelectorAll(".js-record");
+  function setBusy(on) { $("send").disabled = on; recButtons.forEach((b) => b.disabled = on); }
+
   let busy = false;
   async function ask(text, audioBlob) {
     if (busy || (!audioBlob && !text.trim())) return;
-    busy = true; $("send").disabled = $("record").disabled = true;
+    busy = true; setBusy(true);
     bubble("me", audioBlob ? "🎤 Voice question" : text.trim());
     $("text").value = ""; grow();
     const reply = botBubble();
@@ -375,36 +473,49 @@
     } catch (e) {
       showAnswer(reply, { answer: "Sorry, the assistant could not be reached. It may be offline; please try again later." });
     } finally {
-      busy = false; $("send").disabled = $("record").disabled = false;
+      busy = false; setBusy(false);
     }
   }
   $("send").onclick = () => ask($("text").value);
 
-  // Voice recording (stops by itself after 60 seconds).
+  // Voice recording from the orb or the composer mic (stops by itself after 60 seconds).
   let recorder = null, chunks = [], timer = null;
-  $("record").onclick = async () => {
+  function showRecording(on) {
+    recButtons.forEach((b) => b.classList.toggle("rec", on));
+    $("recnote").classList.toggle("hidden", !on);
+    $("orblabel").innerHTML = on ? 'Listening… <span class="t" id="orbtimer">0:00</span> · tap to send' : "Tap to speak";
+  }
+  async function toggleRecording() {
     if (recorder && recorder.state === "recording") { recorder.stop(); return; }
     let stream;
     try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
-    catch (e) { bubble("bot", "I can't use the microphone here. Please allow it in your browser, or type your question."); return; }
+    catch (e) {
+      $("ask").scrollIntoView({ behavior: "smooth", block: "start" });
+      bubble("bot", "I can't use the microphone here. Please allow it in your browser, or type your question.");
+      return;
+    }
     recorder = new MediaRecorder(stream);
     chunks = [];
     recorder.ondataavailable = (e) => chunks.push(e.data);
     recorder.onstop = () => {
       stream.getTracks().forEach((t) => t.stop());
       clearInterval(timer);
-      $("record").classList.remove("rec"); $("recnote").classList.add("hidden");
+      showRecording(false);
+      $("ask").scrollIntoView({ behavior: "smooth", block: "start" });
       ask("", new Blob(chunks, { type: recorder.mimeType }));
     };
     recorder.start();
     const started = Date.now();
-    $("record").classList.add("rec"); $("recnote").classList.remove("hidden"); $("timer").textContent = "0:00";
+    showRecording(true); $("timer").textContent = "0:00";
     timer = setInterval(() => {
       const s = Math.floor((Date.now() - started) / 1000);
-      $("timer").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+      const t = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+      $("timer").textContent = t;
+      const ot = $("orbtimer"); if (ot) ot.textContent = t;
       if (s >= 60 && recorder.state === "recording") recorder.stop();
     }, 250);
-  };
+  }
+  recButtons.forEach((b) => b.onclick = toggleRecording);
 
   // Tell people early if the server is down.
   fetch(API + "/health", { headers: HEADERS })
