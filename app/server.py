@@ -77,6 +77,9 @@ app.mount("/logos", StaticFiles(directory=STATIC / "logos"), name="logos")
 app.add_middleware(
     CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["GET", "POST"],
     allow_headers=["ngrok-skip-browser-warning"],
+    # Chrome only lets the public page reach a server on the tester's own computer
+    # (?api=http://localhost:8080) if the server allows "private network" access.
+    allow_private_network=True,
 )
 
 
