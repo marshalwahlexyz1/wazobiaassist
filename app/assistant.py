@@ -42,7 +42,10 @@ You are WazobiaAssist. Answer the user's general-knowledge question from your ow
 EXTRACT_PROMPT = """TASK: extract
 The user wants to know if a product is registered with NAFDAC.
 Reply with only the product's name and brand, or the NAFDAC number, exactly as the user wrote it.
-No other words. If there is no product name or number, reply NONE."""
+No other words. If there is no product name or number, reply NONE.
+Examples:
+Question: Is Indomie NAFDAC registered? -> Indomie
+Question: Please check if Golden Penny semovita is approved by NAFDAC -> Golden Penny semovita"""
 
 ANSWER_PROMPT = """TASK: answer
 You are WazobiaAssist, a trustworthy assistant for ordinary Nigerians.

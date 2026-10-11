@@ -38,6 +38,7 @@ a an the is are was this that these those my our your his her it its of for to i
 please check tell me know whether if can you i we do does did has have registered registration approved
 approval approve nafdac number no reg product products drug drugs medicine food fake real original genuine
 counterfeit valid still legit legal sold sell buy bought want ask about brand called named
+yes no not none true false
 """.split())
 
 
@@ -47,6 +48,20 @@ def norm_no(number: str) -> str:
 
 def tokens(text: str) -> list[str]:
     return [w for w in re.findall(r"[a-z0-9]+", text.lower()) if w not in _STOP and len(w) > 1]
+
+
+def product_words(question: str, model_guess: str = "") -> str:
+    """The product name to search for, using only words the user actually said.
+
+    The model is asked to copy the product name out of the question, but it
+    sometimes answers instead ("Indomie - Yes, NAFDAC registered"). Words it adds
+    are dropped; if nothing is left, the question's own product words are used."""
+    asked = re.findall(r"[A-Za-z0-9][A-Za-z0-9'&.-]*", question)
+    asked_lower = {w.lower().strip(".'") for w in asked}
+    guess = {t for t in tokens(model_guess) if t in asked_lower}
+    keep = guess or set(tokens(question))
+    words = [w.strip(".'") for w in asked if w.lower().strip(".'") in keep]
+    return " ".join(dict.fromkeys(words))  # in the user's order, no repeats
 
 
 def mentions_nafdac(text: str) -> bool:
@@ -195,6 +210,57 @@ class Greenbook:
         return [self.to_match(r, s) for s, r in good[:limit]]
 
 
+FOOD_PAGE = "https://nafdac.gov.ng/food-products-database/"
+
+
+def download_food_db(target: Path, say=print) -> int:
+    """Downloads NAFDAC's Food Products Database into SQLite at `target`.
+
+    The public table on FOOD_PAGE loads its rows from the site in chunks of 3,000;
+    they are fetched one at a time, politely, and the local copy is replaced only
+    when the download is complete. Returns the number of products saved."""
+    target.parent.mkdir(parents=True, exist_ok=True)
+    tmp = target.with_suffix(".tmp")
+    tmp.unlink(missing_ok=True)
+    db = sqlite3.connect(tmp)
+    db.execute("""CREATE TABLE food (number TEXT, number_norm TEXT, name TEXT, category TEXT,
+                  subcategory TEXT, packsize TEXT, presentation TEXT, applicant TEXT,
+                  manufacturer TEXT, country TEXT, issued TEXT, expiry TEXT)""")
+    total = 0
+    headers = {"User-Agent": "WazobiaAssist (NAIC 2026; daily refresh)"}
+    with httpx.Client(headers=headers, timeout=90, follow_redirects=True) as client:
+        page = client.get(FOOD_PAGE).text
+        m = re.search(r'https:[^"]*admin-ajax\.php\?action=wp_ajax_ninja_tables_public_action[^"]*', page)
+        if not m:
+            raise RuntimeError("Could not find the data link on the NAFDAC page; its layout may have changed.")
+        base = re.sub(r"&chunk_number=\d+", "", m.group(0).replace("\\/", "/").replace("\\u0026", "&"))
+        for chunk in range(100):
+            rows = client.get(f"{base}&chunk_number={chunk}").json()
+            if not rows:
+                break
+            values = []
+            for row in rows:
+                v = {k: html.unescape(x) if isinstance(x, str) else x for k, x in row.get("value", row).items()}
+                values.append((v.get("nafdacnumber", ""), norm_no(v.get("nafdacnumber", "")),
+                               v.get("productname", ""), v.get("category", ""), v.get("subcategory", ""),
+                               v.get("packsize", ""), v.get("presentation", ""), v.get("applicantname", ""),
+                               v.get("manufacturer", ""), v.get("country", ""), v.get("issuedate", ""),
+                               v.get("expirydate", "")))
+            db.executemany("INSERT INTO food VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", values)
+            total += len(values)
+            say(f"chunk {chunk}: {len(values)} products")
+            time.sleep(1)  # be gentle with NAFDAC's server
+    if total == 0:
+        db.close()
+        tmp.unlink(missing_ok=True)
+        raise RuntimeError("No products downloaded; keeping the old copy.")
+    db.execute("CREATE INDEX idx_number ON food(number_norm)")
+    db.commit()
+    db.close()
+    tmp.replace(target)
+    return total
+
+
 class ProductChecker:
     def __init__(self, food: FoodDatabase, greenbook: Greenbook | None):
         self.food = food
@@ -204,11 +270,12 @@ class ProductChecker:
         """Answers in English. `product` is the product name the model pulled out of
         the question; the NAFDAC number, if any, is read from the question itself."""
         today = today or date.today()
-        found = NAFDAC_NO.search(question) or NAFDAC_NO.search(product)
+        found = NAFDAC_NO.search(question)
         number = found.group(1).upper() if found else None
-        query = (product or question).strip().strip('"«»')
+        query = product_words(question, product)
         matches: list[Match] = []
         notes: list[str] = []
+        food_missing = False
 
         if self.greenbook:
             try:
@@ -220,7 +287,7 @@ class ProductChecker:
         if self.food.available:
             matches += self.food.by_number(number) if number else self.food.by_name(query)
         else:
-            notes.append("The food database has not been downloaded yet, so food products were not checked.")
+            food_missing = True
 
         matches.sort(key=lambda m: -m.score)
         if matches:  # show only the best-matching products, not weaker partial matches
@@ -246,6 +313,10 @@ class ProductChecker:
             lines.append("Check that the NAFDAC number on your pack is exactly the same and the company name matches. "
                          "Fake products often copy real numbers. If anything looks different, report it to NAFDAC "
                          f"on {COMPLAINTS}.")
+        if food_missing:
+            # Put this first, in short sentences, so it survives translation.
+            lines.insert(0, "Important: I checked only NAFDAC's list of drugs. "
+                            "The list of food products is not ready on this server. Food was not checked.")
         lines += notes
         lines.append(f"(Source: {' and '.join(sources)}, {checked})")
         return "\n".join(lines), sources

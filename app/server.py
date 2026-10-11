@@ -15,6 +15,7 @@ from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, Request
 from fastapi.responses import FileResponse, Response
 
 from .assistant import Assistant
+from .products import download_food_db
 from .config import LANGUAGES, Settings
 from .conversation import Conversation
 from .channels.whatsapp import WhatsApp, valid_signature
@@ -40,6 +41,9 @@ async def lifespan(app: FastAPI):
     # Load the four ASR models in the background, so the first voice note in each
     # language isn't slow.
     asyncio.get_running_loop().run_in_executor(None, assistant.asr.warm_up)
+    # The NAFDAC food list is normally downloaded by setup.sh; fetch it now if it is missing.
+    if not settings.mock and not settings.nafdac_food_db.exists():
+        asyncio.get_running_loop().run_in_executor(None, _download_food_list)
     telegram = None
     if settings.telegram_token:
         from .channels.telegram import build_telegram
@@ -57,6 +61,14 @@ async def lifespan(app: FastAPI):
         await telegram.shutdown()
 
 
+def _download_food_list() -> None:
+    try:
+        total = download_food_db(settings.nafdac_food_db, say=log.info)
+        log.info("NAFDAC food list ready: %d products", total)
+    except Exception:
+        log.exception("NAFDAC food list download failed; food products can't be checked yet")
+
+
 app = FastAPI(title="WazobiaAssist", lifespan=lifespan)
 
 
@@ -67,6 +79,7 @@ def health():
         "mock": settings.mock,
         "llm": settings.llm_model,
         "domains": {name: len(d.chunks) for name, d in assistant.domains.items()},
+        "nafdac_food_list": settings.nafdac_food_db.exists(),
     }
 
 

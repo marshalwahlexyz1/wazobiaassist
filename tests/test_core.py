@@ -423,3 +423,29 @@ def test_translation_keeps_codes_or_attaches_the_english(settings):
     assert a.translate("Dial *346# to get your NIN.", "en", "ha") == "Kira *346# don samun NIN."
     a.llm.chat = lambda messages, max_tokens=400: "Kira lambar don samun NIN."
     assert a.translate("Dial *346# to get your NIN.", "en", "ha").endswith("(English: Dial *346# to get your NIN.)")
+
+
+def test_missing_food_list_is_said_first(tmp_path):
+    from app.products import FoodDatabase, Greenbook, ProductChecker
+
+    pc = ProductChecker(FoodDatabase(tmp_path / "missing.sqlite"), Greenbook(fetch=lambda term: []))
+    text, _ = pc.check("Check NAFDAC number A8-102316L", "")
+    assert text.startswith("Important: I checked only NAFDAC's list of drugs.")
+    assert "Food was not checked." in text
+
+
+def test_product_words_ignore_what_the_model_adds():
+    from app.products import product_words
+
+    assert product_words("Is Indomie NAFDAC registered?", "Indomie (Noodles) - Yes, NAFDAC registered") == "Indomie"
+    assert product_words("Is Golden Penny semovita registered?", "") == "Golden Penny semovita"
+    assert product_words("Is Indomie NAFDAC registered?", "Dangote sugar") == "Indomie"  # nothing usable: fall back
+
+
+def test_indomie_question_with_a_chatty_model(tmp_path):
+    from app.products import FoodDatabase, ProductChecker
+
+    _food_db(tmp_path / "food.sqlite")
+    pc = ProductChecker(FoodDatabase(tmp_path / "food.sqlite"), None)
+    text, _ = pc.check("Is Indomie NAFDAC registered?", "Indomie (Noodles) - Yes, NAFDAC registered")
+    assert "for «Indomie»" in text and "A8-0121" in text and "Yes," not in text
