@@ -46,6 +46,8 @@ Every live document was written from official pages opened on 8 Oct 2026, and ev
 | health | immunisation schedule; pregnancy danger signs; antenatal visits; newborn danger signs; mother after delivery; malaria and fever; diarrhoea; pneumonia | NPHCDA card (via UNICEF Nigeria), WHO | Federal Ministry of Health / NCDC material |
 | education | JAMB profile and UTME; JAMB CAPS; WAEC; NECO; free basic education (UBE); NELFUND; exam scams | JAMB, WAEC, NECO, UBEC, NELFUND | JAMB result SMS, WAEC/NECO 2026 fraud warnings |
 | agriculture | maize; fall armyworm; cowpea storage; cassava; rice; sorghum; grain storage and aflatoxin; NiMet 2026 seasonal prediction | IITA, FAO, Purdue (PICS), NAERLS, ICRISAT, NiMet | yam, millet, groundnut, soybean, livestock |
+| laws | Constitution fundamental rights (ss.33–46); Police Act 2020 (arrest, bail, detention, complaints); ACJA 2015 (arrest rights); Nigeria Data Protection Act 2023; Cybercrimes Act 2015 with 2024 amendment; EFCC Act 2004; Advance Fee Fraud Act 2006; FCCPA 2018 consumer rights; Legal Aid Council (who qualifies, offices) | PLAC, FAOLEX, NDPC, NFIU, FCCPC, Legal Aid Council | lawyer review: quotes typed from scanned PDFs (Police Act, Legal Aid Act, Cybercrimes 2024 amendment), later amendments |
+| products | none by design: answers come from NAFDAC's Greenbook (live) and Food Products Database (downloaded daily) | NAFDAC | cosmetics are not in either database |
 
 **Before launch, a person must read each domain's `docs/_SOURCES_REVIEW.md`.** It lists what to double-check, for example: conflicting NIMC fees (left out), the HPV dose count, pesticides that must still be registered in Nigeria, the FCCPC court case, and dates that came only from news reports quoting an agency.
 

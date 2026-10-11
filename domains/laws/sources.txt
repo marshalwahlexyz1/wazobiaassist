@@ -1,1 +1,32 @@
-# file | organisation | URL     (filled in after collection)
+# file | publisher | URL     (law texts collected and quote-checked on 10-11 Oct 2026)
+acja-2015-arrest-rights | Policy and Legal Advocacy Centre | https://placng.org/i/wp-content/uploads/2019/12/Administration-of-Criminal-Justice-Act-2015-2.pdf
+acja-2015-arrest-rights | policinglaw.info | https://www.policinglaw.info/assets/downloads/2015_Administration_of_Criminal_Justice_Act.pdf
+advance-fee-fraud-act-2006 | Policy and Legal Advocacy Centre | https://placng.org/lawsofnigeria/print.php?sn=18
+advance-fee-fraud-act-2006 | policyvault.africa | https://policyvault.africa/wp-content/uploads/policy/NGA1149.pdf
+advance-fee-fraud-act-2006 | dataguidance.com | https://www.dataguidance.com/sites/default/files/advance_fee_fraud_and_other_fraud_related_offences_act_2006.pdf
+constitution-fundamental-rights | Policy and Legal Advocacy Centre | https://faolex.fao.org/docs/pdf/nig164561.pdf
+cybercrimes-act | Nigerian Financial Intelligence Unit | https://www.nfiu.gov.ng/images/Downloads/downloads/cybercrime.pdf
+cybercrimes-act | placng.org | https://placng.org/i/wp-content/uploads/2024/05/Cybercrimes-Prohibition-Prevention-etc-Amendment-Act-2024.pdf
+efcc-act-2004 | Policy and Legal Advocacy Centre | https://www.placng.org/lawsofnigeria/laws/E1.pdf
+efcc-act-2004 | policyvault.africa | https://policyvault.africa/wp-content/uploads/policy/NGA1185.pdf
+fccpa-2018-consumer-rights | Federal Competition and Consumer Protection Commission | https://fccpc.gov.ng/wp-content/uploads/2022/07/FCCPA-2018.pdf
+fccpa-2018-consumer-rights | fccpc.gov.ng | https://fccpc.gov.ng/resources-library/fccpa/
+fccpa-2018-consumer-rights | fccpc.gov.ng | https://fccpc.gov.ng/about-us/contact/
+legal-aid-council | Legal Aid Council of Nigeria | https://legalaidcouncil.gov.ng/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/function-and-mandate/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/criminal-justice/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/civil-justice-department/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/contact-us/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/headquarters-and-abuja/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/south-west-zone-and-state-offices/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/south-east-zone-and-state-offices/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/south-south-zone-and-state-offices/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/north-central-zone-and-state-offices/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/north-east-zone-and-state-offices/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/north-west-zone-and-state-offices/
+legal-aid-council | legalaidcouncil.gov.ng | https://legalaidcouncil.gov.ng/lac-laws/
+legal-aid-council | drive.google.com | https://drive.google.com/file/d/1g0Abe4x272FTh_Nd0EZLlAEPwGxtdhMp/view?usp=sharing
+ndpa-2023-data-protection | Nigeria Data Protection Commission | https://ndpc.gov.ng/wp-content/uploads/2024/03/Nigeria_Data_Protection_Act_2023.pdf
+ndpa-2023-data-protection | ndpc.gov.ng | https://ndpc.gov.ng/contact/
+ndpa-2023-data-protection | services.ndpc.gov.ng | https://services.ndpc.gov.ng/breach/
+police-act-2020-arrest-and-bail | Policy and Legal Advocacy Centre | https://placng.org/i/wp-content/uploads/2020/09/Police-Act-2020.pdf
