@@ -449,3 +449,24 @@ def test_indomie_question_with_a_chatty_model(tmp_path):
     pc = ProductChecker(FoodDatabase(tmp_path / "food.sqlite"), None)
     text, _ = pc.check("Is Indomie NAFDAC registered?", "Indomie (Noodles) - Yes, NAFDAC registered")
     assert "for «Indomie»" in text and "A8-0121" in text and "Yes," not in text
+
+
+def test_github_pages_origin_may_call_the_api(monkeypatch, tmp_path):
+    import importlib
+    import sys
+
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setenv("MOCK", "1")
+    monkeypatch.setenv("DB_PATH", str(tmp_path / "db.sqlite"))
+    sys.modules.pop("app.server", None)
+    server = importlib.import_module("app.server")
+    client = TestClient(server.app)
+    origin = "https://marshalwahlexyz1.github.io"
+    r = client.options("/api/ask", headers={
+        "Origin": origin, "Access-Control-Request-Method": "POST",
+        "Access-Control-Request-Headers": "ngrok-skip-browser-warning"})
+    assert r.headers.get("access-control-allow-origin") == origin
+    r = client.options("/api/ask", headers={"Origin": "https://evil.example", "Access-Control-Request-Method": "POST"})
+    assert r.headers.get("access-control-allow-origin") is None
+    sys.modules.pop("app.server", None)

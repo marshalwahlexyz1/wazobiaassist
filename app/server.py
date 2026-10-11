@@ -12,6 +12,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 
 from .assistant import Assistant
@@ -70,6 +71,11 @@ def _download_food_list() -> None:
 
 
 app = FastAPI(title="WazobiaAssist", lifespan=lifespan)
+# Lets the copy of the web page on GitHub Pages call /api/ask and /api/rate.
+app.add_middleware(
+    CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["GET", "POST"],
+    allow_headers=["ngrok-skip-browser-warning"],
+)
 
 
 @app.get("/health")

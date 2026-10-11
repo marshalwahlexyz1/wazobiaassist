@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The bot's server. Empty: the server that served this page. On GitHub Pages the
+     deploy workflow fills it in; ?api=<url> in the address overrides it for testing. -->
+<meta name="wazobia-api" content="">
 <title>WazobiaAssist</title>
 <style>
   :root { --bg:#f6f7f4; --card:#fff; --ink:#1c2420; --muted:#5d6a63; --accent:#0b7a4b; --accent-ink:#fff; --line:#dfe4e0; }
@@ -76,6 +79,10 @@
   }
   const session = sessionId();
   const $ = (id) => document.getElementById(id);
+  const API = (new URLSearchParams(location.search).get("api")
+    || document.querySelector('meta[name="wazobia-api"]').content || "").replace(/\/$/, "");
+  // Free ngrok addresses show browsers a warning page unless this header is sent.
+  const HEADERS = { "ngrok-skip-browser-warning": "1" };
   let recorder = null, chunks = [], lastId = null;
 
   async function ask(audioBlob) {
@@ -89,14 +96,14 @@
     $("answer").textContent = "…";
     ["audio", "rating", "thanks"].forEach((id) => $(id).classList.add("hidden"));
     try {
-      const res = await fetch("/api/ask", { method: "POST", body: form });
+      const res = await fetch(API + "/api/ask", { method: "POST", body: form, headers: HEADERS });
       const data = await res.json();
       $("answer").textContent = data.answer || "Sorry, something went wrong.";
       lastId = data.interaction_id;
       if (lastId) $("rating").classList.remove("hidden");
-      if (data.audio_url) { $("audio").src = data.audio_url; $("audio").classList.remove("hidden"); }
+      if (data.audio_url) { $("audio").src = API + data.audio_url; $("audio").classList.remove("hidden"); }
     } catch (e) {
-      $("answer").textContent = "Sorry, something went wrong. Please try again.";
+      $("answer").textContent = "Sorry, the assistant could not be reached. It may be offline; please try again later.";
     } finally {
       $("send").disabled = $("record").disabled = false;
     }
@@ -130,7 +137,7 @@
     form.append("session_id", session);
     form.append("interaction_id", lastId);
     form.append("rating", b.dataset.rating);
-    await fetch("/api/rate", { method: "POST", body: form });
+    await fetch(API + "/api/rate", { method: "POST", body: form, headers: HEADERS });
     $("rating").classList.add("hidden");
     $("thanks").classList.remove("hidden");
   });

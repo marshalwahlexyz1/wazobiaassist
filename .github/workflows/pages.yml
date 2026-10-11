@@ -1,0 +1,40 @@
+# Publishes the web page (app/static) to GitHub Pages:
+#   https://marshalwahlexyz1.github.io/wazobiaassist/
+# The page calls the bot's server, whose address comes from the repository variable
+# WAZOBIA_API_URL (Settings > Secrets and variables > Actions > Variables), e.g.
+# https://abc-def.ngrok-free.app. Change the variable, then re-run this workflow.
+name: Web page
+on:
+  push:
+    branches: [main]
+    paths: ["app/static/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        env:
+          API_URL: ${{ vars.WAZOBIA_API_URL }}
+        run: |
+          mkdir _site
+          cp -r app/static/. _site/
+          sed -i "s#<meta name=\"wazobia-api\" content=\"\">#<meta name=\"wazobia-api\" content=\"${API_URL%/}\">#" _site/index.html
+          grep -n 'name="wazobia-api"' _site/index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
