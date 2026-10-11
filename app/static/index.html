@@ -7,34 +7,37 @@
      deploy workflow fills it in; ?api=<url> in the address overrides it for testing. -->
 <meta name="wazobia-api" content="">
 <meta name="description" content="Ask by voice or text in Hausa, Igbo, Yorùbá or English and get trustworthy answers from official sources. Built on N-ATLAS.">
-<meta name="theme-color" content="#8a4fe6">
+<meta name="theme-color" content="#008751">
 <title>WazobiaAssist</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23f08a6c'/%3E%3Cstop offset='1' stop-color='%238a4fe6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M18 26h4v12h-4zM26 20h4v24h-4zM34 16h4v32h-4zM42 24h4v16h-4z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23f2b705'/%3E%3Cstop offset='1' stop-color='%23008751'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M18 26h4v12h-4zM26 20h4v24h-4zM34 16h4v32h-4zM42 24h4v16h-4z' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --page-a: #eba48b; --page-b: #c98ac0; --page-c: #8a4fe6;
-    --shell: #f4f2f7; --card: #ffffff; --ink: #1d1a26; --muted: #686377; --line: #e4dfec;
-    --accent: #8a4fe6; --accent-2: #b46ef0; --accent-ink: #ffffff; --warm: #f08a6c;
-    --red: #e0475b; --me: #8a4fe6; --me-ink: #ffffff; --bot: #ffffff;
-    --shadow: 0 12px 34px rgba(60, 30, 110, .12); --shadow-sm: 0 4px 14px rgba(60, 30, 110, .08);
+    --page-a: #f6d77a; --page-b: #5fbf8a; --page-c: #006b40;
+    --shell: #f3f6f2; --card: #ffffff; --ink: #14201a; --muted: #5a6a61; --line: #dde5df;
+    --accent: #008751; --accent-2: #00a862; --accent-ink: #ffffff; --warm: #f2b705;
+    --red: #d64545; --me: #008751; --me-ink: #ffffff; --bot: #ffffff;
+    --orb-glow: rgba(0, 135, 81, .45); --orb-warm: rgba(242, 183, 5, .40);
+    --shadow: 0 12px 34px rgba(10, 60, 35, .12); --shadow-sm: 0 4px 14px rgba(10, 60, 35, .08);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --page-a: #3b1f2e; --page-b: #2c1d40; --page-c: #1c1236;
-      --shell: #15121d; --card: #1e1a29; --ink: #efeaf7; --muted: #a59eb6; --line: #2e283c;
-      --accent: #a777ff; --accent-2: #c79bff; --accent-ink: #160d26; --warm: #ff9b7d;
-      --red: #ff6b7d; --me: #a777ff; --me-ink: #160d26; --bot: #1e1a29;
+      --page-a: #2f2a10; --page-b: #0f3322; --page-c: #071a11;
+      --shell: #0d1411; --card: #16201b; --ink: #e9f1ec; --muted: #9db0a5; --line: #263530;
+      --accent: #1fbf75; --accent-2: #39d98a; --accent-ink: #06140d; --warm: #f5c64a;
+      --red: #ff6b6b; --me: #1fbf75; --me-ink: #06140d; --bot: #16201b;
+      --orb-glow: rgba(31, 191, 117, .40); --orb-warm: rgba(245, 198, 74, .30);
       --shadow: 0 12px 34px rgba(0, 0, 0, .45); --shadow-sm: 0 4px 14px rgba(0, 0, 0, .35);
     }
   }
   :root[data-theme="dark"] {
-    --page-a: #3b1f2e; --page-b: #2c1d40; --page-c: #1c1236;
-    --shell: #15121d; --card: #1e1a29; --ink: #efeaf7; --muted: #a59eb6; --line: #2e283c;
-    --accent: #a777ff; --accent-2: #c79bff; --accent-ink: #160d26; --warm: #ff9b7d;
-    --red: #ff6b7d; --me: #a777ff; --me-ink: #160d26; --bot: #1e1a29;
+    --page-a: #2f2a10; --page-b: #0f3322; --page-c: #071a11;
+    --shell: #0d1411; --card: #16201b; --ink: #e9f1ec; --muted: #9db0a5; --line: #263530;
+    --accent: #1fbf75; --accent-2: #39d98a; --accent-ink: #06140d; --warm: #f5c64a;
+    --red: #ff6b6b; --me: #1fbf75; --me-ink: #06140d; --bot: #16201b;
+    --orb-glow: rgba(31, 191, 117, .40); --orb-warm: rgba(245, 198, 74, .30);
     --shadow: 0 12px 34px rgba(0, 0, 0, .45); --shadow-sm: 0 4px 14px rgba(0, 0, 0, .35);
   }
   * { box-sizing: border-box; }
@@ -52,7 +55,7 @@
   a { color: inherit; }
 
   /* ---- the big rounded frame ---- */
-  .shell { max-width: 1120px; margin: 28px auto; background: var(--shell); border-radius: 30px; box-shadow: 0 30px 80px rgba(40, 10, 80, .25); padding: 18px 28px 8px; }
+  .shell { max-width: 1120px; margin: 28px auto; background: var(--shell); border-radius: 30px; box-shadow: 0 30px 80px rgba(5, 40, 22, .25); padding: 18px 28px 8px; }
   @media (max-width: 640px) { .shell { margin: 10px; padding: 14px 16px 6px; border-radius: 22px; } }
 
   /* ---- top bar ---- */
@@ -77,7 +80,7 @@
   .wavepill .bars i { animation: bar 1.4s ease-in-out infinite; }
   .wavepill .bars i:nth-child(2n) { animation-delay: .2s; } .wavepill .bars i:nth-child(3n) { animation-delay: .45s; }
   @keyframes bar { 0%, 100% { transform: scaleY(.55); } 50% { transform: scaleY(1); } }
-  #hi { min-width: 4.6em; display: inline-block; background: linear-gradient(90deg, var(--warm), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
+  #hi { min-width: 4.6em; display: inline-block; background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
   #hi.swap { animation: swap .5s ease; }
   @keyframes swap { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   .grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -100,17 +103,17 @@
   .orb-wrap { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 12px; }
   .orb {
     position: relative; width: 210px; height: 210px; border-radius: 50%; border: 0; padding: 0; overflow: hidden;
-    background: radial-gradient(circle at 50% 50%, #1b0f33 0%, #0b0716 70%);
-    box-shadow: 0 0 0 6px color-mix(in srgb, var(--card) 70%, transparent), 0 20px 60px rgba(138, 79, 230, .45), 0 0 90px rgba(240, 138, 108, .35);
+    background: radial-gradient(circle at 50% 50%, #0d2a1c 0%, #04110b 70%);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--card) 70%, transparent), 0 20px 60px var(--orb-glow), 0 0 90px var(--orb-warm);
   }
   .orb::before, .orb::after { content: ""; position: absolute; inset: 14%; border-radius: 42% 58% 55% 45% / 48% 40% 60% 52%; filter: blur(2px); mix-blend-mode: screen; }
-  .orb::before { background: conic-gradient(from 0deg, #f08a6c, #c86df0, #6a3df0, #f0a07a, #f08a6c); opacity: .85; animation: spin 9s linear infinite; }
-  .orb::after { inset: 22%; background: conic-gradient(from 120deg, #ffb59c, #8a4fe6, #e46bd8, #ffb59c); opacity: .7; animation: spin 6s linear infinite reverse; }
+  .orb::before { background: conic-gradient(from 0deg, #f2b705, #00a862, #008751, #7be0a8, #f2b705); opacity: .85; animation: spin 9s linear infinite; }
+  .orb::after { inset: 22%; background: conic-gradient(from 120deg, #ffe08a, #00a862, #39d98a, #ffe08a); opacity: .7; animation: spin 6s linear infinite reverse; }
   .orb .core { position: absolute; inset: 38%; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,.25) 60%, transparent 70%); display: grid; place-items: center; z-index: 1; }
-  .orb .core svg { color: #4b1fa0; }
+  .orb .core svg { color: #006b40; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .orb.rec::before { animation-duration: 2.2s; } .orb.rec::after { animation-duration: 1.6s; }
-  .orb.rec { box-shadow: 0 0 0 6px color-mix(in srgb, var(--red) 40%, transparent), 0 20px 60px rgba(224, 71, 91, .5), 0 0 110px rgba(240, 138, 108, .5); }
+  .orb.rec { box-shadow: 0 0 0 6px color-mix(in srgb, var(--red) 40%, transparent), 0 20px 60px rgba(214, 69, 69, .5), 0 0 110px var(--orb-warm); }
   .orb:disabled { opacity: .6; cursor: default; }
   .orb:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
   .orb-label { font-weight: 700; font-size: .95rem; }
