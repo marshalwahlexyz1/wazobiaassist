@@ -1,5 +1,10 @@
-"""Keeps numbers, USSD codes and URLs unchanged through translation by swapping
-them for placeholders before the model sees the text and restoring them after."""
+"""Numbers, USSD codes, URLs and product names that must survive translation
+unchanged. protected_parts() lists them so the translation can be checked.
+
+protect()/restore() swap them for placeholders. The pipeline no longer uses them:
+in a test on 10 Oct, N-ATLaS scrambled placeholders in 7 of 9 translations (codes
+became "0", step numbers became 0, 1, 2), but copied the real codes correctly in
+9 of 9 when asked to keep them unchanged."""
 
 import re
 
@@ -10,6 +15,10 @@ _PROTECTED = re.compile(
     r"|\*[\d*]+#"                # USSD codes like *565*0#
     r"|\d[\d,.:/-]*\d|\d"        # numbers, amounts, dates, times
 )
+
+
+def protected_parts(text: str) -> list[str]:
+    return [m.group(0) for m in _PROTECTED.finditer(text)]
 
 
 def protect(text: str) -> tuple[str, list[str]]:

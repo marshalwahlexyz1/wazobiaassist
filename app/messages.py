@@ -30,6 +30,7 @@ TEXT = {
             "I can help with farming, health, school and exams, government services (NIN, PVC, BVN), "
             "and money and scams. Please ask a question about one of these."
         ),
+        "general_note": "ℹ️ General knowledge, not from an official source. It may be out of date:",
         "error": "Sorry, something went wrong. Please try again.",
         "unsupported": "Please send a voice note or text.",
     },
@@ -51,6 +52,7 @@ TEXT = {
             "Zan iya taimaka maka game da noma, lafiya, makaranta da jarrabawa, ayyukan gwamnati "
             "(NIN, PVC, BVN), da kuɗi da yaudara. Don Allah yi tambaya game da ɗaya daga cikinsu."
         ),
+        "general_note": "ℹ️ Ilimi na gaba ɗaya, ba daga majiyar hukuma ba. Yana iya zama ba na yanzu ba:",
         "error": "Yi haƙuri, an sami matsala. Sake gwadawa.",
         "unsupported": "Don Allah aiko saƙon murya ko rubutu.",
     },
@@ -72,6 +74,7 @@ TEXT = {
             "Enwere m ike inyere gị aka gbasara ọrụ ugbo, ahụike, ụlọ akwụkwọ na ule, ọrụ gọọmentị "
             "(NIN, PVC, BVN), na ego na aghụghọ. Biko jụọ ajụjụ gbasara otu n'ime ha."
         ),
+        "general_note": "ℹ️ Ihe ọmụma izugbe, ọ bụghị site na isi iyi gọọmentị. O nwere ike ọ bụghị nke ugbu a:",
         "error": "Ndo, nsogbu mere. Biko nwaa ọzọ.",
         "unsupported": "Biko ziga ozi olu ma ọ bụ ederede.",
     },
@@ -93,6 +96,7 @@ TEXT = {
             "Mo lè ràn yín lọ́wọ́ nípa iṣẹ́ àgbẹ̀, ìlera, ilé-ìwé àti ìdánwò, iṣẹ́ ìjọba "
             "(NIN, PVC, BVN), àti owó àti jìbìtì. Ẹ jọ̀ọ́ ẹ béèrè nípa ọ̀kan nínú wọn."
         ),
+        "general_note": "ℹ️ Ìmọ̀ gbogbogbò ni, kì í ṣe láti orísun ìjọba. Ó lè ti yí padà:",
         "error": "Ẹ má bínú, ìṣòro kan ṣẹlẹ̀. Ẹ tún gbìyànjú.",
         "unsupported": "Ẹ jọ̀ọ́, ẹ fi ohùn tàbí ọ̀rọ̀ kíkọ ránṣẹ́.",
     },
