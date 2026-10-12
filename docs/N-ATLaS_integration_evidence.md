@@ -77,14 +77,14 @@ Six answers from user testing between 10 and 12 October 2026, copied from the an
 
 ## 5. In numbers
 
-From the cleaned interaction log (`interactions.csv`, submitted with the validation evidence):
+From the cleaned interaction log (`interactions.csv`, summarised in the Real-World Validation report):
 
 | Measure | Value |
 |---|---|
-| Questions answered through N-ATLaS | 145, from 29 users |
-| Asked in Hausa, Igbo or Yorùbá and translated by N-ATLaS | 92 |
-| Voice notes transcribed by NCAIR speech models | 101 |
-| Rated helpful | 97.1% of rated answers (34 👍, 1 👎) |
+| Questions answered through N-ATLaS | 170, from 31 users |
+| Asked in Hausa, Igbo or Yorùbá and translated by N-ATLaS | 112 |
+| Voice notes transcribed by NCAIR speech models | 124 |
+| Rated helpful | 97.4% of rated answers (38 👍, 1 👎) |
 
 Every row of the log keeps the user's words (`transcript`), the N-ATLaS English translation (`question_en`), the N-ATLaS answer in English (`answer_en`) and the translated answer the user received (`answer`), so each step can be checked.
 
