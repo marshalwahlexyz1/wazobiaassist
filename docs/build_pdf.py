@@ -1,4 +1,8 @@
-"""Builds docs/WazobiaAssist_Technical_Documentation.pdf from README.md.
+"""Builds the submission PDFs in docs/:
+
+    WazobiaAssist_Technical_Documentation.pdf       the whole README
+    WazobiaAssist_Architecture_Setup_Usage.pdf      architecture, setup and usage sections of the README
+    WazobiaAssist_N-ATLaS_Integration_Evidence.pdf  docs/N-ATLaS_integration_evidence.md
 
     python docs/build_pdf.py        (needs: pip install markdown, and Microsoft Edge or Chrome)
 """
@@ -14,12 +18,18 @@ import markdown
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
-OUT = DOCS / "WazobiaAssist_Technical_Documentation.pdf"
 
 BROWSERS = [
     r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
     r"C:\Program Files\Google\Chrome\Application\chrome.exe",
     "google-chrome", "chromium", "msedge",
+]
+
+# README sections that make up the architecture, setup and usage document.
+ARCHITECTURE_SETUP_USAGE = [
+    "Try it", "What it does", "How it works", "Technology stack", "Domains are plug-in folders",
+    "Run it", "Users' commands", "NAFDAC product check", "Routing test", "Privacy and safety",
+    "Known limitations", "Project layout",
 ]
 
 PIPELINE = [
@@ -42,25 +52,38 @@ def pipeline_html() -> str:
     return f'<div class="pipeline">{steps}</div><p class="legend">Gold steps are N-ATLaS calls.</p>'
 
 
-def body_html() -> str:
+def readme_text() -> str:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     # The cover replaces the README's logo, title and tagline.
     text = re.sub(r"\A(<p[^\n]*logo[^\n]*\n+)?# WazobiaAssist\s*\n+\*\*Government answers in one place, in your language\.\*\*\s*\n", "", text)
     # The cover already names the challenge.
-    text = re.sub(r"\nNational AI Innovation Challenge \(NAIC\) 2026, Problem Statement 02[^\n]*\n", "\n", text, count=1)
+    return re.sub(r"\nNational AI Innovation Challenge \(NAIC\) 2026, Problem Statement 02[^\n]*\n", "\n", text, count=1)
+
+
+def sections(text: str, titles: list[str]) -> str:
+    """The README's "## " sections with these titles, in README order."""
+    parts = re.split(r"(?m)^(?=## )", text)
+    keep = [s for s in parts if s.startswith("## ") and s[3:].splitlines()[0].strip() in titles]
+    missing = set(titles) - {s[3:].splitlines()[0].strip() for s in keep}
+    if missing:
+        raise SystemExit(f"README has no section named: {', '.join(sorted(missing))}")
+    return "".join(keep)
+
+
+def body_html(text: str) -> str:
     # GitHub renders a list right after a line of text; Python-Markdown needs a blank line first.
     text = re.sub(r"(?m)^([^\n\-|#>`\s][^\n]*)\n(- )", r"\1\n\n\2", text)
     html = markdown.markdown(text, extensions=["tables", "fenced_code", "sane_lists"])
-    # Replace the ASCII pipeline sketch with a drawn one.
+    # Replace the ASCII pipeline sketch, or the marker in the evidence document, with a drawn one.
     html = re.sub(r"<pre><code>voice note ─►.*?</code></pre>", pipeline_html(), html, flags=re.S)
-    return html
+    return html.replace("<!-- pipeline -->", pipeline_html())
 
 
-def page() -> str:
+def page(title: str, sub: str, body: str) -> str:
     logo = base64.b64encode((DOCS / "logo.svg").read_bytes()).decode()
     today = datetime.date.today().strftime("%d %B %Y").lstrip("0")
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>WazobiaAssist Technical Documentation</title>
+<title>WazobiaAssist {title}</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap">
 <style>
   @page {{ size: A4; margin: 18mm 16mm 18mm 16mm; }}
@@ -96,8 +119,8 @@ def page() -> str:
 </style></head><body>
 <header class="cover">
   <img src="data:image/svg+xml;base64,{logo}" alt="WazobiaAssist">
-  <h1>Technical Documentation</h1>
-  <p class="sub">Government answers in one place, in your language. A voice-first assistant built on N-ATLaS.</p>
+  <h1>{title}</h1>
+  <p class="sub">{sub}</p>
   <div class="meta">
     <b>Challenge</b><span>National AI Innovation Challenge (NAIC) 2026 · Problem Statement 02: Voice-First Access · Track B (Innovation &amp; Enterprise)</span>
     <b>Try it</b><span><a href="https://wazobiaassist.github.io">wazobiaassist.github.io</a> · Telegram <a href="https://t.me/WazobiaAssist_bot">@WazobiaAssist_bot</a></span>
@@ -105,21 +128,37 @@ def page() -> str:
     <b>Date</b><span>{today}</span>
   </div>
 </header>
-{body_html()}
+{body}
 </body></html>"""
 
 
+def print_pdf(browser: str, html: str, out: Path) -> None:
+    html_path = DOCS / "_print.html"
+    html_path.write_text(html, encoding="utf-8")
+    subprocess.run([browser, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
+                    "--virtual-time-budget=8000", f"--print-to-pdf={out}", html_path.as_uri()],
+                   check=True, capture_output=True)
+    html_path.unlink()
+    print(f"wrote {out} ({out.stat().st_size // 1024} KB)")
+
+
 def main() -> None:
-    html_path = DOCS / "_technical_documentation.html"
-    html_path.write_text(page(), encoding="utf-8")
     browser = next((b for b in BROWSERS if Path(b).exists() or shutil.which(b)), None)
     if not browser:
         raise SystemExit("Install Microsoft Edge or Google Chrome to print the PDF.")
-    subprocess.run([browser, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-                    "--virtual-time-budget=8000", f"--print-to-pdf={OUT}", html_path.as_uri()],
-                   check=True, capture_output=True)
-    html_path.unlink()
-    print(f"wrote {OUT} ({OUT.stat().st_size // 1024} KB)")
+    tagline = "Government answers in one place, in your language. A voice-first assistant built on N-ATLaS."
+    readme = readme_text()
+    evidence = (DOCS / "N-ATLaS_integration_evidence.md").read_text(encoding="utf-8")
+    evidence = re.sub(r"\A# [^\n]*\n", "", evidence)  # the cover carries the title
+    docs = [
+        ("Technical Documentation", tagline, readme, "WazobiaAssist_Technical_Documentation.pdf"),
+        ("Architecture, Setup and Usage", tagline, sections(readme, ARCHITECTURE_SETUP_USAGE),
+         "WazobiaAssist_Architecture_Setup_Usage.pdf"),
+        ("N-ATLaS Integration Evidence", "How WazobiaAssist uses N-ATLaS, with proof from the live system and real users.",
+         evidence, "WazobiaAssist_N-ATLaS_Integration_Evidence.pdf"),
+    ]
+    for title, sub, text, name in docs:
+        print_pdf(browser, page(title, sub, body_html(text)), DOCS / name)
 
 
 if __name__ == "__main__":

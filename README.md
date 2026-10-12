@@ -248,6 +248,43 @@ python -m scripts.export_logs
 
 This writes `data/interactions.csv` and prints counts by language, domain, channel and input type, the satisfaction rate and the median response time. Every question asked on the web page or Telegram is logged automatically and anonymously; our own test questions were removed from the log. The team also collects screenshots and photos of testing sessions as visual evidence.
 
+## Team profile
+
+| # | Name | Role | Affiliation |
+|---|---|---|---|
+| 1 | Olawale Amos Akanji | Team lead and AI engineer | Boston University |
+| 2 | [Name] | Language and content lead | [University or company] |
+| 3 | [Name] | Health and safety content lead | [University or company] |
+| 4 | [Name] | User testing and outreach lead | [University or company] |
+
+### 1. Olawale Amos Akanji: Team lead and AI engineer
+- **Affiliation:** Boston University, Department of Electrical and Computer Engineering (PhD candidate, Computer Engineering: Security and Privacy)
+- **Location:** Boston, Massachusetts
+- **Responsibilities:** leads the project; built the N-ATLaS pipeline, speech recognition, retrieval, web page and Telegram bot; runs the GPU server and deployment.
+- **Relevant experience:** builds Transformer-based models that detect financial scams in conversations and run on the phone. Led an LLM-assisted review of 434 consumer-lending apps that led to the removal of 93 apps with more than 300 million users (ACM AsiaCCS 2026). Eleven years as a cybersecurity specialist in the Nigerian Air Force, and founder of a Nigerian non-profit that teaches young people to avoid fraud. BSc Cybersecurity, Air Force Institute of Technology, Kaduna (overall best graduating student).
+- **Languages:** Yorùbá, English
+
+### 2. [Name]: Language and content lead
+- **Affiliation:** [University or company, department]
+- **Location:** [City, state]
+- **Responsibilities:** collects and checks official sources for identity, voting, money and scam questions (NIMC, INEC, CBN, EFCC); reviews Hausa, Igbo and Yorùbá answers as a native speaker.
+- **Relevant experience:** [1 to 3 lines]
+- **Languages:** [e.g. Hausa, English]
+
+### 3. [Name]: Health and safety content lead
+- **Affiliation:** [University or company, department]
+- **Location:** [City, state]
+- **Responsibilities:** owns health, farming and education content and the safety rules (no doses, no diagnosis, danger signs go to a health facility); checks answers against NPHCDA, WHO, IITA and JAMB guidance.
+- **Relevant experience:** [1 to 3 lines]
+- **Languages:** [e.g. Igbo, English]
+
+### 4. [Name]: User testing and outreach lead
+- **Affiliation:** [University or company, department]
+- **Location:** [City, state]
+- **Responsibilities:** recruits testers through WhatsApp groups and communities, collects feedback and testing evidence, produces the demo video, and leads the plan to reach 1,000 users.
+- **Relevant experience:** [1 to 3 lines]
+- **Languages:** [e.g. Yorùbá, Pidgin, English]
+
 ## Privacy and safety
 
 - Users are stored only as a salted hash of their channel id. Phone, account and ID numbers and emails are masked before saving. Voice notes are deleted after transcription.
