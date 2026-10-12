@@ -4,7 +4,7 @@
 
 To get a NIN, check a BVN, register to vote, check whether a drug is NAFDAC-registered, or know your rights when the police stop you, a Nigerian today has to find the right agency (NIMC, NIBSS, INEC, NAFDAC, CBN, JAMB, the Police Act…), find its website, and read it in English. Millions of people never get past the first step.
 
-WazobiaAssist puts those answers in one place. Ask by **voice note or text in Hausa, Igbo, Yorùbá or Nigerian English**, on the **web, Telegram or WhatsApp**, and it answers in the same language from the agencies' own published information or official registers, and names the agency it came from. It is built on **N-ATLaS**, Nigeria's multilingual language model, and NCAIR's speech recognition models.
+WazobiaAssist puts those answers in one place. Ask by **voice note or text in Hausa, Igbo, Yorùbá or Nigerian English**, on the **web or Telegram**, and it answers in the same language from the agencies' own published information or official registers, and names the agency it came from. It is built on **N-ATLaS**, Nigeria's multilingual language model, and NCAIR's speech recognition models.
 
 National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First Access, Track B (Innovation & Enterprise).
 
@@ -14,7 +14,6 @@ National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First 
 |---|---|
 | Web | **https://wazobiaassist.github.io**: pick a language, then type or tap the microphone |
 | Telegram | **@WazobiaAssist_bot**: send any message, pick a language, then send a voice note or text |
-| WhatsApp | Twilio sandbox: send `join examine-so` to **+1 415 523 8886**, then ask (replies need a paid Twilio account; see Channels) |
 
 ## What it does
 
@@ -51,7 +50,7 @@ One assistant, many agencies:
 
 | Step | Component | Code |
 |---|---|---|
-| 1. Receive | Telegram bot, Twilio WhatsApp webhook, web page (FastAPI) | `app/channels/`, `app/server.py` |
+| 1. Receive | Web page (FastAPI API) and Telegram bot | `app/server.py`, `app/channels/` |
 | 2. Transcribe | NCAIR ASR model for the user's language (Hausa, Igbo, Yoruba, Nigerian-accented English) | `app/speech.py` |
 | 3. Translate in | N-ATLaS translates the question to English. A typed question is translated from the language it is written in, even if the user picked another one | `Assistant.translate`, `app/langdetect.py` |
 | 4. Route | Domain keywords; N-ATLaS decides when keywords are unclear, including "general" (answered from memory, labelled) | `Assistant.route` |
@@ -146,7 +145,7 @@ pytest
 
 ### On a GPU server
 
-The live deployment runs on a single **NVIDIA L40S (48 GB)** GPU: vLLM serves N-ATLaS on the GPU, and the app (speech recognition, embeddings, Telegram, WhatsApp webhook, web API) runs beside it on the CPU. An ngrok tunnel gives it a fixed public https address, which the web page and Twilio call. No training is needed: N-ATLaS is used as released.
+The live deployment runs on a single **NVIDIA L40S (48 GB)** GPU: vLLM serves N-ATLaS on the GPU, and the app (speech recognition, embeddings, Telegram bot, web API) runs beside it on the CPU. An ngrok tunnel gives it a fixed public https address, which the web page and Twilio call. No training is needed: N-ATLaS is used as released.
 
 Any NVIDIA GPU with 24 GB or more works. The scripts below set it up on Google Cloud (one NVIDIA L4, 24 GB). Before you start:
 
@@ -192,12 +191,11 @@ Without Google Cloud (e.g. a rented RunPod or Lambda GPU), follow the same steps
 
 ### Public address
 
-`PUBLIC_BASE_URL` defaults to `https://<NGROK_DOMAIN>`. It is needed for WhatsApp, for voice replies on WhatsApp, and for the web page's microphone (browsers only allow it on https). On ngrok's free plan, visitors to the web page see a one-time ngrok warning page first; WhatsApp and Telegram are not affected.
+`PUBLIC_BASE_URL` defaults to `https://<NGROK_DOMAIN>`. It is needed for the web page's microphone (browsers only allow it on https). On ngrok's free plan, visitors to the web page see a one-time ngrok warning page first; WhatsApp and Telegram are not affected.
 
 ### Channels
 
 - **Telegram:** message @BotFather, `/newbot`, put the token in `TELEGRAM_BOT_TOKEN`. The bot starts with the server.
-- **WhatsApp (Twilio sandbox):** in the Twilio Console, open Messaging → Try it out → Send a WhatsApp message. Note the sandbox number and join phrase shown there (ours: +1 415 523 8886, `join examine-so`) and set `TWILIO_WHATSAPP_FROM=whatsapp:<that number>` (replies go out from whichever number the user wrote to). Put the account SID and auth token in `.env`. In the Sandbox settings tab, set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must send the join phrase first. **A Twilio trial account cannot send the bot's own replies** (only Twilio's templates, error 21654), so WhatsApp needs an upgraded account.
 - **Web:** `https://<NGROK_DOMAIN>` serves the page directly. The public copy at **https://wazobiaassist.github.io** (repo `Wazobiaassist/wazobiaassist.github.io`, a copy of `app/static` with the API address filled in) calls the same server; its address must be in `CORS_ORIGINS` (both GitHub Pages addresses are allowed by default).
 
 ## Users' commands
@@ -232,7 +230,7 @@ It translates and routes each question exactly like the live bot and lists the w
 python -m scripts.export_logs
 ```
 
-This writes `data/interactions.csv` and prints counts by language, domain, channel and input type, the satisfaction rate and the median response time. Every question asked on the web page, Telegram or WhatsApp is logged automatically and anonymously; our own test questions were removed from the log. The team also collects screenshots and photos of testing sessions as visual evidence.
+This writes `data/interactions.csv` and prints counts by language, domain, channel and input type, the satisfaction rate and the median response time. Every question asked on the web page or Telegram is logged automatically and anonymously; our own test questions were removed from the log. The team also collects screenshots and photos of testing sessions as visual evidence.
 
 ## Privacy and safety
 
@@ -241,6 +239,14 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 - Answers come only from curated documents. Each domain has safety rules (for example, health danger signs mean "go to a health facility now").
 - If translation drops a number, USSD code or link, the English original is attached so the user never gets a wrong code.
 - General-knowledge answers are labelled as such, and N-ATLaS refuses to answer health doses, legal or money questions from memory.
+
+## Further improvements and integrations
+
+- **WhatsApp.** The WhatsApp channel is built and tested up to the provider's limit: Twilio delivers users' messages to the bot and the bot writes its answers, but a Twilio trial account may only send Twilio's own template messages (error 21654), so replies are not delivered yet. Next step: an upgraded Twilio account, then a WhatsApp Business number approved by Meta so users don't need a sandbox join phrase. Code: `app/channels/whatsapp.py`, endpoint `POST /whatsapp`. Setup: in the Twilio Console, open Messaging → Try it out → Send a WhatsApp message. Note the sandbox number and join phrase shown there (ours: +1 415 523 8886, `join examine-so`) and set `TWILIO_WHATSAPP_FROM=whatsapp:<that number>` (replies go out from whichever number the user wrote to). Put the account SID and auth token in `.env`. In the Sandbox settings tab, set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must send the join phrase first. **A Twilio trial account cannot send the bot's own replies** (only Twilio's templates, error 21654), so WhatsApp needs an upgraded account.
+- **Feature phones.** A USSD menu and a phone line (IVR) using the same pipeline, for users without smartphones or data.
+- **Igbo voice replies.** No open Igbo text-to-speech voice exists yet; Igbo answers are text only.
+- **More agencies.** Birth certificates (NPC), driver's licences (FRSC), tax (FIRS), pensions (PenCom), and state-level services.
+- **Native-speaker review** of interface text and a sample of translated answers in each language, and Nigerian Pidgin once the models support it.
 
 ## Known limitations
 
