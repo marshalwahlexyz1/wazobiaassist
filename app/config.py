@@ -88,9 +88,9 @@ class Settings:
     )
     nafdac_live: bool = field(default_factory=lambda: _env("NAFDAC_LIVE", "1") == "1")
 
-    # Web pages on other addresses allowed to call the API (the GitHub Pages copy).
+    # Web pages on other addresses allowed to call the API (the GitHub Pages copies).
     cors_origins: list = field(default_factory=lambda: [
-        o.strip().rstrip("/") for o in _env("CORS_ORIGINS", "https://marshalwahlexyz1.github.io").split(",") if o.strip()
+        o.strip().rstrip("/") for o in _env("CORS_ORIGINS", "https://wazobiaassist.github.io,https://marshalwahlexyz1.github.io").split(",") if o.strip()
     ])
 
     db_path: Path = field(default_factory=lambda: Path(_env("DB_PATH", str(ROOT / "data" / "interactions.db"))))

@@ -462,12 +462,12 @@ def test_github_pages_origin_may_call_the_api(monkeypatch, tmp_path):
     sys.modules.pop("app.server", None)
     server = importlib.import_module("app.server")
     client = TestClient(server.app)
-    origin = "https://marshalwahlexyz1.github.io"
-    r = client.options("/api/ask", headers={
-        "Origin": origin, "Access-Control-Request-Method": "POST",
-        "Access-Control-Request-Headers": "ngrok-skip-browser-warning",
-        "Access-Control-Request-Private-Network": "true"})
-    assert r.status_code == 200 and r.headers.get("access-control-allow-origin") == origin
+    for origin in ("https://wazobiaassist.github.io", "https://marshalwahlexyz1.github.io"):
+        r = client.options("/api/ask", headers={
+            "Origin": origin, "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "ngrok-skip-browser-warning",
+            "Access-Control-Request-Private-Network": "true"})
+        assert r.status_code == 200 and r.headers.get("access-control-allow-origin") == origin
     r = client.options("/api/ask", headers={"Origin": "https://evil.example", "Access-Control-Request-Method": "POST"})
     assert r.headers.get("access-control-allow-origin") is None
     sys.modules.pop("app.server", None)
