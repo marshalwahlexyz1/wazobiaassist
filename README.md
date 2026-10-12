@@ -1,10 +1,35 @@
 # WazobiaAssist
 
-A voice assistant for Nigerians, built on **N-ATLAS**. You send a voice note or text in Hausa, Igbo, Yoruba or English, and it answers in the same language from official Nigerian sources, naming the source, or checks your question against an official register instead of guessing. It works on WhatsApp, Telegram and a web page.
+**Government answers in one place, in your language.**
+
+To get a NIN, check a BVN, register to vote, check whether a drug is NAFDAC-registered, or know your rights when the police stop you, a Nigerian today has to find the right agency (NIMC, NIBSS, INEC, NAFDAC, CBN, JAMB, the Police Act…), find its website, and read it in English. Millions of people never get past the first step.
+
+WazobiaAssist puts those answers in one place. Ask by **voice note or text in Hausa, Igbo, Yorùbá or Nigerian English**, on the **web, Telegram or WhatsApp**, and it answers in the same language from the agencies' own published information or official registers, and names the agency it came from. It is built on **N-ATLaS**, Nigeria's multilingual language model, and NCAIR's speech recognition models.
 
 National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First Access, Track B (Innovation & Enterprise).
 
+## Try it
+
+| Channel | How |
+|---|---|
+| Web | **https://wazobiaassist.github.io**: pick a language, then type or tap the microphone |
+| Telegram | **@WazobiaAssist_bot**: send any message, pick a language, then send a voice note or text |
+| WhatsApp | Twilio sandbox: send `join examine-so` to **+1 415 523 8886**, then ask (replies need a paid Twilio account; see Channels) |
+
 ## What it does
+
+One assistant, many agencies:
+
+| Ask about | Answers come from |
+|---|---|
+| Identity and registration: NIN, BVN, NIN-SIM linking, voter registration and PVC, passport, business names | NIMC, NIBSS, NCC, INEC, Nigeria Immigration Service, CAC |
+| Is this product registered? | NAFDAC Greenbook (live search) and NAFDAC Food Products Database |
+| Your rights: arrest, bail, detention, data privacy, consumer rights | Constitution, Police Act 2020, ACJA 2015, NDPA 2023, FCCPA 2018, Legal Aid Council |
+| Money and scams: loan apps, "grants" that ask for a fee, Ponzi schemes, reporting fraud | CBN, SEC, FCCPC, NDIC, EFCC |
+| Exams and schooling: JAMB, WAEC, NECO, free basic education, student loans | JAMB, WAEC, NECO, UBEC, NELFUND |
+| Health: immunisation, pregnancy and newborn danger signs, malaria | NPHCDA, WHO |
+| Farming: planting times, pests, storage, the 2026 rainy season | IITA, FAO, NAERLS, NiMet |
+
 
 **1. Checks a product against NAFDAC's registers.** Ask "Is Emzor paracetamol registered?" or read out the NAFDAC number on the pack. The assistant searches NAFDAC's Greenbook (about 8,900 drugs, vaccines, medical devices and herbal products, searched live) and NAFDAC's Food Products Database (28,481 foods, refreshed daily) and replies with the product name, NAFDAC number, company and whether the registration is valid or expired. Example: NAFDAC number A8-102316L comes back as "registration expired on 19 December 2024". It never calls a product fake just because it isn't found.
 
@@ -14,10 +39,12 @@ National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First 
 
 **It also answers everyday questions** on health (the NPHCDA immunisation schedule and WHO danger signs for pregnancy, newborns, fever, diarrhoea and pneumonia), farming (IITA, FAO, NAERLS and ICRISAT guides, NiMet's 2026 forecast), education (JAMB, WAEC, NECO, UBE, NELFUND) and money safety (CBN, SEC, FCCPC, NDIC and EFCC guidance plus 20 common scam patterns).
 
+**General questions** about Nigeria that no agency document covers ("Who is the president?", "What is the capital?") are answered from N-ATLaS's own knowledge, clearly labelled *"General knowledge, not from an official source. It may be out of date"*. For health doses, legal and money questions, it refuses to answer from memory and points to the right agency instead.
+
 **Why the answers can be trusted:**
-- Answers come only from curated official documents or live registers, and say "I don't know" otherwise.
-- Every answer names its source.
-- Numbers, USSD codes, NAFDAC numbers and links are protected so translation can't change them.
+- Official answers come only from curated agency documents or live registers, and say "I don't know" otherwise.
+- Every official answer names the agency. Sources that were not in the retrieved passages are removed from the answer.
+- Numbers, USSD codes, NAFDAC numbers and links are checked after translation; if one is lost, the English original is attached.
 - Health answers send danger signs to a health facility; legal answers say they are information, not legal advice.
 
 ## How it works
@@ -27,10 +54,10 @@ National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First 
 | 1. Receive | Telegram bot, Twilio WhatsApp webhook, web page (FastAPI) | `app/channels/`, `app/server.py` |
 | 2. Transcribe | NCAIR ASR model for the user's language (Hausa, Igbo, Yoruba, Nigerian-accented English) | `app/speech.py` |
 | 3. Translate in | N-ATLaS translates the question to English | `Assistant.translate` |
-| 4. Route | Domain keywords; N-ATLaS decides when keywords are unclear | `Assistant.route` |
+| 4. Route | Domain keywords; N-ATLaS decides when keywords are unclear, including "general" (answered from memory, labelled) | `Assistant.route` |
 | 5. Retrieve | Top 4 passages from that domain's curated documents (multilingual-e5 embeddings, keyword fallback) | `app/domains.py` |
 | 6. Answer | N-ATLaS answers in English using only those passages and the domain's safety rules | `Assistant.answer_en` |
-| 7. Translate out | N-ATLaS translates the answer; numbers, USSD codes and URLs are protected | `app/protect.py` |
+| 7. Translate out | N-ATLaS translates the answer; numbers, USSD codes and URLs are checked and the English is attached if one is lost | `app/protect.py` |
 | 8. Speak (optional) | Meta MMS-TTS voice note | `app/speech.py` |
 | 9. Log | Anonymous SQLite log + 👍/👎 rating | `app/store.py` |
 
@@ -38,6 +65,29 @@ National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First 
 voice note ─► NCAIR ASR ─► N-ATLaS: translate to English ─► route to domain
           ─► retrieve passages ─► N-ATLaS: answer ─► N-ATLaS: translate back ─► reply (+ voice)
 ```
+
+## N-ATLaS integration
+
+N-ATLaS (`NCAIR1/N-ATLaS`, Llama-3 8B) is used as released, with no fine-tuning, served by vLLM (OpenAI-compatible API, bfloat16, 4,096-token context). It does the language work in every answer:
+
+| Call | What N-ATLaS does | Code |
+|---|---|---|
+| Translate in | Hausa, Igbo or Yorùbá question → English | `Assistant.translate` |
+| Route | Picks the agency domain when keywords are unclear, or "general" / "other" | `Assistant.route` |
+| Product name | Pulls the product name out of a NAFDAC question | `app/products.py` |
+| Answer | Writes the answer from the retrieved agency passages, following the domain's safety rules | `Assistant.answer_en` |
+| General | Answers general questions from memory with a label, or refuses on sensitive topics | `Assistant.answer_general` |
+| Translate out | English answer → the user's language | `Assistant.translate` |
+
+Speech uses NCAIR's ASR models (`NCAIR1/Hausa-ASR`, `Igbo-ASR`, `Yoruba-ASR`, `NigerianAccentedEnglish`). `GET /health` on the live server reports the model in use (`"llm": "NCAIR1/N-ATLaS"`, `"mock": false`) and the number of passages per domain.
+
+Two real answers from user testing:
+
+> **Yorùbá, text:** *Báwo ni mo ṣe lè forúkọ sílẹ̀ fún káàdì ìdìbò (PVC)?*
+> N-ATLaS translation: "How can I register for a Permanent Voter Card (PVC)?" → civic domain → answer in Yorùbá with the steps on `https://cvr.inecnigeria.org`, ending *(Orisun: INEC)*. 3.9 seconds.
+
+> **Nigerian English, voice note:** "how i feel protect myself from malaria" (NCAIR NigerianAccentedEnglish transcript)
+> → health domain → "Sleep under a mosquito net… use mosquito repellent after dark, coils and vaporisers… (Source: World Health Organization)".
 
 ## Domains are plug-in folders
 
@@ -49,7 +99,7 @@ domains/<name>/docs/*.md         curated official sources (first line: "Source: 
 
 Adding a domain means adding a folder, with no code changes. Files starting with `_` (drafts, notes) are ignored, and so is any file that still contains `{{VERIFY}}`.
 
-### Content status (8 Oct, evening)
+### Content status
 
 Every live document was written from official pages opened on 8 Oct 2026, and every file starts with its source links.
 
@@ -94,9 +144,11 @@ uvicorn app.server:app --port 8080 # open http://localhost:8080
 pytest
 ```
 
-### On the GPU server (Google Cloud, NVIDIA L4)
+### On a GPU server
 
-The bot runs on one always-on Google Cloud server with an NVIDIA L4 (24 GB). No training is needed: N-ATLaS is used as released. Before you start:
+The live deployment runs on a single **NVIDIA L40S (48 GB)** GPU: vLLM serves N-ATLaS on the GPU, and the app (speech recognition, embeddings, Telegram, WhatsApp webhook, web API) runs beside it on the CPU. An ngrok tunnel gives it a fixed public https address, which the web page and Twilio call. No training is needed: N-ATLaS is used as released.
+
+Any NVIDIA GPU with 24 GB or more works. The scripts below set it up on Google Cloud (one NVIDIA L4, 24 GB). Before you start:
 
 - **Google Cloud:** sign up for the $300 credit at https://cloud.google.com/free, upgrade the billing account (free-trial accounts cannot use GPUs; the credit still applies), and request quota for 1 NVIDIA L4 GPU in `us-central1`. Approval can take a day.
 - **Hugging Face:** with the account whose token you will use, accept the terms on all five gated models: [N-ATLaS](https://huggingface.co/NCAIR1/N-ATLaS), [Hausa-ASR](https://huggingface.co/NCAIR1/Hausa-ASR), [Igbo-ASR](https://huggingface.co/NCAIR1/Igbo-ASR), [Yoruba-ASR](https://huggingface.co/NCAIR1/Yoruba-ASR) and [NigerianAccentedEnglish](https://huggingface.co/NCAIR1/NigerianAccentedEnglish) (names checked 8 Oct). Then create a read token.
@@ -145,12 +197,12 @@ Without Google Cloud (e.g. a rented RunPod or Lambda GPU), follow the same steps
 ### Channels
 
 - **Telegram:** message @BotFather, `/newbot`, put the token in `TELEGRAM_BOT_TOKEN`. The bot starts with the server.
-- **WhatsApp (Twilio sandbox):** in the Twilio Console, open Messaging → Try it out → Send a WhatsApp message. Note the sandbox number and join phrase shown there (ours: +1 737 232 4091, `join twilio-trial`) and set `TWILIO_WHATSAPP_FROM=whatsapp:<that number>`. Put the account SID and auth token in `.env`. In the Sandbox settings tab, set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must send the join phrase first, and on a trial account each tester's number must also be added under "Verified testers".
-- **Web:** open `https://<NGROK_DOMAIN>`.
+- **WhatsApp (Twilio sandbox):** in the Twilio Console, open Messaging → Try it out → Send a WhatsApp message. Note the sandbox number and join phrase shown there (ours: +1 415 523 8886, `join examine-so`) and set `TWILIO_WHATSAPP_FROM=whatsapp:<that number>` (replies go out from whichever number the user wrote to). Put the account SID and auth token in `.env`. In the Sandbox settings tab, set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must send the join phrase first. **A Twilio trial account cannot send the bot's own replies** (only Twilio's templates, error 21654), so WhatsApp needs an upgraded account.
+- **Web:** `https://<NGROK_DOMAIN>` serves the page directly. The public copy at **https://wazobiaassist.github.io** (repo `Wazobiaassist/wazobiaassist.github.io`, a copy of `app/static` with the API address filled in) calls the same server; its address must be in `CORS_ORIGINS` (both GitHub Pages addresses are allowed by default).
 
 ## Users' commands
 
-- First message: language menu (1 Hausa, 2 Igbo, 3 Yoruba, 4 English), then the privacy notice
+- First message: what WazobiaAssist answers, the language menu (1 Hausa, 2 Igbo, 3 Yorùbá, 4 English (Nigerian)), then the privacy notice
 - `👍` / `👎` after an answer: rate it (Telegram and web have buttons)
 - `LANGUAGE`: change language
 - `DELETE`: erase all of the user's data
@@ -180,7 +232,7 @@ It translates and routes each question exactly like the live bot and lists the w
 python -m scripts.export_logs
 ```
 
-This writes `data/interactions.csv` and prints counts by language, domain, channel and input type, the satisfaction rate and the median response time.
+This writes `data/interactions.csv` and prints counts by language, domain, channel and input type, the satisfaction rate and the median response time. Every question asked on the web page, Telegram or WhatsApp is logged automatically and anonymously; our own test questions were removed from the log. The team also collects screenshots and photos of testing sessions as visual evidence.
 
 ## Privacy and safety
 
@@ -188,6 +240,7 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 - The privacy notice is shown before the first question, and `DELETE` erases everything.
 - Answers come only from curated documents. Each domain has safety rules (for example, health danger signs mean "go to a health facility now").
 - If translation drops a number, USSD code or link, the English original is attached so the user never gets a wrong code.
+- General-knowledge answers are labelled as such, and N-ATLaS refuses to answer health doses, legal or money questions from memory.
 
 ## Known limitations
 
@@ -195,6 +248,7 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 - Nigerian Pidgin is not supported by the model.
 - NCAIR has no text-to-speech model, so spoken replies use Meta MMS-TTS and are optional. MMS has Hausa, Yoruba and English voices but **no Igbo voice**, so Igbo replies are text only.
 - The Hausa, Igbo and Yoruba interface text in `app/messages.py` is a draft for native-speaker review.
+- If a user picks English but writes in Hausa, Igbo or Yorùbá, the question is not translated first, so retrieval is weaker. Picking the matching language gives better answers.
 
 ## Project layout
 
@@ -209,7 +263,7 @@ app/protect.py         keeps numbers, USSD codes and URLs intact through transla
 app/store.py           anonymous SQLite log
 app/messages.py        interface text in 4 languages
 app/channels/          telegram.py, whatsapp.py
-app/static/index.html  web demo page
+app/static/index.html  web page (also published at https://wazobiaassist.github.io)
 domains/               the five domains
 scripts/ask.py         ask one question from the terminal
 scripts/export_logs.py evidence CSV and summary
