@@ -303,7 +303,7 @@ tests/                 pytest, runs without a GPU
 |---|---|---|---|
 | 1 | Olawale Amos Akanji | Team lead and AI engineer | Boston University |
 | 2 | [Name] | Language and translation lead | [University or company] |
-| 3 | [Name] | Domain content lead | [University or company] |
+| 3 | [Joseph Abah] | Domain content lead | [NNPC Limited] |
 | 4 | [Name] | User testing and outreach lead | [University or company] |
 
 ### 1. Olawale Amos Akanji: Team lead and AI engineer
@@ -320,12 +320,12 @@ tests/                 pytest, runs without a GPU
 - **Relevant experience:** Masters in Information Technology (Artificial Intelligence specialization)
 - **Languages:** Hausa, Yoruba, English
 
-### 3. [Name]: Domain content lead
-- **Affiliation:** [University or company, department]
-- **Location:** [City, state]
+### 3. [Joseph Abah]: Domain content lead
+- **Affiliation:** [NNPC Limited]
+- **Location:** [Abuja,FCT
 - **Responsibilities:** collects and checks the official sources for every domain: identity, voting, money and scams (NIMC, INEC, CBN, EFCC), health, farming and education (NPHCDA, WHO, IITA, JAMB); owns the safety rules (no doses, no diagnosis, danger signs go to a health facility).
-- **Relevant experience:** [1 to 3 lines]
-- **Languages:** [e.g. Igbo, English]
+- **Relevant experience:** [3 Years in IT Security]
+- **Languages:** [Idoma, English]
 
 ### 4. [Name]: User testing and outreach lead
 - **Affiliation:** [University or company, department]
