@@ -505,10 +505,16 @@
       clearInterval(timer);
       showRecording(false);
       $("ask").scrollIntoView({ behavior: "smooth", block: "start" });
-      ask("", new Blob(chunks, { type: recorder.mimeType }));
+      const blob = new Blob(chunks, { type: recorder.mimeType });
+      // A quick tap on and off records nothing the server can hear.
+      if (Date.now() - started < 1000 || blob.size < 1000) {
+        bubble("bot", "That recording was too short. Tap the microphone, speak your question, then tap again to send.");
+        return;
+      }
+      ask("", blob);
     };
-    recorder.start();
     const started = Date.now();
+    recorder.start();
     showRecording(true); $("timer").textContent = "0:00";
     timer = setInterval(() => {
       const s = Math.floor((Date.now() - started) / 1000);
