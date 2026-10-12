@@ -254,7 +254,7 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 |---|---|---|---|
 | 1 | Olawale Amos Akanji | Team lead and AI engineer | Boston University |
 | 2 | [Name] | Language and content lead | [University or company] |
-| 3 | [Name] | Health and safety content lead | [University or company] |
+| 3 | [Name] | Domain content lead | [University or company] |
 | 4 | [Name] | User testing and outreach lead | [University or company] |
 
 ### 1. Olawale Amos Akanji: Team lead and AI engineer
@@ -271,7 +271,7 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 - **Relevant experience:** [1 to 3 lines]
 - **Languages:** [e.g. Hausa, English]
 
-### 3. [Name]: Health and safety content lead
+### 3. [Name]: Domain content lead
 - **Affiliation:** [University or company, department]
 - **Location:** [City, state]
 - **Responsibilities:** owns health, farming and education content and the safety rules (no doses, no diagnosis, danger signs go to a health facility); checks answers against NPHCDA, WHO, IITA and JAMB guidance.
