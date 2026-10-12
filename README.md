@@ -302,7 +302,7 @@ tests/                 pytest, runs without a GPU
 | # | Name | Role | Affiliation |
 |---|---|---|---|
 | 1 | Olawale Amos Akanji | Team lead and AI engineer | Boston University |
-| 2 | [Name] | Language and translation lead | [University or company] |
+| 2 | Umar Mamman Toro | Language and translation lead | Miva Open University; Digital Encode |
 | 3 | Joseph Abah | Domain content lead | NNPC Limited |
 | 4 | [Name] | User testing and outreach lead | [University or company] |
 
@@ -314,17 +314,17 @@ tests/                 pytest, runs without a GPU
 - **Languages:** Yorùbá, English
 
 ### 2. Umar Mamman Toro: Language and translation lead
-- **Affiliation:** Miva Open University, Masters of Information Technology, Digital Encode (Information Security Consultant)
-- **Location:** [Surulere, Lagos]
+- **Affiliation:** Miva Open University (Master of Information Technology); Information Security Consultant, Digital Encode
+- **Location:** Surulere, Lagos
 - **Responsibilities:** reviews Hausa, Igbo and Yorùbá questions and answers as a native speaker; checks that N-ATLaS translations keep the meaning, names and codes right; writes the test questions in each language.
-- **Relevant experience:** Masters in Information Technology (Artificial Intelligence specialization)
-- **Languages:** Hausa, Yoruba, English
+- **Relevant experience:** Master of Information Technology with a specialisation in Artificial Intelligence; works as an information security consultant.
+- **Languages:** Hausa, Yorùbá, English
 
 ### 3. Joseph Abah: Domain content lead
 - **Affiliation:** NNPC Limited
-- **Location:** Abuja,FCT
+- **Location:** Abuja, FCT
 - **Responsibilities:** collects and checks the official sources for every domain: identity, voting, money and scams (NIMC, INEC, CBN, EFCC), health, farming and education (NPHCDA, WHO, IITA, JAMB); owns the safety rules (no doses, no diagnosis, danger signs go to a health facility).
-- **Relevant experience:** 3 Years in IT Security
+- **Relevant experience:** Three years in IT security.
 - **Languages:** Idoma, English
 
 ### 4. [Name]: User testing and outreach lead
