@@ -1,0 +1,45 @@
+WazobiaAssist: real-user interaction summary
+Period: 2026-10-10 23:23 to 2026-10-12 21:59 UTC
+
+Interactions | unique users | failed:
+   170 | 31 | 0
+
+By language:
+   yo | 73
+   en | 58
+   ha | 37
+   ig | 2
+
+By domain:
+   health | 39
+   civic | 34
+   other | 30
+   money | 25
+   agriculture | 14
+   laws | 9
+   general | 9
+   products | 8
+   education | 2
+
+By channel:
+   web | 105
+   telegram | 65
+
+By input_type:
+   voice | 124
+   text | 46
+
+Ratings (up | down | not rated):
+   38 | 1 | 131
+
+Satisfaction (% of rated answers that were helpful):
+   97.4
+
+Median response time (ms):
+   14971  (text 1414, voice 18791)
+
+Data cleaning:
+   Raw log: 185 interactions from 32 users (interactions_all_raw.csv).
+   Removed 11 voice notes the speech model could not transcribe (output was one word repeated, e.g. background noise).
+   Removed 4 empty web recordings (microphone tapped on and off); the web page now ignores recordings under 1 second.
+   Team test questions were removed from the log before export. Users are identified only by an anonymous hash.
