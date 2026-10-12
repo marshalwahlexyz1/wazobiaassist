@@ -313,12 +313,12 @@ tests/                 pytest, runs without a GPU
 - **Relevant experience:** builds Transformer-based models that detect financial scams in conversations and run on the phone. Led an LLM-assisted review of 434 consumer-lending apps that led to the removal of 93 apps with more than 300 million users (ACM AsiaCCS 2026). Eleven years as a cybersecurity specialist in the Nigerian Air Force, and founder of a Nigerian non-profit that teaches young people to avoid fraud. BSc Cybersecurity, Air Force Institute of Technology, Kaduna (overall best graduating student).
 - **Languages:** Yorùbá, English
 
-### 2. [Name]: Language and translation lead
-- **Affiliation:** [University or company, department]
-- **Location:** [City, state]
+### 2. Umar Mamman Toro: Language and translation lead
+- **Affiliation:** Miva Open University, Masters of Information Technology, Digital Encode (Information Security Consultant)
+- **Location:** [Surulere, Lagos]
 - **Responsibilities:** reviews Hausa, Igbo and Yorùbá questions and answers as a native speaker; checks that N-ATLaS translations keep the meaning, names and codes right; writes the test questions in each language.
-- **Relevant experience:** [1 to 3 lines]
-- **Languages:** [e.g. Hausa, English]
+- **Relevant experience:** Masters in Information Technology (Artificial Intelligence specialization)
+- **Languages:** Hausa, Yoruba, English
 
 ### 3. [Name]: Domain content lead
 - **Affiliation:** [University or company, department]
