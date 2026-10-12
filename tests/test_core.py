@@ -97,6 +97,29 @@ def test_full_flow(convo):
     assert (row["channel"], row["language"], row["domain"], row["rating"]) == ("whatsapp", "ha", "money", "up")
 
 
+
+def test_question_written_in_another_language_is_translated_from_it(convo, monkeypatch):
+    from app.langdetect import written_language
+
+    assert written_language("Ta yaya zan kare kaina daga cutar zazzabin cizon sauro?") == "ha"
+    assert written_language("Báwo ni mo ṣe lè forúkọ sílẹ̀ fún káàdì ìdìbò?") == "yo"
+    assert written_language("Kedu ka m ga esi nweta NIN?") == "ig"
+    for english in ("How i fit protect myself from malaria?", "Is Indomie NAFDAC registered?",
+                    "I'm looking for my NIN, can you help me get it?"):
+        assert written_language(english) is None
+
+    seen = []
+    real_ask = convo.assistant.ask
+    monkeypatch.setattr(convo.assistant, "ask", lambda lang, **kw: seen.append(lang) or real_ask(lang, **kw))
+    convo.handle("web", "u1", text="hello")
+    convo.handle("web", "u1", text="4")  # 4 = English
+    convo.handle("web", "u1", text="Ta yaya zan kare kaina daga cutar zazzabin cizon sauro?")
+    convo.handle("web", "u1", text="How do I check my NIN?")
+    assert seen == ["ha", "en"]
+    rows = convo.store.db.execute("SELECT language FROM interactions ORDER BY id").fetchall()
+    assert [r["language"] for r in rows] == ["ha", "en"]
+
+
 def test_language_button_switches_language(convo):
     convo.handle("telegram", "7", text="/start")
     convo.handle("telegram", "7", text="lang:yo")

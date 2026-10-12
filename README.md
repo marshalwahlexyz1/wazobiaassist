@@ -53,7 +53,7 @@ One assistant, many agencies:
 |---|---|---|
 | 1. Receive | Telegram bot, Twilio WhatsApp webhook, web page (FastAPI) | `app/channels/`, `app/server.py` |
 | 2. Transcribe | NCAIR ASR model for the user's language (Hausa, Igbo, Yoruba, Nigerian-accented English) | `app/speech.py` |
-| 3. Translate in | N-ATLaS translates the question to English | `Assistant.translate` |
+| 3. Translate in | N-ATLaS translates the question to English. A typed question is translated from the language it is written in, even if the user picked another one | `Assistant.translate`, `app/langdetect.py` |
 | 4. Route | Domain keywords; N-ATLaS decides when keywords are unclear, including "general" (answered from memory, labelled) | `Assistant.route` |
 | 5. Retrieve | Top 4 passages from that domain's curated documents (multilingual-e5 embeddings, keyword fallback) | `app/domains.py` |
 | 6. Answer | N-ATLaS answers in English using only those passages and the domain's safety rules | `Assistant.answer_en` |
@@ -248,7 +248,6 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 - Nigerian Pidgin is not supported by the model.
 - NCAIR has no text-to-speech model, so spoken replies use Meta MMS-TTS and are optional. MMS has Hausa, Yoruba and English voices but **no Igbo voice**, so Igbo replies are text only.
 - The Hausa, Igbo and Yoruba interface text in `app/messages.py` is a draft for native-speaker review.
-- If a user picks English but writes in Hausa, Igbo or Yorùbá, the question is not translated first, so retrieval is weaker. Picking the matching language gives better answers.
 
 ## Project layout
 

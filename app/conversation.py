@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .assistant import Assistant
 from .config import LANGUAGES
+from .langdetect import written_language
 from .messages import LANGUAGE_MENU, t
 from .store import Store
 
@@ -104,17 +105,22 @@ class Conversation:
             if not msg:
                 return [Reply(t(lang, "unsupported"))]
 
+        # A typed question is translated from (and answered in) the language it is
+        # written in, even if the user picked another one in the menu.
+        q_lang = lang
+        if not audio_path:
+            q_lang = written_language(msg) or lang
         record = {
             "channel": channel,
-            "language": lang,
+            "language": q_lang,
             "input_type": "voice" if audio_path else "text",
             "audio_seconds": audio_seconds,
         }
         try:
             result = self.assistant.ask(
-                lang, text=msg, audio_path=audio_path,
-                off_topic_reply=t(lang, "off_topic"),
-                general_note=t(lang, "general_note"),
+                q_lang, text=msg, audio_path=audio_path,
+                off_topic_reply=t(q_lang, "off_topic"),
+                general_note=t(q_lang, "general_note"),
                 speak_to=self.media_dir / f"{uuid.uuid4().hex}.ogg",
             )
         except Exception as exc:  # failures are logged too: they are part of the evidence
