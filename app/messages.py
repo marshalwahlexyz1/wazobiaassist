@@ -39,6 +39,7 @@ TEXT = {
         "general_note": "ℹ️ General knowledge, not from an official source. It may be out of date:",
         "error": "Sorry, something went wrong. Please try again.",
         "unsupported": "Please send a voice note or text.",
+        "unclear": "Sorry, I couldn't hear that clearly. Please record again in a quiet place, close to the phone.",
     },
     "ha": {
         "privacy": (
@@ -64,6 +65,7 @@ TEXT = {
         "general_note": "ℹ️ Ilimi na gaba ɗaya, ba daga majiyar hukuma ba. Yana iya zama ba na yanzu ba:",
         "error": "Yi haƙuri, an sami matsala. Sake gwadawa.",
         "unsupported": "Don Allah aiko saƙon murya ko rubutu.",
+        "unclear": "Yi haƙuri, ban ji sosai ba. Don Allah sake yin rikodi a wuri mai shiru, kusa da wayar.",
     },
     "ig": {
         "privacy": (
@@ -88,6 +90,7 @@ TEXT = {
         "general_note": "ℹ️ Ihe ọmụma izugbe, ọ bụghị site na isi iyi gọọmentị. O nwere ike ọ bụghị nke ugbu a:",
         "error": "Ndo, nsogbu mere. Biko nwaa ọzọ.",
         "unsupported": "Biko ziga ozi olu ma ọ bụ ederede.",
+        "unclear": "Ndo, anụghị m nke ọma. Biko dekọọ ọzọ n'ebe dị jụụ, nso na ekwentị.",
     },
     "yo": {
         "privacy": (
@@ -112,6 +115,7 @@ TEXT = {
         "general_note": "ℹ️ Ìmọ̀ gbogbogbò ni, kì í ṣe láti orísun ìjọba. Ó lè ti yí padà:",
         "error": "Ẹ má bínú, ìṣòro kan ṣẹlẹ̀. Ẹ tún gbìyànjú.",
         "unsupported": "Ẹ jọ̀ọ́, ẹ fi ohùn tàbí ọ̀rọ̀ kíkọ ránṣẹ́.",
+        "unclear": "Ẹ má bínú, mi ò gbọ́ ọ dáadáa. Ẹ jọ̀ọ́, ẹ tún gbà á sílẹ̀ níbi tí kò sí ariwo, nítòsí fóònù.",
     },
 }
 

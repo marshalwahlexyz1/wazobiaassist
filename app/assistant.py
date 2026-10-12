@@ -65,6 +65,19 @@ PASSAGES:
 {passages}"""
 
 
+class UnclearAudio(Exception):
+    """The voice note had no speech the model could make out."""
+
+
+def is_unclear(transcript: str) -> bool:
+    """Speech models given noise or silence tend to repeat one word ("ƙara ƙara ƙara ...")."""
+    words = transcript.lower().split()
+    if not words:
+        return True
+    top = max(words.count(w) for w in set(words))
+    return top >= 5 and top >= len(words) / 3
+
+
 @dataclass
 class Result:
     transcript: str
@@ -176,7 +189,15 @@ class Assistant:
     def ask(self, lang: str, text: str | None = None, audio_path: str | None = None,
             off_topic_reply: str = "", general_note: str = "", speak_to: Path | None = None) -> Result:
         start = time.monotonic()
-        transcript = self.asr.transcribe(audio_path, lang) if audio_path else (text or "").strip()
+        if audio_path:
+            try:
+                transcript = self.asr.transcribe(audio_path, lang)
+            except ValueError as exc:  # ffmpeg found no audio in the file
+                raise UnclearAudio(str(exc)) from exc
+            if is_unclear(transcript):
+                raise UnclearAudio(transcript[:200])
+        else:
+            transcript = (text or "").strip()
         if not transcript:
             raise ValueError("empty question")
         question_en = self.translate(transcript, lang, "en")

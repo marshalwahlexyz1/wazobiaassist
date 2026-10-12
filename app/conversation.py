@@ -8,7 +8,7 @@ import uuid
 from dataclasses import dataclass
 from pathlib import Path
 
-from .assistant import Assistant
+from .assistant import Assistant, UnclearAudio
 from .config import LANGUAGES
 from .langdetect import written_language
 from .messages import LANGUAGE_MENU, t
@@ -123,6 +123,10 @@ class Conversation:
                 general_note=t(q_lang, "general_note"),
                 speak_to=self.media_dir / f"{uuid.uuid4().hex}.ogg",
             )
+        except UnclearAudio as exc:
+            # Nothing was answered, so this is not an interaction: ask the user to try again.
+            log.info("unclear voice note: %s", exc)
+            return [Reply(t(lang, "unclear"))]
         except Exception as exc:  # failures are logged too: they are part of the evidence
             log.exception("question failed")
             store.log(uh, **record, error=repr(exc)[:500])

@@ -18,7 +18,8 @@ def main() -> None:
     rows = db.execute("SELECT * FROM interactions ORDER BY id").fetchall()
 
     out = settings.db_path.with_suffix(".csv")
-    with out.open("w", newline="", encoding="utf-8") as f:
+    # utf-8-sig so Excel shows Yorùbá, Hausa and Igbo letters correctly.
+    with out.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.writer(f)
         if rows:
             writer.writerow(rows[0].keys())

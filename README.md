@@ -101,7 +101,7 @@ Two real answers from user testing:
 | Backend | Python 3.12, FastAPI, Uvicorn, SQLite (anonymous log and NAFDAC food database) |
 | Channels | Web app (HTML, CSS, JavaScript with in-browser recording) on GitHub Pages; Telegram Bot API (`python-telegram-bot`); Twilio WhatsApp API (built, next phase) |
 | Infrastructure | One NVIDIA L40S (48 GB) GPU; ngrok for a fixed HTTPS address; Google Cloud (NVIDIA L4) setup scripts as an alternative |
-| Engineering | GitHub, GitHub Actions, pytest (43 tests that run without a GPU) |
+| Engineering | GitHub, GitHub Actions, pytest (45 tests that run without a GPU) |
 | Official data | NAFDAC Greenbook (live) and Food Products Database; NIMC, NIBSS, NCC, INEC, NIS, CAC, CBN, SEC, FCCPC, NDIC, EFCC, JAMB, WAEC, NECO, UBEC, NELFUND, NPHCDA, WHO, IITA, FAO, NAERLS, NiMet; the Constitution and federal laws |
 
 ## Domains are plug-in folders

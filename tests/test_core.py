@@ -97,6 +97,27 @@ def test_full_flow(convo):
     assert (row["channel"], row["language"], row["domain"], row["rating"]) == ("whatsapp", "ha", "money", "up")
 
 
+def test_unclear_voice_note_asks_again_and_is_not_logged(convo):
+    convo.handle("telegram", "u1", text="hi")
+    convo.handle("telegram", "u1", text="1")
+    convo.assistant.asr.transcribe = lambda path, lang: "ƙara ƙara ƙara ƙara ƙara ƙara ƙara"
+    assert convo.handle("telegram", "u1", audio_path="voice.ogg")[0].text == TEXT["ha"]["unclear"]
+
+    def no_audio(path, lang):
+        raise ValueError("Soundfile is either not in the correct format or is malformed")
+    convo.assistant.asr.transcribe = no_audio
+    assert convo.handle("telegram", "u1", audio_path="voice.ogg")[0].text == TEXT["ha"]["unclear"]
+    assert convo.store.db.execute("SELECT COUNT(*) FROM interactions").fetchone()[0] == 0
+
+
+def test_is_unclear_keeps_real_questions():
+    from app.assistant import is_unclear
+    assert not is_unclear("menene aikin hukumar efcc wajen yaƙi da cin hanci?")
+    assert not is_unclear("báwo ni mo ṣe lè forúkọsílẹ̀ fún káàdì ìdìbò?")
+    assert is_unclear("mafiyar ƙasa ƙasa ƙasa ƙasa ƙasa ƙasa ƙasa ƙasa")
+    assert is_unclear("")
+
+
 
 def test_question_written_in_another_language_is_translated_from_it(convo, monkeypatch):
     from app.langdetect import written_language
