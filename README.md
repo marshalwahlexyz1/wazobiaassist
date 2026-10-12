@@ -304,7 +304,7 @@ tests/                 pytest, runs without a GPU
 | 1 | Olawale Amos Akanji | Team lead and AI engineer | Boston University |
 | 2 | Umar Mamman Toro | Language and translation lead | Miva Open University; Digital Encode |
 | 3 | Joseph Abah | Domain content lead | NNPC Limited |
-| 4 | [Name] | User testing and outreach lead | [University or company] |
+| 4 | Nwaikwu Ekenedilichukwu Sebastian | User testing and outreach lead | Inspirive Technologies |
 
 ### 1. Olawale Amos Akanji: Team lead and AI engineer
 - **Affiliation:** Boston University, Department of Electrical and Computer Engineering (PhD candidate, Computer Engineering: Security and Privacy)
