@@ -253,7 +253,7 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 | # | Name | Role | Affiliation |
 |---|---|---|---|
 | 1 | Olawale Amos Akanji | Team lead and AI engineer | Boston University |
-| 2 | [Name] | Language and content lead | [University or company] |
+| 2 | [Name] | Language and translation lead | [University or company] |
 | 3 | [Name] | Domain content lead | [University or company] |
 | 4 | [Name] | User testing and outreach lead | [University or company] |
 
@@ -264,7 +264,7 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 - **Relevant experience:** builds Transformer-based models that detect financial scams in conversations and run on the phone. Led an LLM-assisted review of 434 consumer-lending apps that led to the removal of 93 apps with more than 300 million users (ACM AsiaCCS 2026). Eleven years as a cybersecurity specialist in the Nigerian Air Force, and founder of a Nigerian non-profit that teaches young people to avoid fraud. BSc Cybersecurity, Air Force Institute of Technology, Kaduna (overall best graduating student).
 - **Languages:** Yorùbá, English
 
-### 2. [Name]: Language and content lead
+### 2. [Name]: Language and translation lead
 - **Affiliation:** [University or company, department]
 - **Location:** [City, state]
 - **Responsibilities:** collects and checks official sources for identity, voting, money and scam questions (NIMC, INEC, CBN, EFCC); reviews Hausa, Igbo and Yorùbá answers as a native speaker.
