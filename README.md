@@ -327,9 +327,9 @@ tests/                 pytest, runs without a GPU
 - **Relevant experience:** Three years in IT security.
 - **Languages:** Idoma, English
 
-### 4. [Name]: User testing and outreach lead
-- **Affiliation:** [University or company, department]
-- **Location:** [City, state]
+### 4. Nwaikwu Ekenedilichukwu Sebastian: User testing and outreach lead
+- **Affiliation:** Inspirive Technologies, IT Support Engineer
+- **Location:** [Ikoyi, Lagos]
 - **Responsibilities:** recruits testers through WhatsApp groups and communities, collects feedback and testing evidence, produces the demo video, and leads the plan to reach 1,000 users.
-- **Relevant experience:** [1 to 3 lines]
-- **Languages:** [e.g. Yorùbá, Pidgin, English]
+- **Relevant experience:** Manages user accounts, access controls, identity management, and enterprise IT resources. 
+- **Languages:** Igbo, Pidgin, English
