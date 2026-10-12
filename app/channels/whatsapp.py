@@ -53,10 +53,10 @@ class WhatsApp:
     def enabled(self) -> bool:
         return bool(self.s.twilio_sid and self.s.twilio_token)
 
-    def send(self, to: str, body: str, media_url: str | None = None) -> None:
+    def send(self, to: str, body: str, media_url: str | None = None, from_: str | None = None) -> None:
         parts = split_message(body) or [""]
         for i, part in enumerate(parts):
-            data = {"From": self.s.twilio_whatsapp_from, "To": to, "Body": part}
+            data = {"From": from_ or self.s.twilio_whatsapp_from, "To": to, "Body": part}
             if media_url and i == len(parts) - 1:
                 data["MediaUrl"] = media_url
             r = httpx.post(
@@ -69,6 +69,9 @@ class WhatsApp:
     def process(self, form: dict) -> None:
         """Runs in the background after Twilio's webhook call has returned."""
         sender = form.get("From", "")
+        # Reply from the number the user wrote to (the sandbox number), so a wrong
+        # TWILIO_WHATSAPP_FROM can't break replies.
+        our_number = form.get("To") or None
         text = form.get("Body", "")
         media_type = form.get("MediaContentType0", "")
         with tempfile.TemporaryDirectory() as tmp:
@@ -92,4 +95,4 @@ class WhatsApp:
             media_url = None
             if reply.audio_path and self.s.public_base_url:
                 media_url = f"{self.s.public_base_url}/media/{Path(reply.audio_path).name}"
-            self.send(sender, body, media_url)
+            self.send(sender, body, media_url, from_=our_number)

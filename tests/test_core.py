@@ -233,6 +233,17 @@ def test_split_message_keeps_all_text_within_limit():
     assert split_message("short") == ["short"]
 
 
+def test_whatsapp_replies_from_the_number_the_user_wrote_to(settings, convo, monkeypatch):
+    from app.channels.whatsapp import WhatsApp
+
+    sent = []
+    monkeypatch.setattr("app.channels.whatsapp.httpx.post", lambda url, data, **kw: sent.append(data)
+                        or type("R", (), {"status_code": 201, "text": ""})())
+    wa = WhatsApp(settings, convo)
+    wa.process({"From": "whatsapp:+234800", "To": "whatsapp:+14155238886", "Body": "hi"})
+    assert sent and all(d["From"] == "whatsapp:+14155238886" and d["To"] == "whatsapp:+234800" for d in sent)
+
+
 # --- concurrency -----------------------------------------------------------------
 
 def test_different_users_are_answered_in_parallel(convo, monkeypatch):
