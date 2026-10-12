@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" width="420" height="96" role="img" aria-label="WazobiaAssist">
+  <rect x="4" y="4" width="88" height="70" rx="22" fill="#008751"/>
+  <path d="M20 66 L12 92 L42 72 Z" fill="#008751"/>
+  <rect x="16" y="31" width="8" height="16" rx="4" fill="#ffffff"/>
+  <rect x="30" y="23" width="8" height="32" rx="4" fill="#ffffff"/>
+  <rect x="44" y="17" width="8" height="44" rx="4" fill="#f2b705"/>
+  <rect x="58" y="23" width="8" height="32" rx="4" fill="#ffffff"/>
+  <rect x="72" y="31" width="8" height="16" rx="4" fill="#ffffff"/>
+  <text x="108" y="56" font-family="Poppins, 'Segoe UI', Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="-0.5"><tspan fill="#008751">Wazobia</tspan><tspan fill="#14201a">Assist</tspan></text>
+  <text x="110" y="82" font-family="'Segoe UI', Arial, sans-serif" font-size="15" fill="#5a6b62" letter-spacing="0.3">Government answers in one place</text>
+</svg>

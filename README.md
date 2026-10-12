@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/logo.svg" alt="WazobiaAssist" width="360"></p>
+
 # WazobiaAssist
 
 **Government answers in one place, in your language.**
@@ -87,6 +89,20 @@ Two real answers from user testing:
 
 > **Nigerian English, voice note:** "how i feel protect myself from malaria" (NCAIR NigerianAccentedEnglish transcript)
 > → health domain → "Sleep under a mosquito net… use mosquito repellent after dark, coils and vaporisers… (Source: World Health Organization)".
+
+## Technology stack
+
+| Layer | Tools |
+|---|---|
+| Language model | **N-ATLaS** (`NCAIR1/N-ATLaS`, Llama-3 8B), used as released, served by **vLLM** (OpenAI-compatible API, bfloat16) |
+| Speech recognition | **NCAIR ASR** models: Hausa-ASR, Igbo-ASR, Yoruba-ASR, NigerianAccentedEnglish (Whisper-based) |
+| Retrieval | `intfloat/multilingual-e5-small` embeddings over curated agency documents, with a keyword fallback |
+| Model runtime | PyTorch, Hugging Face Transformers, Sentence-Transformers, FFmpeg |
+| Backend | Python 3.12, FastAPI, Uvicorn, SQLite (anonymous log and NAFDAC food database) |
+| Channels | Web app (HTML, CSS, JavaScript with in-browser recording) on GitHub Pages; Telegram Bot API (`python-telegram-bot`); Twilio WhatsApp API (built, next phase) |
+| Infrastructure | One NVIDIA L40S (48 GB) GPU; ngrok for a fixed HTTPS address; Google Cloud (NVIDIA L4) setup scripts as an alternative |
+| Engineering | GitHub, GitHub Actions, pytest (43 tests that run without a GPU) |
+| Official data | NAFDAC Greenbook (live) and Food Products Database; NIMC, NIBSS, NCC, INEC, NIS, CAC, CBN, SEC, FCCPC, NDIC, EFCC, JAMB, WAEC, NECO, UBEC, NELFUND, NPHCDA, WHO, IITA, FAO, NAERLS, NiMet; the Constitution and federal laws |
 
 ## Domains are plug-in folders
 

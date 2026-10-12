@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="WazobiaAssist">
+  <rect x="4" y="4" width="88" height="70" rx="22" fill="#008751"/>
+  <path d="M20 66 L12 92 L42 72 Z" fill="#008751"/>
+  <rect x="16" y="31" width="8" height="16" rx="4" fill="#ffffff"/>
+  <rect x="30" y="23" width="8" height="32" rx="4" fill="#ffffff"/>
+  <rect x="44" y="17" width="8" height="44" rx="4" fill="#f2b705"/>
+  <rect x="58" y="23" width="8" height="32" rx="4" fill="#ffffff"/>
+  <rect x="72" y="31" width="8" height="16" rx="4" fill="#ffffff"/>
+</svg>
