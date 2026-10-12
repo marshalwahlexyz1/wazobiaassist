@@ -267,14 +267,14 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 ### 2. [Name]: Language and translation lead
 - **Affiliation:** [University or company, department]
 - **Location:** [City, state]
-- **Responsibilities:** collects and checks official sources for identity, voting, money and scam questions (NIMC, INEC, CBN, EFCC); reviews Hausa, Igbo and Yorùbá answers as a native speaker.
+- **Responsibilities:** reviews Hausa, Igbo and Yorùbá questions and answers as a native speaker; checks that N-ATLaS translations keep the meaning, names and codes right; writes the test questions in each language.
 - **Relevant experience:** [1 to 3 lines]
 - **Languages:** [e.g. Hausa, English]
 
 ### 3. [Name]: Domain content lead
 - **Affiliation:** [University or company, department]
 - **Location:** [City, state]
-- **Responsibilities:** owns health, farming and education content and the safety rules (no doses, no diagnosis, danger signs go to a health facility); checks answers against NPHCDA, WHO, IITA and JAMB guidance.
+- **Responsibilities:** collects and checks the official sources for every domain: identity, voting, money and scams (NIMC, INEC, CBN, EFCC), health, farming and education (NPHCDA, WHO, IITA, JAMB); owns the safety rules (no doses, no diagnosis, danger signs go to a health facility).
 - **Relevant experience:** [1 to 3 lines]
 - **Languages:** [e.g. Igbo, English]
 
