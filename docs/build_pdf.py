@@ -4,6 +4,7 @@
     WazobiaAssist_Architecture_Setup_Usage.pdf      architecture, setup and usage sections of the README
     WazobiaAssist_N-ATLaS_Integration_Evidence.pdf  docs/N-ATLaS_integration_evidence.md
     WazobiaAssist_Team_Profile.pdf                  the README's team profile
+    WazobiaAssist_User_Acquisition_Plan.pdf         docs/user_acquisition_plan.md
 
     python docs/build_pdf.py        (needs: pip install markdown, and Microsoft Edge or Chrome)
 """
@@ -159,6 +160,9 @@ def main() -> None:
          evidence, "WazobiaAssist_N-ATLaS_Integration_Evidence.pdf"),
         ("Team Profile", "The people building WazobiaAssist: bios, affiliations and roles.",
          re.sub(r"\A## Team profile\s*\n", "", sections(readme, ["Team profile"])), "WazobiaAssist_Team_Profile.pdf"),
+        ("User Acquisition Plan", "Reaching 1,000 users within 3 months of the award.",
+         re.sub(r"\A# [^\n]*\n", "", (DOCS / "user_acquisition_plan.md").read_text(encoding="utf-8")),
+         "WazobiaAssist_User_Acquisition_Plan.pdf"),
     ]
     for title, sub, text, name in docs:
         print_pdf(browser, page(title, sub, body_html(text)), DOCS / name)
