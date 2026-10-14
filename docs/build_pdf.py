@@ -29,9 +29,9 @@ BROWSERS = [
 
 # README sections that make up the architecture, setup and usage document.
 ARCHITECTURE_SETUP_USAGE = [
-    "Try it", "What it does", "How it works", "Technology stack", "Domains are plug-in folders",
+    "Why it matters", "Our two promises", "Try it", "What it does", "How we keep answers correct", "How it works", "Technology stack", "Domains are plug-in folders",
     "Run it", "Users' commands", "NAFDAC product check", "Routing test", "Privacy and safety",
-    "Known limitations", "Project layout",
+    "Further improvements and integrations", "Known limitations", "Project layout",
 ]
 
 PIPELINE = [
@@ -75,7 +75,7 @@ def sections(text: str, titles: list[str]) -> str:
 def body_html(text: str) -> str:
     # GitHub renders a list right after a line of text; Python-Markdown needs a blank line first.
     text = re.sub(r"(?m)^([^\n\-|#>`\s][^\n]*)\n(- )", r"\1\n\n\2", text)
-    html = markdown.markdown(text, extensions=["tables", "fenced_code", "sane_lists"])
+    html = markdown.markdown(text, extensions=["tables", "fenced_code", "sane_lists", "toc"])
     # Replace the ASCII pipeline sketch, or the marker in the evidence document, with a drawn one.
     html = re.sub(r"<pre><code>voice note ─►.*?</code></pre>", pipeline_html(), html, flags=re.S)
     return html.replace("<!-- pipeline -->", pipeline_html())
@@ -148,7 +148,7 @@ def main() -> None:
     browser = next((b for b in BROWSERS if Path(b).exists() or shutil.which(b)), None)
     if not browser:
         raise SystemExit("Install Microsoft Edge or Google Chrome to print the PDF.")
-    tagline = "Government answers in one place, in your language. A voice-first assistant built on N-ATLaS."
+    tagline = "Any question about government, answered correctly, in your language. A voice-first assistant built on N-ATLaS."
     readme = readme_text()
     evidence = (DOCS / "N-ATLaS_integration_evidence.md").read_text(encoding="utf-8")
     evidence = re.sub(r"\A# [^\n]*\n", "", evidence)  # the cover carries the title

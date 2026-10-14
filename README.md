@@ -4,11 +4,23 @@
 
 **Government answers in one place, in your language.**
 
-To get a NIN, check a BVN, register to vote, check whether a drug is NAFDAC-registered, or know your rights when the police stop you, a Nigerian today has to find the right agency (NIMC, NIBSS, INEC, NAFDAC, CBN, JAMB, the Police Act…), find its website, and read it in English. Millions of people never get past the first step.
+**Our goal: anyone in Nigeria can find out anything about their government by asking in their own language, and the answer they get is correct.**
 
-WazobiaAssist puts those answers in one place. Ask by **voice note or text in Hausa, Igbo, Yorùbá or Nigerian English**, on the **web or Telegram**, and it answers in the same language from the agencies' own published information or official registers, and names the agency it came from. It is built on **N-ATLaS**, Nigeria's multilingual language model, and NCAIR's speech recognition models.
+WazobiaAssist is one place to ask about any government service, law, procedure or official register. Ask by **voice note or text in Hausa, Igbo, Yorùbá or Nigerian English**, on the **web or Telegram**. It answers in the same language from the agencies' own published information and live official registers, and names the agency the answer came from. It is built on **N-ATLaS**, Nigeria's multilingual language model, and NCAIR's speech recognition models.
 
 National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First Access, Track B (Innovation & Enterprise).
+
+## Why it matters
+
+Government information in Nigeria is spread across dozens of agencies, each with its own website, PDFs, USSD codes and helplines, almost all in English. To get a NIN, register to vote, check whether a drug is NAFDAC-registered, apply for a student loan or know your rights when the police stop you, you first have to know which agency handles it (NIMC, INEC, NAFDAC, NELFUND, the Police Act…), then find its page, then read it in a language many people do not read comfortably.
+
+So most people ask a friend, a WhatsApp group or an agent instead, and the answers they get are often wrong. People pay "registration fees" for free services, send money for CBN "grants" that do not exist, buy products whose registration has expired, and do not know what the law allows the police to do. **A wrong answer about government costs people money, missed deadlines and their rights.** That is why WazobiaAssist is built around two promises.
+
+## Our two promises
+
+**1. Anything about government, in one place.** People should not need to know which agency to ask. One assistant already covers identity and registration, voting, official product registers, legal rights, money and scams, exams and schooling, health and farming. That is more than 20 federal agencies and bodies, the Constitution and the main federal laws on policing, criminal justice, data protection, fraud and consumer rights. Each topic is a folder of official documents, so adding an agency needs no code changes. Coverage can grow agency by agency until every service a citizen needs is covered (see [Further improvements](#further-improvements-and-integrations)).
+
+**2. The answer must be correct.** When WazobiaAssist answers a question about government, it answers only from that agency's own published information or a live official register, and it names the source. Numbers and codes are checked after translation. When the official information does not answer the question, WazobiaAssist says so and points to the right agency instead of guessing. [How we keep answers correct](#how-we-keep-answers-correct) explains every safeguard.
 
 ## Try it
 
@@ -31,7 +43,6 @@ One assistant, many agencies:
 | Health: immunisation, pregnancy and newborn danger signs, malaria | NPHCDA, WHO |
 | Farming: planting times, pests, storage, the 2026 rainy season | IITA, FAO, NAERLS, NiMet |
 
-
 **1. Checks a product against NAFDAC's registers.** Ask "Is Emzor paracetamol registered?" or read out the NAFDAC number on the pack. The assistant searches NAFDAC's Greenbook (about 8,900 drugs, vaccines, medical devices and herbal products, searched live) and NAFDAC's Food Products Database (28,481 foods, refreshed daily) and replies with the product name, NAFDAC number, company and whether the registration is valid or expired. Example: NAFDAC number A8-102316L comes back as "registration expired on 19 December 2024". It never calls a product fake just because it isn't found.
 
 **2. Explains your legal rights with the exact law.** "Can the police arrest me for my brother's debt?" or "Can a company share my data?" is answered from the Constitution's fundamental rights, the Police Act 2020, the Administration of Criminal Justice Act 2015, the Nigeria Data Protection Act 2023, the Cybercrimes Act, the EFCC Act, the Advance Fee Fraud Act and the consumer rights in the FCCPA 2018. Answers name the law and section and point to free help from the Legal Aid Council. The 270 passages quoted from these laws were checked against the source texts.
@@ -42,11 +53,22 @@ One assistant, many agencies:
 
 **General questions** about Nigeria that no agency document covers ("Who is the president?", "What is the capital?") are answered from N-ATLaS's own knowledge, clearly labelled *"General knowledge, not from an official source. It may be out of date"*. For health doses, legal and money questions, it refuses to answer from memory and points to the right agency instead.
 
-**Why the answers can be trusted:**
-- Official answers come only from curated agency documents or live registers, and say "I don't know" otherwise.
-- Every official answer names the agency. Sources that were not in the retrieved passages are removed from the answer.
-- Numbers, USSD codes, NAFDAC numbers and links are checked after translation; if one is lost, the English original is attached.
-- Health answers send danger signs to a health facility; legal answers say they are information, not legal advice.
+## How we keep answers correct
+
+Correctness is designed into every step, not left to the language model:
+
+| Safeguard | How it works |
+|---|---|
+| **Official sources only** | Every document was written from the agency's own page or the law's official text, and starts with its source links and the date it was checked. Drafts, and any file still marked `{{VERIFY}}`, are never loaded. |
+| **Live registers for facts that change** | Product questions are checked against NAFDAC's Greenbook at the moment they are asked, and against NAFDAC's food database, which is downloaded daily. A registration that has expired is reported as expired. |
+| **Answers grounded in the source** | N-ATLaS writes each official answer only from the passages retrieved for that question. If those passages do not contain the answer, it says it does not know and gives the agency to contact. |
+| **Facts copied, not generated** | Product answers are assembled from NAFDAC's own fields (name, NAFDAC number, company, expiry date), so a number or date is never invented. A product that is not found is never called fake. |
+| **Every answer names its source** | Official answers end with the agency they came from. Any source named in an answer that was not in the retrieved passages is removed. |
+| **Codes survive translation** | After N-ATLaS translates an answer, every number, USSD code, NAFDAC number and link is compared with the English. If one was lost or changed, the English original is attached, so a user never gets a wrong code. |
+| **Safety rules per topic** | Health danger signs always mean "go to a health facility now", with no doses and no diagnosis. Legal answers cite the law and section and say they are information, not legal advice. Money answers warn against paying fees for "grants". |
+| **Memory is labelled or refused** | General questions no agency covers ("What is the capital?") are answered from N-ATLaS's own knowledge with the label *"General knowledge, not from an official source. It may be out of date"*. N-ATLaS will not answer health, legal or money questions from memory. |
+| **People check the content** | The domain content lead checks each document against its source. The 270 passages quoted from Nigerian laws were checked against the source texts. Each domain's `docs/_SOURCES_REVIEW.md` lists what still needs a second check before launch. |
+| **Real users check the answers** | Every answer can be rated 👍 or 👎. In testing, 97.4% of rated answers were rated helpful. Every 👎 and every unanswered question is reviewed, and the content is fixed. |
 
 ## How it works
 
@@ -156,7 +178,6 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
 cp .env.example .env               # set MOCK=1
 uvicorn app.server:app --port 8080 # open http://localhost:8080
-pytest
 ```
 
 ### On a GPU server
@@ -258,12 +279,38 @@ This writes `data/interactions.csv` and prints counts by language, domain, chann
 
 ## Further improvements and integrations
 
+The goal stays the same as we grow: every question about government, answered correctly, on every phone, in the user's language. All new channels use the same backend (`POST /api/ask`), so every answer goes through the same sources, safety rules and translation checks described in [How we keep answers correct](#how-we-keep-answers-correct).
+
+### Android and iOS apps
+
+A WazobiaAssist app for Android phones and iPhones, built from one shared codebase (Flutter):
+
+- **Android first.** Most phones in Nigeria run Android, many of them low-cost models, so the app targets Android 8 and newer, a download under 20 MB, and a low-data mode that sends text answers by default and voice replies only on request. It will be on Google Play, and the install file will also be shared directly for phones without the Play Store.
+- **iPhone** from the same code, on the App Store.
+- **Hold to talk.** The main screen is one large microphone button, and the app remembers the user's language. Typing is always available.
+- **Saved answers work offline.** Users can save an answer, such as the NIN steps or a PVC checklist, and open it later without data.
+- **Opt-in reminders** for government deadlines people often miss: voter registration, JAMB registration, immunisation days and tax dates.
+- **Scan a NAFDAC number** with the camera instead of typing it, and get the registration status from NAFDAC's registers.
+- **Share an answer** with its source to WhatsApp, as text or a voice note, so correct information spreads through the same groups where rumours do.
+- **Same privacy as today.** No account and no phone number are needed. `DELETE` in settings erases everything.
+
+### Other channels and integrations
+
 - **WhatsApp.** The WhatsApp channel is built and tested up to the provider's limit: Twilio delivers users' messages to the bot and the bot writes its answers, but a Twilio trial account may only send Twilio's own template messages (error 21654), so replies are not delivered yet. Next step: an upgraded Twilio account, then a WhatsApp Business number approved by Meta so users don't need a sandbox join phrase. Code: `app/channels/whatsapp.py`, endpoint `POST /whatsapp`. Setup: in the Twilio Console, open Messaging → Try it out → Send a WhatsApp message. Note the sandbox number and join phrase shown there (ours: +1 415 523 8886, `join examine-so`) and set `TWILIO_WHATSAPP_FROM=whatsapp:<that number>` (replies go out from whichever number the user wrote to). Put the account SID and auth token in `.env`. In the Sandbox settings tab, set "When a message comes in" to `https://<NGROK_DOMAIN>/whatsapp` (POST). Each tester must send the join phrase first. **A Twilio trial account cannot send the bot's own replies** (only Twilio's templates, error 21654), so WhatsApp needs an upgraded account.
-- **Live lookup on official sites.** When the curated documents have no answer, search only an approved list of official sites (nimc.gov.ng, inecnigeria.org, cbn.gov.ng, jamb.gov.ng, nafdac.gov.ng and others), pull the relevant paragraphs, and answer from them with a label such as "From nimc.gov.ng, checked today". The NAFDAC Greenbook check already works this way. Health and money answers from a live page add "please confirm with the agency". A nightly job also re-downloads every source page and flags changes for review, so curated documents never go out of date.
-- **Feature phones.** A USSD menu and a phone line (IVR) using the same pipeline, for users without smartphones or data.
-- **Igbo voice replies.** No open Igbo text-to-speech voice exists yet; Igbo answers are text only.
-- **More agencies.** Birth certificates (NPC), driver's licences (FRSC), tax (FIRS), pensions (PenCom), and state-level services.
-- **Native-speaker review** of interface text and a sample of translated answers in each language, and Nigerian Pidgin once the models support it.
+- **Feature phones.** A USSD menu and a phone line (IVR) using the same pipeline, for people without smartphones or data.
+
+### Covering all of government, and keeping it correct
+
+- **More agencies, then states.** Next are birth certificates (NPC), driver's licences and plate numbers (FRSC), tax (the Nigeria Revenue Service, formerly FIRS), pensions (PenCom) and health insurance (NHIA). After that come state and local government services, starting with the states where our users are. Each new agency gets the same source checks before it goes live.
+- **Live lookup on official sites.** When the curated documents have no answer, search only an approved list of official sites (nimc.gov.ng, inecnigeria.org, cbn.gov.ng, jamb.gov.ng, nafdac.gov.ng and others), pull the relevant paragraphs, and answer from them with a label such as "From nimc.gov.ng, checked today". The NAFDAC Greenbook check already works this way. Health and money answers from a live page add "please confirm with the agency".
+- **Never out of date.** A nightly job re-downloads every source page and flags any change for review, so a fee, code or deadline that changes on the agency's site is updated in WazobiaAssist too.
+- **Agency partnerships.** Agencies can review and confirm their own content, and receive an anonymous monthly report of what citizens ask them about and where their information is unclear.
+
+### Languages and voice
+
+- **Igbo voice replies.** No open Igbo text-to-speech voice exists yet, so Igbo answers are text only for now.
+- **Nigerian Pidgin, and more Nigerian languages** as N-ATLaS and NCAIR's speech models add them.
+- **Native-speaker review** of the interface text and a sample of translated answers in each language.
 
 ## Known limitations
 
@@ -286,7 +333,7 @@ app/store.py           anonymous SQLite log
 app/messages.py        interface text in 4 languages
 app/channels/          telegram.py, whatsapp.py
 app/static/index.html  web page (also published at https://wazobiaassist.github.io)
-domains/               the five domains
+domains/               the seven topic domains
 scripts/ask.py         ask one question from the terminal
 scripts/export_logs.py evidence CSV and summary
 scripts/fetch_sources.py download source pages as drafts for review
@@ -294,7 +341,7 @@ scripts/routing_test.py check routing per language (tests/routing_questions.csv)
 scripts/update_nafdac.py download NAFDAC's food product database
 app/products.py        NAFDAC product check (Greenbook live search + food database)
 scripts/gcp/            Google Cloud VM creation, setup and always-on services
-tests/                 pytest, runs without a GPU
+tests/                 routing questions per language (routing_questions.csv)
 ```
 
 ## Team profile
