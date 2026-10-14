@@ -4,23 +4,22 @@
 
 **Government answers in one place, in your language.**
 
-**Our goal: anyone in Nigeria can find out anything about their government by asking in their own language, and the answer they get is correct.**
+**Our goal: anyone in Nigeria can find out anything about their government by asking in their own language, and get an answer that is correct.**
 
-WazobiaAssist is one place to ask about any government service, law, procedure or official register. Ask by **voice note or text in Hausa, Igbo, Yorùbá or Nigerian English**, on the **web or Telegram**. It answers in the same language from the agencies' own published information and live official registers, and names the agency the answer came from. It is built on **N-ATLaS**, Nigeria's multilingual language model, and NCAIR's speech recognition models.
+WazobiaAssist is a front desk for the whole of government. You do not need to know which agency handles your problem, find its website or read English. Ask by **voice note or text in Hausa, Igbo, Yorùbá or Nigerian English**, on the **web or Telegram**, and WazobiaAssist answers in your language from the government's own information, and tells you which agency the answer came from. It is built on **N-ATLaS**, Nigeria's multilingual language model, and NCAIR's speech recognition models.
 
 National AI Innovation Challenge (NAIC) 2026, Problem Statement 02: Voice-First Access, Track B (Innovation & Enterprise).
 
 ## Why it matters
 
-Government information in Nigeria is spread across dozens of agencies, each with its own website, PDFs, USSD codes and helplines, almost all in English. To get a NIN, register to vote, check whether a drug is NAFDAC-registered, apply for a student loan or know your rights when the police stop you, you first have to know which agency handles it (NIMC, INEC, NAFDAC, NELFUND, the Police Act…), then find its page, then read it in a language many people do not read comfortably.
+Government information in Nigeria is spread across dozens of agencies, each with its own website, PDFs, USSD codes and helplines, almost all in English. To get a NIN, register to vote, apply for a student loan, check that a loan app is legal or know your rights when the police stop you, you first have to know which agency handles it, then find its page, then read it in a language many people do not read comfortably.
 
-So most people ask a friend, a WhatsApp group or an agent instead, and the answers they get are often wrong. People pay "registration fees" for free services, send money for CBN "grants" that do not exist, buy products whose registration has expired, and do not know what the law allows the police to do. **A wrong answer about government costs people money, missed deadlines and their rights.** That is why WazobiaAssist is built around two promises.
+So most people ask a friend, a WhatsApp group or an agent instead, and the answers they get are often wrong. People pay "registration fees" for services that are free, send money for CBN "grants" that do not exist, borrow from loan apps that regulators have removed from their lists, and do not know what the law allows the police to do. **A wrong answer about government costs people money, missed deadlines and their rights.**
 
-## Our two promises
+WazobiaAssist makes two promises:
 
-**1. Anything about government, in one place.** People should not need to know which agency to ask. One assistant already covers identity and registration, voting, official product registers, legal rights, money and scams, exams and schooling, health and farming. That is more than 20 federal agencies and bodies, the Constitution and the main federal laws on policing, criminal justice, data protection, fraud and consumer rights. Each topic is a folder of official documents, so adding an agency needs no code changes. Coverage can grow agency by agency until every service a citizen needs is covered (see [Further improvements](#further-improvements-and-integrations)).
-
-**2. The answer must be correct.** When WazobiaAssist answers a question about government, it answers only from that agency's own published information or a live official register, and it names the source. Numbers and codes are checked after translation. When the official information does not answer the question, WazobiaAssist says so and points to the right agency instead of guessing. [How we keep answers correct](#how-we-keep-answers-correct) explains every safeguard.
+1. **Anything about government, in one place.** People should not need to know which agency to ask.
+2. **The answer must be correct.** It comes from the agency's own information, names its source, and when the official information does not answer the question, WazobiaAssist says so instead of guessing.
 
 ## Try it
 
@@ -29,45 +28,50 @@ So most people ask a friend, a WhatsApp group or an agent instead, and the answe
 | Web | **https://wazobiaassist.github.io**: pick a language, then type or tap the microphone |
 | Telegram | **@WazobiaAssist_bot**: send any message, pick a language, then send a voice note or text |
 
-## What it does
+## What it does: explain, verify, direct
 
-One assistant, many agencies:
+Every question is handled in one of three ways. None of them is tied to one agency: each works the same way for any agency that is added.
+
+| | What WazobiaAssist does | Working today | Next |
+|---|---|---|---|
+| **Explain** | Explains a government procedure, requirement, right or rule from the agency's own published information or the text of the law, with the exact steps, codes and fees. *"How do I retrieve my NIN?" "Can the police arrest me for my brother's debt?" "How do I apply for a student loan?"* | 20+ agencies and bodies (NIMC, NIBSS, NCC, INEC, Immigration, CAC, CBN, SEC, FCCPC, NDIC, EFCC, JAMB, WAEC, NECO, UBEC, NELFUND, NPHCDA, NiMet, Legal Aid Council and others), the Constitution and the main federal laws | Every federal agency, then state and local government services |
+| **Verify** | Many agencies publish their records online. WazobiaAssist searches those databases at the moment the question is asked, so the answer matches today's official record, not an old copy. *"Is this drug registered?" "Is this loan app approved?"* | NAFDAC's product registers (drugs, vaccines, medical devices, herbal products and foods) | FCCPC's register of approved digital lenders and the lenders removed from it; CAC business search; SEC's registered operators; CBN's licensed banks and microfinance banks |
+| **Direct** | When the official information does not answer the question, it says so and points the user to the right agency and its official helpline or website. It does not guess. | All topics | Agency complaint and appointment links |
+
+**Examples from the pilot:**
+- **Rights, with the exact law.** "Can the police arrest me for my brother's debt?" is answered from the Constitution, the Police Act 2020 and the Administration of Criminal Justice Act 2015, naming the section and pointing to free help from the Legal Aid Council. The 270 passages quoted from Nigerian laws were checked against the source texts.
+- **Procedures, with codes checked against the official pages.** Retrieving a NIN (`*346#`, NIMC), checking a BVN (`*565*0#`, NIBSS), registering to vote and collecting a PVC (INEC), applying for a passport, registering a business name (CAC), creating a JAMB profile.
+- **A live record check.** "Is Emzor paracetamol registered?", or a NAFDAC number read from the pack, is checked against NAFDAC's live register. The reply gives the product, registration number, company and whether the registration is valid or expired, for example "registration expired on 19 December 2024".
+- **Money safety.** "Someone says CBN is giving grants if I pay a fee" is recognised as a scam from CBN guidance. The pilot covers 20 common scam patterns, and how to report fraud to the EFCC and the police.
+- **Everyday public services.** The NPHCDA immunisation schedule, danger signs in pregnancy and in newborns, JAMB, WAEC and NECO, and farming guidance with NiMet's 2026 rainy-season forecast.
+- **General questions** about Nigeria that no agency document covers ("What is the capital?") are answered from N-ATLaS's own knowledge, clearly labelled *"General knowledge, not from an official source. It may be out of date"*.
+
+**Coverage in the pilot:**
 
 | Ask about | Answers come from |
 |---|---|
 | Identity and registration: NIN, BVN, NIN-SIM linking, voter registration and PVC, passport, business names | NIMC, NIBSS, NCC, INEC, Nigeria Immigration Service, CAC |
-| Is this product registered? | NAFDAC Greenbook (live search) and NAFDAC Food Products Database |
-| Your rights: arrest, bail, detention, data privacy, consumer rights | Constitution, Police Act 2020, ACJA 2015, NDPA 2023, FCCPA 2018, Legal Aid Council |
+| Your rights: arrest, bail, detention, data privacy, consumer rights | Constitution, Police Act 2020, ACJA 2015, NDPA 2023, FCCPA 2018, Cybercrimes Act, Legal Aid Council |
 | Money and scams: loan apps, "grants" that ask for a fee, Ponzi schemes, reporting fraud | CBN, SEC, FCCPC, NDIC, EFCC |
+| Registered products (live check) | NAFDAC's registers |
 | Exams and schooling: JAMB, WAEC, NECO, free basic education, student loans | JAMB, WAEC, NECO, UBEC, NELFUND |
 | Health: immunisation, pregnancy and newborn danger signs, malaria | NPHCDA, WHO |
 | Farming: planting times, pests, storage, the 2026 rainy season | IITA, FAO, NAERLS, NiMet |
 
-**1. Checks a product against NAFDAC's registers.** Ask "Is Emzor paracetamol registered?" or read out the NAFDAC number on the pack. The assistant searches NAFDAC's Greenbook (about 8,900 drugs, vaccines, medical devices and herbal products, searched live) and NAFDAC's Food Products Database (28,481 foods, refreshed daily) and replies with the product name, NAFDAC number, company and whether the registration is valid or expired. Example: NAFDAC number A8-102316L comes back as "registration expired on 19 December 2024". It never calls a product fake just because it isn't found.
-
-**2. Explains your legal rights with the exact law.** "Can the police arrest me for my brother's debt?" or "Can a company share my data?" is answered from the Constitution's fundamental rights, the Police Act 2020, the Administration of Criminal Justice Act 2015, the Nigeria Data Protection Act 2023, the Cybercrimes Act, the EFCC Act, the Advance Fee Fraud Act and the consumer rights in the FCCPA 2018. Answers name the law and section and point to free help from the Legal Aid Council. The 270 passages quoted from these laws were checked against the source texts.
-
-**3. Walks you through government procedures with codes checked against the official pages.** Getting or retrieving a NIN (`*346#`, NIMC), checking a BVN (`*565*0#`, NIBSS), registering to vote and collecting a PVC (INEC), applying for a passport (Nigeria Immigration Service), registering a business name (CAC), and creating a JAMB profile (SMS to 55019 or 66019).
-
-**It also answers everyday questions** on health (the NPHCDA immunisation schedule and WHO danger signs for pregnancy, newborns, fever, diarrhoea and pneumonia), farming (IITA, FAO, NAERLS and ICRISAT guides, NiMet's 2026 forecast), education (JAMB, WAEC, NECO, UBE, NELFUND) and money safety (CBN, SEC, FCCPC, NDIC and EFCC guidance plus 20 common scam patterns).
-
-**General questions** about Nigeria that no agency document covers ("Who is the president?", "What is the capital?") are answered from N-ATLaS's own knowledge, clearly labelled *"General knowledge, not from an official source. It may be out of date"*. For health doses, legal and money questions, it refuses to answer from memory and points to the right agency instead.
-
 ## How we keep answers correct
 
-Correctness is designed into every step, not left to the language model:
+Correctness is built into every step, not left to the language model:
 
 | Safeguard | How it works |
 |---|---|
 | **Official sources only** | Every document was written from the agency's own page or the law's official text, and starts with its source links and the date it was checked. Drafts, and any file still marked `{{VERIFY}}`, are never loaded. |
-| **Live registers for facts that change** | Product questions are checked against NAFDAC's Greenbook at the moment they are asked, and against NAFDAC's food database, which is downloaded daily. A registration that has expired is reported as expired. |
 | **Answers grounded in the source** | N-ATLaS writes each official answer only from the passages retrieved for that question. If those passages do not contain the answer, it says it does not know and gives the agency to contact. |
-| **Facts copied, not generated** | Product answers are assembled from NAFDAC's own fields (name, NAFDAC number, company, expiry date), so a number or date is never invented. A product that is not found is never called fake. |
+| **Live records, copied not generated** | When an agency's database is searched, the answer is built from the record's own fields (name, registration number, holder, expiry date), so a number or date is never invented and an expired record is reported as expired. A record that is not found is never called fake; the user is sent to the agency to confirm. |
 | **Every answer names its source** | Official answers end with the agency they came from. Any source named in an answer that was not in the retrieved passages is removed. |
-| **Codes survive translation** | After N-ATLaS translates an answer, every number, USSD code, NAFDAC number and link is compared with the English. If one was lost or changed, the English original is attached, so a user never gets a wrong code. |
+| **Codes survive translation** | After N-ATLaS translates an answer, every number, USSD code, registration number and link is compared with the English. If one was lost or changed, the English original is attached, so a user never gets a wrong code. |
 | **Safety rules per topic** | Health danger signs always mean "go to a health facility now", with no doses and no diagnosis. Legal answers cite the law and section and say they are information, not legal advice. Money answers warn against paying fees for "grants". |
-| **Memory is labelled or refused** | General questions no agency covers ("What is the capital?") are answered from N-ATLaS's own knowledge with the label *"General knowledge, not from an official source. It may be out of date"*. N-ATLaS will not answer health, legal or money questions from memory. |
-| **People check the content** | The domain content lead checks each document against its source. The 270 passages quoted from Nigerian laws were checked against the source texts. Each domain's `docs/_SOURCES_REVIEW.md` lists what still needs a second check before launch. |
+| **Memory is labelled or refused** | General knowledge from N-ATLaS's memory is always labelled. N-ATLaS will not answer health, legal or money questions from memory. |
+| **People check the content** | The domain content lead checks each document against its source. Each domain's `docs/_SOURCES_REVIEW.md` lists what still needs a second check before launch. |
 | **Real users check the answers** | Every answer can be rated 👍 or 👎. In testing, 97.4% of rated answers were rated helpful. Every 👎 and every unanswered question is reviewed, and the content is fixed. |
 
 ## How it works
@@ -97,7 +101,7 @@ N-ATLaS (`NCAIR1/N-ATLaS`, Llama-3 8B) is used as released, with no fine-tuning,
 |---|---|---|
 | Translate in | Hausa, Igbo or Yorùbá question → English | `Assistant.translate` |
 | Route | Picks the agency domain when keywords are unclear, or "general" / "other" | `Assistant.route` |
-| Product name | Pulls the product name out of a NAFDAC question | `app/products.py` |
+| Record lookup | Pulls the name or number to look up out of the question (for example a product name for NAFDAC's register) | `app/products.py` |
 | Answer | Writes the answer from the retrieved agency passages, following the domain's safety rules | `Assistant.answer_en` |
 | General | Answers general questions from memory with a label, or refuses on sensitive topics | `Assistant.answer_general` |
 | Translate out | English answer → the user's language | `Assistant.translate` |
@@ -242,7 +246,18 @@ Without Google Cloud (e.g. a rented RunPod or Lambda GPU), follow the same steps
 - `LANGUAGE`: change language
 - `DELETE`: erase all of the user's data
 
-## NAFDAC product check
+## Live checks against agency databases
+
+Some answers must come from an official record, not from a document: whether a product is registered, whether a lender is approved, whether a business exists. For these, WazobiaAssist searches the agency's own online database when the question is asked, and builds the reply from the record's fields. Each database is a connector: it recognises the questions it can check, searches the database, and returns the record. N-ATLaS only pulls out the name or number to look up and translates the reply, so it never writes a registration number or date itself.
+
+| Database | Status |
+|---|---|
+| NAFDAC Greenbook and Food Products Database | Working (`app/products.py`) |
+| FCCPC register of approved digital lenders, and lenders removed from it | Next: "Is this loan app approved?" |
+| CAC public search | Planned: "Is this business registered?" |
+| SEC registered capital market operators; CBN licensed banks and microfinance banks | Planned: "Is this investment company or bank licensed?" |
+
+### The first connector: NAFDAC
 
 Users can ask whether a product is registered with NAFDAC, by name or by NAFDAC number ("Is Emzor paracetamol registered?", "Check A8-0121"). Any question that mentions NAFDAC or contains a NAFDAC number goes to the `products` domain, which looks the product up instead of reading documents:
 
@@ -290,7 +305,7 @@ A WazobiaAssist app for Android phones and iPhones, built from one shared codeba
 - **Hold to talk.** The main screen is one large microphone button, and the app remembers the user's language. Typing is always available.
 - **Saved answers work offline.** Users can save an answer, such as the NIN steps or a PVC checklist, and open it later without data.
 - **Opt-in reminders** for government deadlines people often miss: voter registration, JAMB registration, immunisation days and tax dates.
-- **Scan a NAFDAC number** with the camera instead of typing it, and get the registration status from NAFDAC's registers.
+- **Scan instead of typing.** Point the camera at a registration number, such as the NAFDAC number on a pack or a CAC number on a receipt, and get the official record.
 - **Share an answer** with its source to WhatsApp, as text or a voice note, so correct information spreads through the same groups where rumours do.
 - **Same privacy as today.** No account and no phone number are needed. `DELETE` in settings erases everything.
 
@@ -302,6 +317,7 @@ A WazobiaAssist app for Android phones and iPhones, built from one shared codeba
 ### Covering all of government, and keeping it correct
 
 - **More agencies, then states.** Next are birth certificates (NPC), driver's licences and plate numbers (FRSC), tax (the Nigeria Revenue Service, formerly FIRS), pensions (PenCom) and health insurance (NHIA). After that come state and local government services, starting with the states where our users are. Each new agency gets the same source checks before it goes live.
+- **More live database checks.** Connect every agency database the public can already search: FCCPC's register of approved digital lenders first, then CAC, SEC and CBN. Each one turns a question people are often lied to about into a check against the official record.
 - **Live lookup on official sites.** When the curated documents have no answer, search only an approved list of official sites (nimc.gov.ng, inecnigeria.org, cbn.gov.ng, jamb.gov.ng, nafdac.gov.ng and others), pull the relevant paragraphs, and answer from them with a label such as "From nimc.gov.ng, checked today". The NAFDAC Greenbook check already works this way. Health and money answers from a live page add "please confirm with the agency".
 - **Never out of date.** A nightly job re-downloads every source page and flags any change for review, so a fee, code or deadline that changes on the agency's site is updated in WazobiaAssist too.
 - **Agency partnerships.** Agencies can review and confirm their own content, and receive an anonymous monthly report of what citizens ask them about and where their information is unclear.

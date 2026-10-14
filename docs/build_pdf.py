@@ -29,8 +29,8 @@ BROWSERS = [
 
 # README sections that make up the architecture, setup and usage document.
 ARCHITECTURE_SETUP_USAGE = [
-    "Why it matters", "Our two promises", "Try it", "What it does", "How we keep answers correct", "How it works", "Technology stack", "Domains are plug-in folders",
-    "Run it", "Users' commands", "NAFDAC product check", "Routing test", "Privacy and safety",
+    "Why it matters", "Try it", "What it does: explain, verify, direct", "How we keep answers correct", "How it works", "Technology stack", "Domains are plug-in folders",
+    "Run it", "Users' commands", "Live checks against agency databases", "Routing test", "Privacy and safety",
     "Further improvements and integrations", "Known limitations", "Project layout",
 ]
 

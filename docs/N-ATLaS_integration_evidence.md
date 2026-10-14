@@ -71,9 +71,9 @@ Six answers from user testing between 10 and 12 October 2026, copied from the an
 - NCAIR NigerianAccentedEnglish heard: *"someone says cbn is giving grants if i pay a fee. is it true?"*
 - Answer: *"This looks like a scam. The Central Bank of Nigeria (CBN) does not ask you to pay a fee to receive any grants or money…"*, from CBN's consumer-protection pages. 11.8 seconds.
 
-**NAFDAC product check, text, web page**
+**Live record check (NAFDAC register), text, web page**
 - User typed: *"is emzor paracetamol registered?"*
-- N-ATLaS pulled out the product name, the NAFDAC Greenbook was searched live, and the reply listed each registered product: *"Emzor Paracetamol Tablet (Tablet, 500 mg), NAFDAC number 04-0411, registered to Emzor Pharmaceutical Industries Limited: registration valid until 27 March 2028…"*. 3.5 seconds.
+- N-ATLaS pulled out the product name, NAFDAC's own database was searched at that moment, and the reply listed each registered product: *"Emzor Paracetamol Tablet (Tablet, 500 mg), NAFDAC number 04-0411, registered to Emzor Pharmaceutical Industries Limited: registration valid until 27 March 2028…"*. 3.5 seconds.
 
 ## 5. In numbers
 
