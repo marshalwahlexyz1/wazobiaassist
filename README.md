@@ -392,7 +392,7 @@ tests/                 routing questions per language (routing_questions.csv)
 
 ### 4. Nwaikwu Ekenedilichukwu Sebastian: User testing and outreach lead
 - **Affiliation:** Inspirive Technologies, IT Support Engineer
-- **Location:** [Ikoyi, Lagos]
+- **Location:** Ikoyi, Lagos
 - **Responsibilities:** recruits testers through WhatsApp groups and communities, collects feedback and testing evidence, produces the demo video, and leads the plan to reach 1,000 users.
 - **Relevant experience:** Manages user accounts, access controls, identity management, and enterprise IT resources. 
 - **Languages:** Igbo, Pidgin, English
